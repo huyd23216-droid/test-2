@@ -1,0 +1,442 @@
+{
+  "_huong_dan": "levels: mô tả 3 mức độ. sentences: mỗi câu cần id (duy nhất), level (1, 2 hoặc 3), text (câu tiếng Anh), meaning_vi, youglish_query (cụm chính để tìm trên YouGlish). Nên viết số bằng chữ (eight thay vì 8) để chấm chính xác.",
+  "levels": [
+    {
+      "level": 1,
+      "name": "Câu ngắn",
+      "description": "Câu ngắn, từ vựng đơn giản. Làm quen với việc nghe từng từ."
+    },
+    {
+      "level": 2,
+      "name": "Câu trung bình",
+      "description": "Câu dài hơn, nói ở tốc độ bình thường, có vài chỗ nối âm nhẹ."
+    },
+    {
+      "level": 3,
+      "name": "Câu dài có nối âm",
+      "description": "Câu dài, nhiều nối âm, nuốt âm và dạng yếu như người bản xứ nói tự nhiên."
+    }
+  ],
+  "sentences": [
+    {
+      "id": "d1-01",
+      "level": 1,
+      "text": "I like green tea.",
+      "meaning_vi": "Tôi thích trà xanh.",
+      "youglish_query": "green tea"
+    },
+    {
+      "id": "d1-02",
+      "level": 1,
+      "text": "She lives in a big city.",
+      "meaning_vi": "Cô ấy sống ở một thành phố lớn.",
+      "youglish_query": "lives in a big city"
+    },
+    {
+      "id": "d1-03",
+      "level": 1,
+      "text": "We have class on Monday.",
+      "meaning_vi": "Chúng tôi có tiết học vào thứ Hai.",
+      "youglish_query": "class on Monday"
+    },
+    {
+      "id": "d1-04",
+      "level": 1,
+      "text": "My brother is a doctor.",
+      "meaning_vi": "Anh trai tôi là bác sĩ.",
+      "youglish_query": "my brother is a doctor"
+    },
+    {
+      "id": "d1-05",
+      "level": 1,
+      "text": "It is very hot today.",
+      "meaning_vi": "Hôm nay trời rất nóng.",
+      "youglish_query": "very hot today"
+    },
+    {
+      "id": "d1-06",
+      "level": 1,
+      "text": "Where is the bus stop?",
+      "meaning_vi": "Trạm xe buýt ở đâu?",
+      "youglish_query": "where is the bus stop"
+    },
+    {
+      "id": "d1-07",
+      "level": 1,
+      "text": "I get up at six.",
+      "meaning_vi": "Tôi dậy lúc sáu giờ.",
+      "youglish_query": "get up at six"
+    },
+    {
+      "id": "d1-08",
+      "level": 1,
+      "text": "They play football after school.",
+      "meaning_vi": "Họ chơi bóng đá sau giờ học.",
+      "youglish_query": "after school"
+    },
+    {
+      "id": "d1-09",
+      "level": 1,
+      "text": "Can I have the menu, please?",
+      "meaning_vi": "Cho tôi xem thực đơn được không?",
+      "youglish_query": "can I have the menu"
+    },
+    {
+      "id": "d1-10",
+      "level": 1,
+      "text": "He drinks coffee every morning.",
+      "meaning_vi": "Sáng nào anh ấy cũng uống cà phê.",
+      "youglish_query": "coffee every morning"
+    },
+    {
+      "id": "d1-11",
+      "level": 1,
+      "text": "The shop closes at nine.",
+      "meaning_vi": "Cửa hàng đóng cửa lúc chín giờ.",
+      "youglish_query": "closes at nine"
+    },
+    {
+      "id": "d1-12",
+      "level": 1,
+      "text": "I don't eat meat.",
+      "meaning_vi": "Tôi không ăn thịt.",
+      "youglish_query": "I don't eat meat"
+    },
+    {
+      "id": "d1-13",
+      "level": 1,
+      "text": "What time is it now?",
+      "meaning_vi": "Bây giờ là mấy giờ?",
+      "youglish_query": "what time is it"
+    },
+    {
+      "id": "d1-14",
+      "level": 1,
+      "text": "My phone is on the table.",
+      "meaning_vi": "Điện thoại của tôi ở trên bàn.",
+      "youglish_query": "on the table"
+    },
+    {
+      "id": "d1-15",
+      "level": 1,
+      "text": "We are going to the beach.",
+      "meaning_vi": "Chúng tôi đang đi ra biển.",
+      "youglish_query": "going to the beach"
+    },
+    {
+      "id": "d1-16",
+      "level": 1,
+      "text": "She has two cats.",
+      "meaning_vi": "Cô ấy có hai con mèo.",
+      "youglish_query": "she has two"
+    },
+    {
+      "id": "d1-17",
+      "level": 1,
+      "text": "How much is this bag?",
+      "meaning_vi": "Cái túi này giá bao nhiêu?",
+      "youglish_query": "how much is this"
+    },
+    {
+      "id": "d1-18",
+      "level": 1,
+      "text": "I am learning English.",
+      "meaning_vi": "Tôi đang học tiếng Anh.",
+      "youglish_query": "I am learning English"
+    },
+    {
+      "id": "d1-19",
+      "level": 1,
+      "text": "The weather is nice today.",
+      "meaning_vi": "Hôm nay thời tiết đẹp.",
+      "youglish_query": "the weather is nice"
+    },
+    {
+      "id": "d1-20",
+      "level": 1,
+      "text": "Please open the window.",
+      "meaning_vi": "Làm ơn mở cửa sổ.",
+      "youglish_query": "open the window"
+    },
+    {
+      "id": "d2-01",
+      "level": 2,
+      "text": "I usually take the bus to work in the morning.",
+      "meaning_vi": "Buổi sáng tôi thường đi xe buýt đi làm.",
+      "youglish_query": "take the bus to work"
+    },
+    {
+      "id": "d2-02",
+      "level": 2,
+      "text": "My sister wants to study abroad next year.",
+      "meaning_vi": "Chị tôi muốn đi du học vào năm sau.",
+      "youglish_query": "study abroad next year"
+    },
+    {
+      "id": "d2-03",
+      "level": 2,
+      "text": "We should leave early to avoid the traffic.",
+      "meaning_vi": "Chúng ta nên đi sớm để tránh tắc đường.",
+      "youglish_query": "avoid the traffic"
+    },
+    {
+      "id": "d2-04",
+      "level": 2,
+      "text": "Could you tell me the way to the train station?",
+      "meaning_vi": "Bạn có thể chỉ tôi đường đến ga tàu không?",
+      "youglish_query": "the way to the train station"
+    },
+    {
+      "id": "d2-05",
+      "level": 2,
+      "text": "I have been learning English for three months.",
+      "meaning_vi": "Tôi đã học tiếng Anh được ba tháng.",
+      "youglish_query": "for three months"
+    },
+    {
+      "id": "d2-06",
+      "level": 2,
+      "text": "The restaurant was full, so we went somewhere else.",
+      "meaning_vi": "Nhà hàng kín chỗ nên chúng tôi đi chỗ khác.",
+      "youglish_query": "went somewhere else"
+    },
+    {
+      "id": "d2-07",
+      "level": 2,
+      "text": "She forgot her keys and had to wait outside.",
+      "meaning_vi": "Cô ấy quên chìa khóa và phải đợi bên ngoài.",
+      "youglish_query": "had to wait outside"
+    },
+    {
+      "id": "d2-08",
+      "level": 2,
+      "text": "It's important to get enough sleep every night.",
+      "meaning_vi": "Ngủ đủ giấc mỗi đêm là điều quan trọng.",
+      "youglish_query": "get enough sleep"
+    },
+    {
+      "id": "d2-09",
+      "level": 2,
+      "text": "Many young people prefer to live in big cities.",
+      "meaning_vi": "Nhiều người trẻ thích sống ở thành phố lớn hơn.",
+      "youglish_query": "prefer to live in"
+    },
+    {
+      "id": "d2-10",
+      "level": 2,
+      "text": "I'm sorry, but I didn't understand the question.",
+      "meaning_vi": "Xin lỗi, nhưng tôi không hiểu câu hỏi.",
+      "youglish_query": "I didn't understand the question"
+    },
+    {
+      "id": "d2-11",
+      "level": 2,
+      "text": "He works from home two days a week.",
+      "meaning_vi": "Anh ấy làm việc ở nhà hai ngày một tuần.",
+      "youglish_query": "works from home"
+    },
+    {
+      "id": "d2-12",
+      "level": 2,
+      "text": "The movie was longer than I expected.",
+      "meaning_vi": "Bộ phim dài hơn tôi nghĩ.",
+      "youglish_query": "longer than I expected"
+    },
+    {
+      "id": "d2-13",
+      "level": 2,
+      "text": "We need to buy some food for the weekend.",
+      "meaning_vi": "Chúng ta cần mua ít đồ ăn cho cuối tuần.",
+      "youglish_query": "for the weekend"
+    },
+    {
+      "id": "d2-14",
+      "level": 2,
+      "text": "Technology has changed the way we communicate.",
+      "meaning_vi": "Công nghệ đã thay đổi cách chúng ta giao tiếp.",
+      "youglish_query": "the way we communicate"
+    },
+    {
+      "id": "d2-15",
+      "level": 2,
+      "text": "I'll call you as soon as I get home.",
+      "meaning_vi": "Tôi sẽ gọi cho bạn ngay khi về đến nhà.",
+      "youglish_query": "as soon as I get home"
+    },
+    {
+      "id": "d2-16",
+      "level": 2,
+      "text": "Reading books is a good way to improve your vocabulary.",
+      "meaning_vi": "Đọc sách là một cách tốt để cải thiện vốn từ.",
+      "youglish_query": "improve your vocabulary"
+    },
+    {
+      "id": "d2-17",
+      "level": 2,
+      "text": "My parents visit my grandmother every Sunday.",
+      "meaning_vi": "Bố mẹ tôi đến thăm bà vào mỗi Chủ nhật.",
+      "youglish_query": "every Sunday"
+    },
+    {
+      "id": "d2-18",
+      "level": 2,
+      "text": "The city is famous for its street food.",
+      "meaning_vi": "Thành phố này nổi tiếng với đồ ăn đường phố.",
+      "youglish_query": "famous for its"
+    },
+    {
+      "id": "d2-19",
+      "level": 2,
+      "text": "If it rains tomorrow, we will stay at home.",
+      "meaning_vi": "Nếu mai trời mưa, chúng tôi sẽ ở nhà.",
+      "youglish_query": "if it rains tomorrow"
+    },
+    {
+      "id": "d2-20",
+      "level": 2,
+      "text": "She speaks English much better than before.",
+      "meaning_vi": "Cô ấy nói tiếng Anh giỏi hơn trước rất nhiều.",
+      "youglish_query": "much better than before"
+    },
+    {
+      "id": "d3-01",
+      "level": 3,
+      "text": "I was going to call you, but I got caught up at work.",
+      "meaning_vi": "Tôi định gọi cho bạn, nhưng lại bị kẹt việc ở công ty.",
+      "youglish_query": "got caught up at work"
+    },
+    {
+      "id": "d3-02",
+      "level": 3,
+      "text": "What do you want to do after we finish dinner?",
+      "meaning_vi": "Ăn tối xong bạn muốn làm gì?",
+      "youglish_query": "what do you want to do"
+    },
+    {
+      "id": "d3-03",
+      "level": 3,
+      "text": "I don't know what you're talking about.",
+      "meaning_vi": "Tôi không biết bạn đang nói về chuyện gì.",
+      "youglish_query": "what you're talking about"
+    },
+    {
+      "id": "d3-04",
+      "level": 3,
+      "text": "Did you get a chance to look at the report I sent you?",
+      "meaning_vi": "Bạn đã có dịp xem bản báo cáo tôi gửi chưa?",
+      "youglish_query": "did you get a chance to"
+    },
+    {
+      "id": "d3-05",
+      "level": 3,
+      "text": "We've got to get out of here before it gets dark.",
+      "meaning_vi": "Chúng ta phải ra khỏi đây trước khi trời tối.",
+      "youglish_query": "get out of here"
+    },
+    {
+      "id": "d3-06",
+      "level": 3,
+      "text": "Let me know if you need any help with it.",
+      "meaning_vi": "Cho tôi biết nếu bạn cần giúp gì nhé.",
+      "youglish_query": "let me know if you need"
+    },
+    {
+      "id": "d3-07",
+      "level": 3,
+      "text": "It's not a big deal, but I'd rather not talk about it.",
+      "meaning_vi": "Không có gì to tát, nhưng tôi không muốn nói về chuyện đó.",
+      "youglish_query": "not a big deal"
+    },
+    {
+      "id": "d3-08",
+      "level": 3,
+      "text": "Could you turn it off and put it on the table?",
+      "meaning_vi": "Bạn tắt nó đi rồi đặt lên bàn giúp được không?",
+      "youglish_query": "turn it off"
+    },
+    {
+      "id": "d3-09",
+      "level": 3,
+      "text": "I should have told you earlier, and I'm really sorry about that.",
+      "meaning_vi": "Lẽ ra tôi nên nói với bạn sớm hơn, tôi thật sự xin lỗi về chuyện đó.",
+      "youglish_query": "should have told you"
+    },
+    {
+      "id": "d3-10",
+      "level": 3,
+      "text": "As a matter of fact, I've never been there before.",
+      "meaning_vi": "Thật ra thì tôi chưa từng đến đó bao giờ.",
+      "youglish_query": "as a matter of fact"
+    },
+    {
+      "id": "d3-11",
+      "level": 3,
+      "text": "What are you going to do about it?",
+      "meaning_vi": "Bạn định làm gì với chuyện đó?",
+      "youglish_query": "what are you going to do"
+    },
+    {
+      "id": "d3-12",
+      "level": 3,
+      "text": "I'm trying to figure out what went wrong.",
+      "meaning_vi": "Tôi đang cố tìm ra chuyện gì đã sai.",
+      "youglish_query": "figure out what went wrong"
+    },
+    {
+      "id": "d3-13",
+      "level": 3,
+      "text": "Would you mind if I opened the window a little bit?",
+      "meaning_vi": "Bạn có phiền không nếu tôi mở cửa sổ một chút?",
+      "youglish_query": "would you mind if I"
+    },
+    {
+      "id": "d3-14",
+      "level": 3,
+      "text": "I think it's going to take a lot of time and effort.",
+      "meaning_vi": "Tôi nghĩ việc này sẽ tốn rất nhiều thời gian và công sức.",
+      "youglish_query": "take a lot of time"
+    },
+    {
+      "id": "d3-15",
+      "level": 3,
+      "text": "Most of my friends moved out of the city after they graduated.",
+      "meaning_vi": "Hầu hết bạn bè tôi đã chuyển khỏi thành phố sau khi tốt nghiệp.",
+      "youglish_query": "moved out of the city"
+    },
+    {
+      "id": "d3-16",
+      "level": 3,
+      "text": "Can you pick me up at the airport at around eight?",
+      "meaning_vi": "Bạn đón tôi ở sân bay vào khoảng tám giờ được không?",
+      "youglish_query": "pick me up at the airport"
+    },
+    {
+      "id": "d3-17",
+      "level": 3,
+      "text": "I haven't seen him since we left high school.",
+      "meaning_vi": "Tôi chưa gặp lại anh ấy kể từ khi chúng tôi rời trường cấp ba.",
+      "youglish_query": "since we left high school"
+    },
+    {
+      "id": "d3-18",
+      "level": 3,
+      "text": "Why don't we meet up next week and talk it over?",
+      "meaning_vi": "Sao chúng ta không gặp nhau tuần sau rồi bàn kỹ chuyện này?",
+      "youglish_query": "talk it over"
+    },
+    {
+      "id": "d3-19",
+      "level": 3,
+      "text": "It depends on what kind of job you're looking for.",
+      "meaning_vi": "Điều đó còn tùy vào loại công việc bạn đang tìm.",
+      "youglish_query": "what kind of job"
+    },
+    {
+      "id": "d3-20",
+      "level": 3,
+      "text": "Honestly, I didn't expect it to be that expensive.",
+      "meaning_vi": "Thật lòng mà nói, tôi không ngờ nó lại đắt như vậy.",
+      "youglish_query": "didn't expect it to be"
+    }
+  ]
+}

@@ -1,0 +1,2705 @@
+{
+  "_huong_dan": "Mỗi thẻ cần: id (duy nhất, không đổi sau khi đã dùng), word, ipa, pos (loại từ, xem README), meaning_vi, example_en, example_vi. Tùy chọn: youglish_query (cụm từ tìm trên YouGlish, mặc định là word). Thẻ mới thêm vào cuối file sẽ tự được nạp vào tài khoản ở lần mở app tiếp theo.",
+  "cards": [
+    {
+      "id": "w001",
+      "word": "the",
+      "ipa": "/ðə/ (trước nguyên âm: /ði/)",
+      "pos": "article",
+      "meaning_vi": "(mạo từ xác định) dùng trước danh từ mà cả hai bên đều biết đang nói tới",
+      "example_en": "Please close the door.",
+      "example_vi": "Làm ơn đóng cửa lại."
+    },
+    {
+      "id": "w002",
+      "word": "be",
+      "ipa": "/biː/",
+      "pos": "verb",
+      "meaning_vi": "là, thì, ở; trở thành",
+      "example_en": "I want to be a teacher.",
+      "example_vi": "Tôi muốn trở thành giáo viên."
+    },
+    {
+      "id": "w003",
+      "word": "to",
+      "ipa": "/tuː/ (dạng yếu: /tə/)",
+      "pos": "preposition",
+      "meaning_vi": "đến, tới; (trước động từ) để",
+      "example_en": "I go to work by bus.",
+      "example_vi": "Tôi đi làm bằng xe buýt."
+    },
+    {
+      "id": "w004",
+      "word": "of",
+      "ipa": "/ʌv/ (dạng yếu: /əv/, /ə/)",
+      "pos": "preposition",
+      "meaning_vi": "của; (một phần) trong số",
+      "example_en": "She drinks a cup of coffee every morning.",
+      "example_vi": "Mỗi sáng cô ấy uống một tách cà phê."
+    },
+    {
+      "id": "w005",
+      "word": "and",
+      "ipa": "/ænd/ (dạng yếu: /ən/, /n/)",
+      "pos": "conjunction",
+      "meaning_vi": "và",
+      "example_en": "I like tea and coffee.",
+      "example_vi": "Tôi thích trà và cà phê."
+    },
+    {
+      "id": "w006",
+      "word": "a",
+      "ipa": "/ə/ (khi nhấn: /eɪ/)",
+      "pos": "article",
+      "meaning_vi": "một (trước danh từ số ít bắt đầu bằng phụ âm)",
+      "example_en": "I have a brother.",
+      "example_vi": "Tôi có một anh trai."
+    },
+    {
+      "id": "w007",
+      "word": "in",
+      "ipa": "/ɪn/",
+      "pos": "preposition",
+      "meaning_vi": "trong, ở trong; vào (tháng, năm)",
+      "example_en": "My keys are in my bag.",
+      "example_vi": "Chìa khóa của tôi ở trong túi."
+    },
+    {
+      "id": "w008",
+      "word": "that",
+      "ipa": "/ðæt/ (dạng yếu: /ðət/)",
+      "pos": "determiner, pronoun, conjunction",
+      "meaning_vi": "đó, kia; rằng",
+      "example_en": "I think that he is right.",
+      "example_vi": "Tôi nghĩ rằng anh ấy đúng."
+    },
+    {
+      "id": "w009",
+      "word": "have",
+      "ipa": "/hæv/ (dạng yếu: /həv/, /əv/)",
+      "pos": "verb",
+      "meaning_vi": "có; ăn, uống (bữa ăn)",
+      "example_en": "We have two cats.",
+      "example_vi": "Chúng tôi có hai con mèo."
+    },
+    {
+      "id": "w010",
+      "word": "I",
+      "ipa": "/aɪ/",
+      "pos": "pronoun",
+      "meaning_vi": "tôi, mình",
+      "example_en": "I live in Hanoi.",
+      "example_vi": "Tôi sống ở Hà Nội."
+    },
+    {
+      "id": "w011",
+      "word": "it",
+      "ipa": "/ɪt/",
+      "pos": "pronoun",
+      "meaning_vi": "nó (vật, sự việc)",
+      "example_en": "It is very hot today.",
+      "example_vi": "Hôm nay trời rất nóng."
+    },
+    {
+      "id": "w012",
+      "word": "for",
+      "ipa": "/fɔːr/ (dạng yếu: /fɚ/)",
+      "pos": "preposition",
+      "meaning_vi": "cho, dành cho; trong (khoảng thời gian)",
+      "example_en": "This gift is for you.",
+      "example_vi": "Món quà này dành cho bạn."
+    },
+    {
+      "id": "w013",
+      "word": "not",
+      "ipa": "/nɑːt/",
+      "pos": "adverb",
+      "meaning_vi": "không",
+      "example_en": "I am not tired.",
+      "example_vi": "Tôi không mệt."
+    },
+    {
+      "id": "w014",
+      "word": "on",
+      "ipa": "/ɑːn/",
+      "pos": "preposition",
+      "meaning_vi": "trên; vào (ngày)",
+      "example_en": "The book is on the table.",
+      "example_vi": "Quyển sách ở trên bàn."
+    },
+    {
+      "id": "w015",
+      "word": "with",
+      "ipa": "/wɪð/",
+      "pos": "preposition",
+      "meaning_vi": "với, cùng với",
+      "example_en": "I live with my parents.",
+      "example_vi": "Tôi sống cùng bố mẹ."
+    },
+    {
+      "id": "w016",
+      "word": "he",
+      "ipa": "/hiː/",
+      "pos": "pronoun",
+      "meaning_vi": "anh ấy, ông ấy, cậu ấy",
+      "example_en": "He works at a bank.",
+      "example_vi": "Anh ấy làm việc ở ngân hàng."
+    },
+    {
+      "id": "w017",
+      "word": "as",
+      "ipa": "/æz/ (dạng yếu: /əz/)",
+      "pos": "conjunction, preposition",
+      "meaning_vi": "như; với tư cách là; khi",
+      "example_en": "She works as a nurse.",
+      "example_vi": "Cô ấy làm y tá."
+    },
+    {
+      "id": "w018",
+      "word": "you",
+      "ipa": "/juː/ (dạng yếu: /jə/)",
+      "pos": "pronoun",
+      "meaning_vi": "bạn, các bạn",
+      "example_en": "Can you help me?",
+      "example_vi": "Bạn giúp tôi được không?"
+    },
+    {
+      "id": "w019",
+      "word": "do",
+      "ipa": "/duː/ (dạng yếu: /də/)",
+      "pos": "verb",
+      "meaning_vi": "làm",
+      "example_en": "What do you do on weekends?",
+      "example_vi": "Cuối tuần bạn làm gì?"
+    },
+    {
+      "id": "w020",
+      "word": "at",
+      "ipa": "/æt/ (dạng yếu: /ət/)",
+      "pos": "preposition",
+      "meaning_vi": "ở, tại; vào lúc",
+      "example_en": "Let's meet at seven o'clock.",
+      "example_vi": "Mình gặp nhau lúc bảy giờ nhé."
+    },
+    {
+      "id": "w021",
+      "word": "this",
+      "ipa": "/ðɪs/",
+      "pos": "determiner, pronoun",
+      "meaning_vi": "này, cái này",
+      "example_en": "This is my phone.",
+      "example_vi": "Đây là điện thoại của tôi."
+    },
+    {
+      "id": "w022",
+      "word": "but",
+      "ipa": "/bʌt/ (dạng yếu: /bət/)",
+      "pos": "conjunction",
+      "meaning_vi": "nhưng",
+      "example_en": "I'm tired, but I'm happy.",
+      "example_vi": "Tôi mệt nhưng tôi vui."
+    },
+    {
+      "id": "w023",
+      "word": "his",
+      "ipa": "/hɪz/",
+      "pos": "determiner",
+      "meaning_vi": "của anh ấy",
+      "example_en": "His car is red.",
+      "example_vi": "Xe của anh ấy màu đỏ."
+    },
+    {
+      "id": "w024",
+      "word": "by",
+      "ipa": "/baɪ/",
+      "pos": "preposition",
+      "meaning_vi": "bằng (phương tiện); bởi; bên cạnh",
+      "example_en": "I usually go to school by bike.",
+      "example_vi": "Tôi thường đi học bằng xe đạp."
+    },
+    {
+      "id": "w025",
+      "word": "from",
+      "ipa": "/frʌm/ (dạng yếu: /frəm/)",
+      "pos": "preposition",
+      "meaning_vi": "từ",
+      "example_en": "I'm from Vietnam.",
+      "example_vi": "Tôi đến từ Việt Nam."
+    },
+    {
+      "id": "w026",
+      "word": "they",
+      "ipa": "/ðeɪ/",
+      "pos": "pronoun",
+      "meaning_vi": "họ, chúng nó",
+      "example_en": "They are my classmates.",
+      "example_vi": "Họ là bạn cùng lớp của tôi."
+    },
+    {
+      "id": "w027",
+      "word": "we",
+      "ipa": "/wiː/",
+      "pos": "pronoun",
+      "meaning_vi": "chúng tôi, chúng ta",
+      "example_en": "We are learning English.",
+      "example_vi": "Chúng tôi đang học tiếng Anh."
+    },
+    {
+      "id": "w028",
+      "word": "say",
+      "ipa": "/seɪ/",
+      "pos": "verb",
+      "meaning_vi": "nói",
+      "example_en": "What did you say?",
+      "example_vi": "Bạn vừa nói gì?"
+    },
+    {
+      "id": "w029",
+      "word": "her",
+      "ipa": "/hɝː/ (dạng yếu: /ɚ/)",
+      "pos": "pronoun, determiner",
+      "meaning_vi": "cô ấy (tân ngữ); của cô ấy",
+      "example_en": "I called her yesterday.",
+      "example_vi": "Hôm qua tôi đã gọi cho cô ấy."
+    },
+    {
+      "id": "w030",
+      "word": "she",
+      "ipa": "/ʃiː/",
+      "pos": "pronoun",
+      "meaning_vi": "cô ấy, bà ấy",
+      "example_en": "She is a doctor.",
+      "example_vi": "Cô ấy là bác sĩ."
+    },
+    {
+      "id": "w031",
+      "word": "or",
+      "ipa": "/ɔːr/",
+      "pos": "conjunction",
+      "meaning_vi": "hoặc, hay",
+      "example_en": "Do you want tea or coffee?",
+      "example_vi": "Bạn muốn trà hay cà phê?"
+    },
+    {
+      "id": "w032",
+      "word": "an",
+      "ipa": "/æn/ (dạng yếu: /ən/)",
+      "pos": "article",
+      "meaning_vi": "một (trước từ bắt đầu bằng nguyên âm)",
+      "example_en": "I eat an apple every day.",
+      "example_vi": "Mỗi ngày tôi ăn một quả táo."
+    },
+    {
+      "id": "w033",
+      "word": "will",
+      "ipa": "/wɪl/",
+      "pos": "modal",
+      "meaning_vi": "sẽ",
+      "example_en": "It will rain tomorrow.",
+      "example_vi": "Ngày mai trời sẽ mưa."
+    },
+    {
+      "id": "w034",
+      "word": "my",
+      "ipa": "/maɪ/",
+      "pos": "determiner",
+      "meaning_vi": "của tôi",
+      "example_en": "My name is Nam.",
+      "example_vi": "Tên tôi là Nam."
+    },
+    {
+      "id": "w035",
+      "word": "one",
+      "ipa": "/wʌn/",
+      "pos": "number, pronoun",
+      "meaning_vi": "một; một cái, một người",
+      "example_en": "I have one sister.",
+      "example_vi": "Tôi có một chị gái."
+    },
+    {
+      "id": "w036",
+      "word": "all",
+      "ipa": "/ɑːl/",
+      "pos": "determiner, pronoun",
+      "meaning_vi": "tất cả",
+      "example_en": "All my friends like music.",
+      "example_vi": "Tất cả bạn bè tôi đều thích âm nhạc."
+    },
+    {
+      "id": "w037",
+      "word": "would",
+      "ipa": "/wʊd/ (dạng yếu: /wəd/, /d/)",
+      "pos": "modal",
+      "meaning_vi": "sẽ (giả định); (lịch sự) muốn",
+      "example_en": "I would like a glass of water.",
+      "example_vi": "Tôi muốn một ly nước."
+    },
+    {
+      "id": "w038",
+      "word": "there",
+      "ipa": "/ðer/",
+      "pos": "adverb, pronoun",
+      "meaning_vi": "ở đó; (there is/are) có",
+      "example_en": "There is a park near my house.",
+      "example_vi": "Có một công viên gần nhà tôi."
+    },
+    {
+      "id": "w039",
+      "word": "their",
+      "ipa": "/ðer/",
+      "pos": "determiner",
+      "meaning_vi": "của họ",
+      "example_en": "Their house is very big.",
+      "example_vi": "Nhà của họ rất to."
+    },
+    {
+      "id": "w040",
+      "word": "what",
+      "ipa": "/wʌt/",
+      "pos": "pronoun, determiner",
+      "meaning_vi": "cái gì, gì",
+      "example_en": "What is your name?",
+      "example_vi": "Bạn tên là gì?"
+    },
+    {
+      "id": "w041",
+      "word": "so",
+      "ipa": "/soʊ/",
+      "pos": "adverb, conjunction",
+      "meaning_vi": "rất, quá; vì vậy",
+      "example_en": "I was tired, so I went to bed early.",
+      "example_vi": "Tôi mệt nên đi ngủ sớm."
+    },
+    {
+      "id": "w042",
+      "word": "up",
+      "ipa": "/ʌp/",
+      "pos": "adverb, preposition",
+      "meaning_vi": "lên, ở trên",
+      "example_en": "Please stand up.",
+      "example_vi": "Mời bạn đứng lên."
+    },
+    {
+      "id": "w043",
+      "word": "out",
+      "ipa": "/aʊt/",
+      "pos": "adverb",
+      "meaning_vi": "ra ngoài",
+      "example_en": "Let's go out for dinner.",
+      "example_vi": "Mình ra ngoài ăn tối nhé."
+    },
+    {
+      "id": "w044",
+      "word": "if",
+      "ipa": "/ɪf/",
+      "pos": "conjunction",
+      "meaning_vi": "nếu",
+      "example_en": "If it rains, I will stay home.",
+      "example_vi": "Nếu trời mưa, tôi sẽ ở nhà."
+    },
+    {
+      "id": "w045",
+      "word": "about",
+      "ipa": "/əˈbaʊt/",
+      "pos": "preposition, adverb",
+      "meaning_vi": "về (chủ đề); khoảng",
+      "example_en": "This book is about history.",
+      "example_vi": "Quyển sách này nói về lịch sử."
+    },
+    {
+      "id": "w046",
+      "word": "who",
+      "ipa": "/huː/",
+      "pos": "pronoun",
+      "meaning_vi": "ai; người mà",
+      "example_en": "Who is that man?",
+      "example_vi": "Người đàn ông kia là ai?"
+    },
+    {
+      "id": "w047",
+      "word": "get",
+      "ipa": "/ɡet/",
+      "pos": "verb",
+      "meaning_vi": "nhận được, lấy; trở nên; đến nơi",
+      "example_en": "What time do you get home?",
+      "example_vi": "Mấy giờ bạn về đến nhà?"
+    },
+    {
+      "id": "w048",
+      "word": "which",
+      "ipa": "/wɪtʃ/",
+      "pos": "pronoun, determiner",
+      "meaning_vi": "cái nào; cái mà",
+      "example_en": "Which color do you like?",
+      "example_vi": "Bạn thích màu nào?"
+    },
+    {
+      "id": "w049",
+      "word": "go",
+      "ipa": "/ɡoʊ/",
+      "pos": "verb",
+      "meaning_vi": "đi",
+      "example_en": "I go to bed at eleven.",
+      "example_vi": "Tôi đi ngủ lúc mười một giờ."
+    },
+    {
+      "id": "w050",
+      "word": "me",
+      "ipa": "/miː/",
+      "pos": "pronoun",
+      "meaning_vi": "tôi (tân ngữ)",
+      "example_en": "Please call me later.",
+      "example_vi": "Lát nữa gọi cho tôi nhé."
+    },
+    {
+      "id": "w051",
+      "word": "when",
+      "ipa": "/wen/",
+      "pos": "adverb, conjunction",
+      "meaning_vi": "khi nào; khi",
+      "example_en": "When is your birthday?",
+      "example_vi": "Sinh nhật bạn là khi nào?"
+    },
+    {
+      "id": "w052",
+      "word": "make",
+      "ipa": "/meɪk/",
+      "pos": "verb",
+      "meaning_vi": "làm, tạo ra; khiến cho",
+      "example_en": "My mom makes great soup.",
+      "example_vi": "Mẹ tôi nấu súp rất ngon."
+    },
+    {
+      "id": "w053",
+      "word": "can",
+      "ipa": "/kæn/ (dạng yếu: /kən/)",
+      "pos": "modal",
+      "meaning_vi": "có thể, biết (làm gì)",
+      "example_en": "I can swim.",
+      "example_vi": "Tôi biết bơi."
+    },
+    {
+      "id": "w054",
+      "word": "like",
+      "ipa": "/laɪk/",
+      "pos": "verb, preposition",
+      "meaning_vi": "thích; giống như",
+      "example_en": "I like watching movies.",
+      "example_vi": "Tôi thích xem phim."
+    },
+    {
+      "id": "w055",
+      "word": "time",
+      "ipa": "/taɪm/",
+      "pos": "noun",
+      "meaning_vi": "thời gian; lần",
+      "example_en": "I don't have time today.",
+      "example_vi": "Hôm nay tôi không có thời gian."
+    },
+    {
+      "id": "w056",
+      "word": "no",
+      "ipa": "/noʊ/",
+      "pos": "determiner, adverb",
+      "meaning_vi": "không; không có",
+      "example_en": "There is no milk in the fridge.",
+      "example_vi": "Trong tủ lạnh không còn sữa."
+    },
+    {
+      "id": "w057",
+      "word": "just",
+      "ipa": "/dʒʌst/",
+      "pos": "adverb",
+      "meaning_vi": "vừa mới; chỉ",
+      "example_en": "I just got home.",
+      "example_vi": "Tôi vừa mới về nhà."
+    },
+    {
+      "id": "w058",
+      "word": "him",
+      "ipa": "/hɪm/ (dạng yếu: /ɪm/)",
+      "pos": "pronoun",
+      "meaning_vi": "anh ấy (tân ngữ)",
+      "example_en": "I saw him at the station.",
+      "example_vi": "Tôi thấy anh ấy ở nhà ga."
+    },
+    {
+      "id": "w059",
+      "word": "know",
+      "ipa": "/noʊ/",
+      "pos": "verb",
+      "meaning_vi": "biết",
+      "example_en": "I don't know the answer.",
+      "example_vi": "Tôi không biết câu trả lời."
+    },
+    {
+      "id": "w060",
+      "word": "take",
+      "ipa": "/teɪk/",
+      "pos": "verb",
+      "meaning_vi": "cầm, lấy; mang đi; mất (thời gian)",
+      "example_en": "It takes twenty minutes to get there.",
+      "example_vi": "Mất hai mươi phút để đến đó."
+    },
+    {
+      "id": "w061",
+      "word": "people",
+      "ipa": "/ˈpiːpəl/",
+      "pos": "noun",
+      "meaning_vi": "mọi người, người ta",
+      "example_en": "Many people live in this city.",
+      "example_vi": "Rất nhiều người sống ở thành phố này."
+    },
+    {
+      "id": "w062",
+      "word": "into",
+      "ipa": "/ˈɪntuː/",
+      "pos": "preposition",
+      "meaning_vi": "vào trong",
+      "example_en": "She walked into the room.",
+      "example_vi": "Cô ấy bước vào phòng."
+    },
+    {
+      "id": "w063",
+      "word": "year",
+      "ipa": "/jɪr/",
+      "pos": "noun",
+      "meaning_vi": "năm",
+      "example_en": "I started learning English last year.",
+      "example_vi": "Tôi bắt đầu học tiếng Anh từ năm ngoái."
+    },
+    {
+      "id": "w064",
+      "word": "your",
+      "ipa": "/jʊr/ (dạng yếu: /jɚ/)",
+      "pos": "determiner",
+      "meaning_vi": "của bạn",
+      "example_en": "Is this your bag?",
+      "example_vi": "Đây có phải túi của bạn không?"
+    },
+    {
+      "id": "w065",
+      "word": "good",
+      "ipa": "/ɡʊd/",
+      "pos": "adjective",
+      "meaning_vi": "tốt, giỏi, ngon",
+      "example_en": "This is a good idea.",
+      "example_vi": "Đây là một ý kiến hay."
+    },
+    {
+      "id": "w066",
+      "word": "some",
+      "ipa": "/sʌm/ (dạng yếu: /səm/)",
+      "pos": "determiner",
+      "meaning_vi": "một vài, một ít",
+      "example_en": "I need some water.",
+      "example_vi": "Tôi cần một ít nước."
+    },
+    {
+      "id": "w067",
+      "word": "could",
+      "ipa": "/kʊd/ (dạng yếu: /kəd/)",
+      "pos": "modal",
+      "meaning_vi": "có thể (quá khứ / lịch sự)",
+      "example_en": "Could you open the window?",
+      "example_vi": "Bạn mở cửa sổ giúp được không?"
+    },
+    {
+      "id": "w068",
+      "word": "them",
+      "ipa": "/ðem/ (dạng yếu: /ðəm/, /əm/)",
+      "pos": "pronoun",
+      "meaning_vi": "họ, chúng (tân ngữ)",
+      "example_en": "I miss them a lot.",
+      "example_vi": "Tôi nhớ họ rất nhiều."
+    },
+    {
+      "id": "w069",
+      "word": "see",
+      "ipa": "/siː/",
+      "pos": "verb",
+      "meaning_vi": "nhìn thấy; hiểu",
+      "example_en": "I can't see anything.",
+      "example_vi": "Tôi không nhìn thấy gì cả."
+    },
+    {
+      "id": "w070",
+      "word": "other",
+      "ipa": "/ˈʌðɚ/",
+      "pos": "adjective, pronoun",
+      "meaning_vi": "khác",
+      "example_en": "Do you have any other questions?",
+      "example_vi": "Bạn còn câu hỏi nào khác không?"
+    },
+    {
+      "id": "w071",
+      "word": "than",
+      "ipa": "/ðæn/ (dạng yếu: /ðən/)",
+      "pos": "conjunction",
+      "meaning_vi": "hơn (dùng khi so sánh)",
+      "example_en": "He is taller than me.",
+      "example_vi": "Anh ấy cao hơn tôi."
+    },
+    {
+      "id": "w072",
+      "word": "then",
+      "ipa": "/ðen/",
+      "pos": "adverb",
+      "meaning_vi": "sau đó; lúc đó",
+      "example_en": "First wash your hands, then eat.",
+      "example_vi": "Rửa tay trước, sau đó hãy ăn."
+    },
+    {
+      "id": "w073",
+      "word": "now",
+      "ipa": "/naʊ/",
+      "pos": "adverb",
+      "meaning_vi": "bây giờ",
+      "example_en": "Where are you now?",
+      "example_vi": "Bây giờ bạn đang ở đâu?"
+    },
+    {
+      "id": "w074",
+      "word": "look",
+      "ipa": "/lʊk/",
+      "pos": "verb",
+      "meaning_vi": "nhìn; trông có vẻ",
+      "example_en": "Look at this picture.",
+      "example_vi": "Nhìn bức ảnh này đi."
+    },
+    {
+      "id": "w075",
+      "word": "only",
+      "ipa": "/ˈoʊnli/",
+      "pos": "adverb, adjective",
+      "meaning_vi": "chỉ; duy nhất",
+      "example_en": "I only have ten dollars.",
+      "example_vi": "Tôi chỉ có mười đô la."
+    },
+    {
+      "id": "w076",
+      "word": "come",
+      "ipa": "/kʌm/",
+      "pos": "verb",
+      "meaning_vi": "đến, tới",
+      "example_en": "Can you come to my party?",
+      "example_vi": "Bạn đến dự tiệc của tôi được không?"
+    },
+    {
+      "id": "w077",
+      "word": "its",
+      "ipa": "/ɪts/",
+      "pos": "determiner",
+      "meaning_vi": "của nó",
+      "example_en": "The cat is eating its food.",
+      "example_vi": "Con mèo đang ăn thức ăn của nó."
+    },
+    {
+      "id": "w078",
+      "word": "over",
+      "ipa": "/ˈoʊvɚ/",
+      "pos": "preposition, adverb",
+      "meaning_vi": "qua, trên; hơn; kết thúc",
+      "example_en": "The movie is over.",
+      "example_vi": "Bộ phim đã kết thúc."
+    },
+    {
+      "id": "w079",
+      "word": "think",
+      "ipa": "/θɪŋk/",
+      "pos": "verb",
+      "meaning_vi": "nghĩ, cho rằng",
+      "example_en": "What do you think about this?",
+      "example_vi": "Bạn nghĩ sao về chuyện này?"
+    },
+    {
+      "id": "w080",
+      "word": "also",
+      "ipa": "/ˈɑːlsoʊ/",
+      "pos": "adverb",
+      "meaning_vi": "cũng",
+      "example_en": "She speaks English and also French.",
+      "example_vi": "Cô ấy nói tiếng Anh và cả tiếng Pháp."
+    },
+    {
+      "id": "w081",
+      "word": "back",
+      "ipa": "/bæk/",
+      "pos": "adverb, noun",
+      "meaning_vi": "trở lại; lưng, phía sau",
+      "example_en": "I'll be back in five minutes.",
+      "example_vi": "Năm phút nữa tôi sẽ quay lại."
+    },
+    {
+      "id": "w082",
+      "word": "after",
+      "ipa": "/ˈæftɚ/",
+      "pos": "preposition, conjunction",
+      "meaning_vi": "sau, sau khi",
+      "example_en": "Let's talk after lunch.",
+      "example_vi": "Mình nói chuyện sau bữa trưa nhé."
+    },
+    {
+      "id": "w083",
+      "word": "use",
+      "ipa": "/juːz/",
+      "pos": "verb",
+      "meaning_vi": "sử dụng, dùng",
+      "example_en": "Can I use your phone?",
+      "example_vi": "Tôi dùng điện thoại của bạn được không?"
+    },
+    {
+      "id": "w084",
+      "word": "two",
+      "ipa": "/tuː/",
+      "pos": "number",
+      "meaning_vi": "hai",
+      "example_en": "I have two brothers.",
+      "example_vi": "Tôi có hai anh trai."
+    },
+    {
+      "id": "w085",
+      "word": "how",
+      "ipa": "/haʊ/",
+      "pos": "adverb",
+      "meaning_vi": "như thế nào, bằng cách nào",
+      "example_en": "How do you go to work?",
+      "example_vi": "Bạn đi làm bằng gì?"
+    },
+    {
+      "id": "w086",
+      "word": "our",
+      "ipa": "/aʊr/",
+      "pos": "determiner",
+      "meaning_vi": "của chúng tôi, của chúng ta",
+      "example_en": "Our teacher is very kind.",
+      "example_vi": "Cô giáo của chúng tôi rất tốt bụng."
+    },
+    {
+      "id": "w087",
+      "word": "work",
+      "ipa": "/wɝːk/",
+      "pos": "verb, noun",
+      "meaning_vi": "làm việc; công việc",
+      "example_en": "I work from nine to five.",
+      "example_vi": "Tôi làm việc từ chín giờ đến năm giờ."
+    },
+    {
+      "id": "w088",
+      "word": "first",
+      "ipa": "/fɝːst/",
+      "pos": "adjective, adverb",
+      "meaning_vi": "đầu tiên; trước tiên",
+      "example_en": "This is my first time in London.",
+      "example_vi": "Đây là lần đầu tiên tôi đến London."
+    },
+    {
+      "id": "w089",
+      "word": "well",
+      "ipa": "/wel/",
+      "pos": "adverb",
+      "meaning_vi": "tốt, giỏi",
+      "example_en": "She sings very well.",
+      "example_vi": "Cô ấy hát rất hay."
+    },
+    {
+      "id": "w090",
+      "word": "way",
+      "ipa": "/weɪ/",
+      "pos": "noun",
+      "meaning_vi": "đường đi; cách",
+      "example_en": "Is this the way to the station?",
+      "example_vi": "Đây có phải đường đến nhà ga không?"
+    },
+    {
+      "id": "w091",
+      "word": "even",
+      "ipa": "/ˈiːvən/",
+      "pos": "adverb",
+      "meaning_vi": "thậm chí, ngay cả",
+      "example_en": "He even forgot my name.",
+      "example_vi": "Anh ấy thậm chí còn quên tên tôi."
+    },
+    {
+      "id": "w092",
+      "word": "new",
+      "ipa": "/nuː/",
+      "pos": "adjective",
+      "meaning_vi": "mới",
+      "example_en": "I bought a new phone.",
+      "example_vi": "Tôi đã mua một chiếc điện thoại mới."
+    },
+    {
+      "id": "w093",
+      "word": "want",
+      "ipa": "/wɑːnt/",
+      "pos": "verb",
+      "meaning_vi": "muốn",
+      "example_en": "I want to learn English.",
+      "example_vi": "Tôi muốn học tiếng Anh."
+    },
+    {
+      "id": "w094",
+      "word": "because",
+      "ipa": "/bɪˈkɑːz/",
+      "pos": "conjunction",
+      "meaning_vi": "bởi vì",
+      "example_en": "I stayed home because I was sick.",
+      "example_vi": "Tôi ở nhà vì bị ốm."
+    },
+    {
+      "id": "w095",
+      "word": "any",
+      "ipa": "/ˈeni/",
+      "pos": "determiner",
+      "meaning_vi": "bất kỳ; nào (trong câu hỏi, phủ định)",
+      "example_en": "Do you have any questions?",
+      "example_vi": "Bạn có câu hỏi nào không?"
+    },
+    {
+      "id": "w096",
+      "word": "these",
+      "ipa": "/ðiːz/",
+      "pos": "determiner, pronoun",
+      "meaning_vi": "những cái này",
+      "example_en": "These shoes are too small.",
+      "example_vi": "Đôi giày này quá chật."
+    },
+    {
+      "id": "w097",
+      "word": "give",
+      "ipa": "/ɡɪv/",
+      "pos": "verb",
+      "meaning_vi": "cho, đưa",
+      "example_en": "Please give me the salt.",
+      "example_vi": "Làm ơn đưa tôi lọ muối."
+    },
+    {
+      "id": "w098",
+      "word": "day",
+      "ipa": "/deɪ/",
+      "pos": "noun",
+      "meaning_vi": "ngày",
+      "example_en": "Have a nice day!",
+      "example_vi": "Chúc bạn một ngày tốt lành!"
+    },
+    {
+      "id": "w099",
+      "word": "most",
+      "ipa": "/moʊst/",
+      "pos": "adverb, determiner",
+      "meaning_vi": "nhất; hầu hết",
+      "example_en": "Most students here are friendly.",
+      "example_vi": "Hầu hết sinh viên ở đây đều thân thiện."
+    },
+    {
+      "id": "w100",
+      "word": "more",
+      "ipa": "/mɔːr/",
+      "pos": "determiner, adverb",
+      "meaning_vi": "nhiều hơn, thêm",
+      "example_en": "Can I have some more rice?",
+      "example_vi": "Cho tôi thêm ít cơm được không?"
+    },
+    {
+      "id": "w101",
+      "word": "us",
+      "ipa": "/ʌs/ (dạng yếu: /əs/)",
+      "pos": "pronoun",
+      "meaning_vi": "chúng tôi, chúng ta (tân ngữ)",
+      "example_en": "Can you join us for lunch?",
+      "example_vi": "Bạn ăn trưa cùng chúng tôi nhé?"
+    },
+    {
+      "id": "w102",
+      "word": "thing",
+      "ipa": "/θɪŋ/",
+      "pos": "noun",
+      "meaning_vi": "đồ vật, điều, việc",
+      "example_en": "I have a lot of things to do.",
+      "example_vi": "Tôi có rất nhiều việc phải làm."
+    },
+    {
+      "id": "w103",
+      "word": "man",
+      "ipa": "/mæn/",
+      "pos": "noun",
+      "meaning_vi": "người đàn ông",
+      "example_en": "That man is my uncle.",
+      "example_vi": "Người đàn ông kia là chú tôi."
+    },
+    {
+      "id": "w104",
+      "word": "woman",
+      "ipa": "/ˈwʊmən/",
+      "pos": "noun",
+      "meaning_vi": "người phụ nữ",
+      "example_en": "The woman in the red dress is my aunt.",
+      "example_vi": "Người phụ nữ mặc váy đỏ là dì tôi."
+    },
+    {
+      "id": "w105",
+      "word": "child",
+      "ipa": "/tʃaɪld/",
+      "pos": "noun",
+      "meaning_vi": "đứa trẻ (số nhiều: children)",
+      "example_en": "The child is playing in the garden.",
+      "example_vi": "Đứa trẻ đang chơi ngoài vườn."
+    },
+    {
+      "id": "w106",
+      "word": "find",
+      "ipa": "/faɪnd/",
+      "pos": "verb",
+      "meaning_vi": "tìm thấy; thấy rằng",
+      "example_en": "I can't find my keys.",
+      "example_vi": "Tôi không tìm thấy chìa khóa."
+    },
+    {
+      "id": "w107",
+      "word": "here",
+      "ipa": "/hɪr/",
+      "pos": "adverb",
+      "meaning_vi": "ở đây",
+      "example_en": "Come here, please.",
+      "example_vi": "Lại đây nào."
+    },
+    {
+      "id": "w108",
+      "word": "tell",
+      "ipa": "/tel/",
+      "pos": "verb",
+      "meaning_vi": "kể, bảo, nói cho biết",
+      "example_en": "Can you tell me the time?",
+      "example_vi": "Bạn cho tôi biết mấy giờ rồi được không?"
+    },
+    {
+      "id": "w109",
+      "word": "very",
+      "ipa": "/ˈveri/",
+      "pos": "adverb",
+      "meaning_vi": "rất",
+      "example_en": "It's very cold today.",
+      "example_vi": "Hôm nay trời rất lạnh."
+    },
+    {
+      "id": "w110",
+      "word": "where",
+      "ipa": "/wer/",
+      "pos": "adverb",
+      "meaning_vi": "ở đâu",
+      "example_en": "Where do you live?",
+      "example_vi": "Bạn sống ở đâu?"
+    },
+    {
+      "id": "w111",
+      "word": "why",
+      "ipa": "/waɪ/",
+      "pos": "adverb",
+      "meaning_vi": "tại sao",
+      "example_en": "Why are you late?",
+      "example_vi": "Tại sao bạn đến muộn?"
+    },
+    {
+      "id": "w112",
+      "word": "many",
+      "ipa": "/ˈmeni/",
+      "pos": "determiner",
+      "meaning_vi": "nhiều (dùng với danh từ đếm được)",
+      "example_en": "How many people are in your family?",
+      "example_vi": "Nhà bạn có bao nhiêu người?"
+    },
+    {
+      "id": "w113",
+      "word": "much",
+      "ipa": "/mʌtʃ/",
+      "pos": "determiner, adverb",
+      "meaning_vi": "nhiều (dùng với danh từ không đếm được)",
+      "example_en": "How much is this shirt?",
+      "example_vi": "Cái áo này bao nhiêu tiền?"
+    },
+    {
+      "id": "w114",
+      "word": "through",
+      "ipa": "/θruː/",
+      "pos": "preposition",
+      "meaning_vi": "xuyên qua; thông qua",
+      "example_en": "We drove through the city.",
+      "example_vi": "Chúng tôi lái xe xuyên qua thành phố."
+    },
+    {
+      "id": "w115",
+      "word": "life",
+      "ipa": "/laɪf/",
+      "pos": "noun",
+      "meaning_vi": "cuộc sống, cuộc đời",
+      "example_en": "Life in the city is busy.",
+      "example_vi": "Cuộc sống ở thành phố rất bận rộn."
+    },
+    {
+      "id": "w116",
+      "word": "still",
+      "ipa": "/stɪl/",
+      "pos": "adverb",
+      "meaning_vi": "vẫn, vẫn còn",
+      "example_en": "Are you still at work?",
+      "example_vi": "Bạn vẫn còn ở chỗ làm à?"
+    },
+    {
+      "id": "w117",
+      "word": "should",
+      "ipa": "/ʃʊd/ (dạng yếu: /ʃəd/)",
+      "pos": "modal",
+      "meaning_vi": "nên",
+      "example_en": "You should drink more water.",
+      "example_vi": "Bạn nên uống nhiều nước hơn."
+    },
+    {
+      "id": "w118",
+      "word": "world",
+      "ipa": "/wɝːld/",
+      "pos": "noun",
+      "meaning_vi": "thế giới",
+      "example_en": "I want to travel around the world.",
+      "example_vi": "Tôi muốn đi du lịch vòng quanh thế giới."
+    },
+    {
+      "id": "w119",
+      "word": "last",
+      "ipa": "/læst/",
+      "pos": "adjective",
+      "meaning_vi": "cuối cùng; trước (tuần trước, năm trước)",
+      "example_en": "I saw him last week.",
+      "example_vi": "Tôi gặp anh ấy tuần trước."
+    },
+    {
+      "id": "w120",
+      "word": "ask",
+      "ipa": "/æsk/",
+      "pos": "verb",
+      "meaning_vi": "hỏi; yêu cầu",
+      "example_en": "Can I ask you a question?",
+      "example_vi": "Tôi hỏi bạn một câu được không?"
+    },
+    {
+      "id": "w121",
+      "word": "need",
+      "ipa": "/niːd/",
+      "pos": "verb",
+      "meaning_vi": "cần",
+      "example_en": "I need your help.",
+      "example_vi": "Tôi cần bạn giúp."
+    },
+    {
+      "id": "w122",
+      "word": "feel",
+      "ipa": "/fiːl/",
+      "pos": "verb",
+      "meaning_vi": "cảm thấy",
+      "example_en": "I feel much better today.",
+      "example_vi": "Hôm nay tôi thấy khỏe hơn nhiều."
+    },
+    {
+      "id": "w123",
+      "word": "try",
+      "ipa": "/traɪ/",
+      "pos": "verb",
+      "meaning_vi": "cố gắng; thử",
+      "example_en": "Try this cake, it's delicious.",
+      "example_vi": "Thử bánh này đi, ngon lắm."
+    },
+    {
+      "id": "w124",
+      "word": "leave",
+      "ipa": "/liːv/",
+      "pos": "verb",
+      "meaning_vi": "rời đi; để lại",
+      "example_en": "What time do you leave home?",
+      "example_vi": "Mấy giờ bạn ra khỏi nhà?"
+    },
+    {
+      "id": "w125",
+      "word": "put",
+      "ipa": "/pʊt/",
+      "pos": "verb",
+      "meaning_vi": "đặt, để",
+      "example_en": "Put your bag on the chair.",
+      "example_vi": "Để túi của bạn lên ghế."
+    },
+    {
+      "id": "w126",
+      "word": "mean",
+      "ipa": "/miːn/",
+      "pos": "verb",
+      "meaning_vi": "có nghĩa là; ý là",
+      "example_en": "What does this word mean?",
+      "example_vi": "Từ này nghĩa là gì?"
+    },
+    {
+      "id": "w127",
+      "word": "keep",
+      "ipa": "/kiːp/",
+      "pos": "verb",
+      "meaning_vi": "giữ; tiếp tục",
+      "example_en": "Keep the change.",
+      "example_vi": "Cứ giữ lại tiền thừa."
+    },
+    {
+      "id": "w128",
+      "word": "let",
+      "ipa": "/let/",
+      "pos": "verb",
+      "meaning_vi": "để, cho phép",
+      "example_en": "Let me help you.",
+      "example_vi": "Để tôi giúp bạn."
+    },
+    {
+      "id": "w129",
+      "word": "begin",
+      "ipa": "/bɪˈɡɪn/",
+      "pos": "verb",
+      "meaning_vi": "bắt đầu",
+      "example_en": "The class begins at eight.",
+      "example_vi": "Lớp học bắt đầu lúc tám giờ."
+    },
+    {
+      "id": "w130",
+      "word": "seem",
+      "ipa": "/siːm/",
+      "pos": "verb",
+      "meaning_vi": "dường như, có vẻ",
+      "example_en": "You seem tired today.",
+      "example_vi": "Hôm nay trông bạn có vẻ mệt."
+    },
+    {
+      "id": "w131",
+      "word": "help",
+      "ipa": "/help/",
+      "pos": "verb, noun",
+      "meaning_vi": "giúp đỡ; sự giúp đỡ",
+      "example_en": "Can you help me with my homework?",
+      "example_vi": "Bạn giúp tôi làm bài tập được không?"
+    },
+    {
+      "id": "w132",
+      "word": "talk",
+      "ipa": "/tɑːk/",
+      "pos": "verb",
+      "meaning_vi": "nói chuyện",
+      "example_en": "We talked for hours.",
+      "example_vi": "Chúng tôi đã nói chuyện hàng giờ liền."
+    },
+    {
+      "id": "w133",
+      "word": "turn",
+      "ipa": "/tɝːn/",
+      "pos": "verb",
+      "meaning_vi": "rẽ; xoay; (turn on/off) bật/tắt",
+      "example_en": "Turn left at the corner.",
+      "example_vi": "Rẽ trái ở góc đường."
+    },
+    {
+      "id": "w134",
+      "word": "start",
+      "ipa": "/stɑːrt/",
+      "pos": "verb",
+      "meaning_vi": "bắt đầu",
+      "example_en": "Let's start the meeting.",
+      "example_vi": "Chúng ta bắt đầu cuộc họp nhé."
+    },
+    {
+      "id": "w135",
+      "word": "show",
+      "ipa": "/ʃoʊ/",
+      "pos": "verb, noun",
+      "meaning_vi": "cho xem, chỉ; chương trình",
+      "example_en": "Can you show me the way?",
+      "example_vi": "Bạn chỉ đường cho tôi được không?"
+    },
+    {
+      "id": "w136",
+      "word": "hear",
+      "ipa": "/hɪr/",
+      "pos": "verb",
+      "meaning_vi": "nghe thấy",
+      "example_en": "Can you hear me?",
+      "example_vi": "Bạn có nghe thấy tôi không?"
+    },
+    {
+      "id": "w137",
+      "word": "play",
+      "ipa": "/pleɪ/",
+      "pos": "verb",
+      "meaning_vi": "chơi (trò chơi, thể thao, nhạc cụ)",
+      "example_en": "The kids are playing football.",
+      "example_vi": "Bọn trẻ đang chơi bóng đá."
+    },
+    {
+      "id": "w138",
+      "word": "run",
+      "ipa": "/rʌn/",
+      "pos": "verb",
+      "meaning_vi": "chạy; điều hành",
+      "example_en": "I run every morning.",
+      "example_vi": "Sáng nào tôi cũng chạy bộ."
+    },
+    {
+      "id": "w139",
+      "word": "move",
+      "ipa": "/muːv/",
+      "pos": "verb",
+      "meaning_vi": "di chuyển; chuyển nhà",
+      "example_en": "We moved to a new apartment.",
+      "example_vi": "Chúng tôi đã chuyển đến căn hộ mới."
+    },
+    {
+      "id": "w140",
+      "word": "live",
+      "ipa": "/lɪv/",
+      "pos": "verb",
+      "meaning_vi": "sống",
+      "example_en": "I live near the river.",
+      "example_vi": "Tôi sống gần con sông."
+    },
+    {
+      "id": "w141",
+      "word": "believe",
+      "ipa": "/bɪˈliːv/",
+      "pos": "verb",
+      "meaning_vi": "tin, tin tưởng",
+      "example_en": "I believe you.",
+      "example_vi": "Tôi tin bạn."
+    },
+    {
+      "id": "w142",
+      "word": "bring",
+      "ipa": "/brɪŋ/",
+      "pos": "verb",
+      "meaning_vi": "mang đến, mang theo",
+      "example_en": "Please bring your passport.",
+      "example_vi": "Nhớ mang theo hộ chiếu nhé."
+    },
+    {
+      "id": "w143",
+      "word": "happen",
+      "ipa": "/ˈhæpən/",
+      "pos": "verb",
+      "meaning_vi": "xảy ra",
+      "example_en": "What happened?",
+      "example_vi": "Chuyện gì đã xảy ra vậy?"
+    },
+    {
+      "id": "w144",
+      "word": "write",
+      "ipa": "/raɪt/",
+      "pos": "verb",
+      "meaning_vi": "viết",
+      "example_en": "Please write your name here.",
+      "example_vi": "Làm ơn viết tên bạn vào đây."
+    },
+    {
+      "id": "w145",
+      "word": "provide",
+      "ipa": "/prəˈvaɪd/",
+      "pos": "verb",
+      "meaning_vi": "cung cấp",
+      "example_en": "The hotel provides free breakfast.",
+      "example_vi": "Khách sạn cung cấp bữa sáng miễn phí."
+    },
+    {
+      "id": "w146",
+      "word": "sit",
+      "ipa": "/sɪt/",
+      "pos": "verb",
+      "meaning_vi": "ngồi",
+      "example_en": "Please sit down.",
+      "example_vi": "Mời bạn ngồi."
+    },
+    {
+      "id": "w147",
+      "word": "lose",
+      "ipa": "/luːz/",
+      "pos": "verb",
+      "meaning_vi": "mất, đánh mất; thua",
+      "example_en": "I often lose my glasses.",
+      "example_vi": "Tôi hay làm mất kính."
+    },
+    {
+      "id": "w148",
+      "word": "pay",
+      "ipa": "/peɪ/",
+      "pos": "verb",
+      "meaning_vi": "trả tiền",
+      "example_en": "Can I pay by card?",
+      "example_vi": "Tôi trả bằng thẻ được không?"
+    },
+    {
+      "id": "w149",
+      "word": "meet",
+      "ipa": "/miːt/",
+      "pos": "verb",
+      "meaning_vi": "gặp",
+      "example_en": "Nice to meet you.",
+      "example_vi": "Rất vui được gặp bạn."
+    },
+    {
+      "id": "w150",
+      "word": "include",
+      "ipa": "/ɪnˈkluːd/",
+      "pos": "verb",
+      "meaning_vi": "bao gồm",
+      "example_en": "The price includes tax.",
+      "example_vi": "Giá này đã bao gồm thuế."
+    },
+    {
+      "id": "w151",
+      "word": "continue",
+      "ipa": "/kənˈtɪnjuː/",
+      "pos": "verb",
+      "meaning_vi": "tiếp tục",
+      "example_en": "Please continue.",
+      "example_vi": "Mời bạn tiếp tục."
+    },
+    {
+      "id": "w152",
+      "word": "learn",
+      "ipa": "/lɝːn/",
+      "pos": "verb",
+      "meaning_vi": "học, học được",
+      "example_en": "I learn five new words every day.",
+      "example_vi": "Mỗi ngày tôi học năm từ mới."
+    },
+    {
+      "id": "w153",
+      "word": "change",
+      "ipa": "/tʃeɪndʒ/",
+      "pos": "verb, noun",
+      "meaning_vi": "thay đổi; sự thay đổi; tiền thừa",
+      "example_en": "The weather changes quickly here.",
+      "example_vi": "Thời tiết ở đây thay đổi rất nhanh."
+    },
+    {
+      "id": "w154",
+      "word": "understand",
+      "ipa": "/ˌʌndɚˈstænd/",
+      "pos": "verb",
+      "meaning_vi": "hiểu",
+      "example_en": "I don't understand this question.",
+      "example_vi": "Tôi không hiểu câu hỏi này."
+    },
+    {
+      "id": "w155",
+      "word": "watch",
+      "ipa": "/wɑːtʃ/",
+      "pos": "verb, noun",
+      "meaning_vi": "xem, theo dõi; đồng hồ đeo tay",
+      "example_en": "We watched a movie last night.",
+      "example_vi": "Tối qua chúng tôi đã xem một bộ phim."
+    },
+    {
+      "id": "w156",
+      "word": "follow",
+      "ipa": "/ˈfɑːloʊ/",
+      "pos": "verb",
+      "meaning_vi": "đi theo; làm theo",
+      "example_en": "Follow me, please.",
+      "example_vi": "Mời đi theo tôi."
+    },
+    {
+      "id": "w157",
+      "word": "stop",
+      "ipa": "/stɑːp/",
+      "pos": "verb",
+      "meaning_vi": "dừng lại",
+      "example_en": "Stop the car!",
+      "example_vi": "Dừng xe lại!"
+    },
+    {
+      "id": "w158",
+      "word": "create",
+      "ipa": "/kriˈeɪt/",
+      "pos": "verb",
+      "meaning_vi": "tạo ra",
+      "example_en": "She created a new website.",
+      "example_vi": "Cô ấy đã tạo một trang web mới."
+    },
+    {
+      "id": "w159",
+      "word": "speak",
+      "ipa": "/spiːk/",
+      "pos": "verb",
+      "meaning_vi": "nói (một ngôn ngữ), phát biểu",
+      "example_en": "Do you speak English?",
+      "example_vi": "Bạn có nói tiếng Anh không?"
+    },
+    {
+      "id": "w160",
+      "word": "read",
+      "ipa": "/riːd/",
+      "pos": "verb",
+      "meaning_vi": "đọc",
+      "example_en": "I read before bed.",
+      "example_vi": "Tôi đọc sách trước khi ngủ."
+    },
+    {
+      "id": "w161",
+      "word": "allow",
+      "ipa": "/əˈlaʊ/",
+      "pos": "verb",
+      "meaning_vi": "cho phép",
+      "example_en": "Smoking is not allowed here.",
+      "example_vi": "Không được phép hút thuốc ở đây."
+    },
+    {
+      "id": "w162",
+      "word": "add",
+      "ipa": "/æd/",
+      "pos": "verb",
+      "meaning_vi": "thêm vào",
+      "example_en": "Add some salt to the soup.",
+      "example_vi": "Thêm chút muối vào súp."
+    },
+    {
+      "id": "w163",
+      "word": "spend",
+      "ipa": "/spend/",
+      "pos": "verb",
+      "meaning_vi": "tiêu (tiền); dành (thời gian)",
+      "example_en": "I spend two hours a day on my phone.",
+      "example_vi": "Mỗi ngày tôi dành hai tiếng cho điện thoại."
+    },
+    {
+      "id": "w164",
+      "word": "grow",
+      "ipa": "/ɡroʊ/",
+      "pos": "verb",
+      "meaning_vi": "lớn lên, phát triển; trồng",
+      "example_en": "Children grow so fast.",
+      "example_vi": "Trẻ con lớn nhanh quá."
+    },
+    {
+      "id": "w165",
+      "word": "open",
+      "ipa": "/ˈoʊpən/",
+      "pos": "verb, adjective",
+      "meaning_vi": "mở; đang mở",
+      "example_en": "The shop opens at nine.",
+      "example_vi": "Cửa hàng mở cửa lúc chín giờ."
+    },
+    {
+      "id": "w166",
+      "word": "walk",
+      "ipa": "/wɑːk/",
+      "pos": "verb",
+      "meaning_vi": "đi bộ",
+      "example_en": "I walk to work every day.",
+      "example_vi": "Ngày nào tôi cũng đi bộ đi làm."
+    },
+    {
+      "id": "w167",
+      "word": "win",
+      "ipa": "/wɪn/",
+      "pos": "verb",
+      "meaning_vi": "thắng",
+      "example_en": "Our team won the game.",
+      "example_vi": "Đội chúng tôi đã thắng trận đấu."
+    },
+    {
+      "id": "w168",
+      "word": "offer",
+      "ipa": "/ˈɑːfɚ/",
+      "pos": "verb, noun",
+      "meaning_vi": "đề nghị, mời; lời đề nghị",
+      "example_en": "He offered me a job.",
+      "example_vi": "Anh ấy đã mời tôi một công việc."
+    },
+    {
+      "id": "w169",
+      "word": "remember",
+      "ipa": "/rɪˈmembɚ/",
+      "pos": "verb",
+      "meaning_vi": "nhớ",
+      "example_en": "Do you remember me?",
+      "example_vi": "Bạn còn nhớ tôi không?"
+    },
+    {
+      "id": "w170",
+      "word": "love",
+      "ipa": "/lʌv/",
+      "pos": "verb, noun",
+      "meaning_vi": "yêu, rất thích; tình yêu",
+      "example_en": "I love this song.",
+      "example_vi": "Tôi rất thích bài hát này."
+    },
+    {
+      "id": "w171",
+      "word": "consider",
+      "ipa": "/kənˈsɪdɚ/",
+      "pos": "verb",
+      "meaning_vi": "cân nhắc, xem xét",
+      "example_en": "We are considering moving abroad.",
+      "example_vi": "Chúng tôi đang cân nhắc chuyển ra nước ngoài."
+    },
+    {
+      "id": "w172",
+      "word": "buy",
+      "ipa": "/baɪ/",
+      "pos": "verb",
+      "meaning_vi": "mua",
+      "example_en": "I need to buy some bread.",
+      "example_vi": "Tôi cần mua một ít bánh mì."
+    },
+    {
+      "id": "w173",
+      "word": "wait",
+      "ipa": "/weɪt/",
+      "pos": "verb",
+      "meaning_vi": "chờ, đợi",
+      "example_en": "Please wait for me.",
+      "example_vi": "Làm ơn đợi tôi với."
+    },
+    {
+      "id": "w174",
+      "word": "send",
+      "ipa": "/send/",
+      "pos": "verb",
+      "meaning_vi": "gửi",
+      "example_en": "I'll send you an email.",
+      "example_vi": "Tôi sẽ gửi email cho bạn."
+    },
+    {
+      "id": "w175",
+      "word": "expect",
+      "ipa": "/ɪkˈspekt/",
+      "pos": "verb",
+      "meaning_vi": "mong đợi, nghĩ là sẽ xảy ra",
+      "example_en": "I didn't expect to see you here.",
+      "example_vi": "Tôi không ngờ lại gặp bạn ở đây."
+    },
+    {
+      "id": "w176",
+      "word": "build",
+      "ipa": "/bɪld/",
+      "pos": "verb",
+      "meaning_vi": "xây dựng",
+      "example_en": "They are building a new bridge.",
+      "example_vi": "Họ đang xây một cây cầu mới."
+    },
+    {
+      "id": "w177",
+      "word": "stay",
+      "ipa": "/steɪ/",
+      "pos": "verb",
+      "meaning_vi": "ở lại; lưu trú",
+      "example_en": "I stayed at a small hotel.",
+      "example_vi": "Tôi đã ở một khách sạn nhỏ."
+    },
+    {
+      "id": "w178",
+      "word": "fall",
+      "ipa": "/fɑːl/",
+      "pos": "verb",
+      "meaning_vi": "ngã, rơi; giảm",
+      "example_en": "Be careful, don't fall!",
+      "example_vi": "Cẩn thận, đừng ngã!"
+    },
+    {
+      "id": "w179",
+      "word": "suggest",
+      "ipa": "/səˈdʒest/",
+      "pos": "verb",
+      "meaning_vi": "gợi ý, đề xuất",
+      "example_en": "I suggest we take a taxi.",
+      "example_vi": "Tôi đề nghị chúng ta đi taxi."
+    },
+    {
+      "id": "w180",
+      "word": "decide",
+      "ipa": "/dɪˈsaɪd/",
+      "pos": "verb",
+      "meaning_vi": "quyết định",
+      "example_en": "I decided to study abroad.",
+      "example_vi": "Tôi đã quyết định đi du học."
+    },
+    {
+      "id": "w181",
+      "word": "pass",
+      "ipa": "/pæs/",
+      "pos": "verb",
+      "meaning_vi": "đi qua; đỗ (kỳ thi); chuyền, đưa",
+      "example_en": "I hope I pass the exam.",
+      "example_vi": "Tôi mong mình sẽ đỗ kỳ thi."
+    },
+    {
+      "id": "w182",
+      "word": "sell",
+      "ipa": "/sel/",
+      "pos": "verb",
+      "meaning_vi": "bán",
+      "example_en": "They sell fresh fruit here.",
+      "example_vi": "Ở đây họ bán hoa quả tươi."
+    },
+    {
+      "id": "w183",
+      "word": "forget",
+      "ipa": "/fɚˈɡet/",
+      "pos": "verb",
+      "meaning_vi": "quên",
+      "example_en": "Don't forget your umbrella.",
+      "example_vi": "Đừng quên ô nhé."
+    },
+    {
+      "id": "w184",
+      "word": "agree",
+      "ipa": "/əˈɡriː/",
+      "pos": "verb",
+      "meaning_vi": "đồng ý",
+      "example_en": "I agree with you.",
+      "example_vi": "Tôi đồng ý với bạn."
+    },
+    {
+      "id": "w185",
+      "word": "explain",
+      "ipa": "/ɪkˈspleɪn/",
+      "pos": "verb",
+      "meaning_vi": "giải thích",
+      "example_en": "Can you explain this again?",
+      "example_vi": "Bạn giải thích lại chỗ này được không?"
+    },
+    {
+      "id": "w186",
+      "word": "improve",
+      "ipa": "/ɪmˈpruːv/",
+      "pos": "verb",
+      "meaning_vi": "cải thiện",
+      "example_en": "I want to improve my English.",
+      "example_vi": "Tôi muốn cải thiện tiếng Anh."
+    },
+    {
+      "id": "w187",
+      "word": "describe",
+      "ipa": "/dɪˈskraɪb/",
+      "pos": "verb",
+      "meaning_vi": "miêu tả",
+      "example_en": "Can you describe the man?",
+      "example_vi": "Bạn có thể miêu tả người đàn ông đó không?"
+    },
+    {
+      "id": "w188",
+      "word": "answer",
+      "ipa": "/ˈænsɚ/",
+      "pos": "verb, noun",
+      "meaning_vi": "trả lời; câu trả lời",
+      "example_en": "Please answer the phone.",
+      "example_vi": "Làm ơn nghe điện thoại."
+    },
+    {
+      "id": "w189",
+      "word": "travel",
+      "ipa": "/ˈtrævəl/",
+      "pos": "verb, noun",
+      "meaning_vi": "đi du lịch, di chuyển",
+      "example_en": "I love to travel.",
+      "example_vi": "Tôi rất thích đi du lịch."
+    },
+    {
+      "id": "w190",
+      "word": "choose",
+      "ipa": "/tʃuːz/",
+      "pos": "verb",
+      "meaning_vi": "chọn",
+      "example_en": "You can choose any color.",
+      "example_vi": "Bạn có thể chọn màu bất kỳ."
+    },
+    {
+      "id": "w191",
+      "word": "finish",
+      "ipa": "/ˈfɪnɪʃ/",
+      "pos": "verb",
+      "meaning_vi": "hoàn thành, làm xong",
+      "example_en": "Did you finish your homework?",
+      "example_vi": "Bạn làm xong bài tập chưa?"
+    },
+    {
+      "id": "w192",
+      "word": "cook",
+      "ipa": "/kʊk/",
+      "pos": "verb",
+      "meaning_vi": "nấu ăn",
+      "example_en": "My dad cooks dinner on Sundays.",
+      "example_vi": "Bố tôi nấu bữa tối vào Chủ nhật."
+    },
+    {
+      "id": "w193",
+      "word": "prefer",
+      "ipa": "/prɪˈfɝː/",
+      "pos": "verb",
+      "meaning_vi": "thích hơn",
+      "example_en": "I prefer tea to coffee.",
+      "example_vi": "Tôi thích trà hơn cà phê."
+    },
+    {
+      "id": "w194",
+      "word": "worry",
+      "ipa": "/ˈwɝːi/",
+      "pos": "verb",
+      "meaning_vi": "lo lắng",
+      "example_en": "Don't worry about it.",
+      "example_vi": "Đừng lo về chuyện đó."
+    },
+    {
+      "id": "w195",
+      "word": "call",
+      "ipa": "/kɑːl/",
+      "pos": "verb, noun",
+      "meaning_vi": "gọi (điện); gọi là; cuộc gọi",
+      "example_en": "I'll call you tonight.",
+      "example_vi": "Tối nay tôi sẽ gọi cho bạn."
+    },
+    {
+      "id": "w196",
+      "word": "eat",
+      "ipa": "/iːt/",
+      "pos": "verb",
+      "meaning_vi": "ăn",
+      "example_en": "What do you want to eat?",
+      "example_vi": "Bạn muốn ăn gì?"
+    },
+    {
+      "id": "w197",
+      "word": "study",
+      "ipa": "/ˈstʌdi/",
+      "pos": "verb, noun",
+      "meaning_vi": "học, nghiên cứu; việc học",
+      "example_en": "I study English every evening.",
+      "example_vi": "Tối nào tôi cũng học tiếng Anh."
+    },
+    {
+      "id": "w198",
+      "word": "before",
+      "ipa": "/bɪˈfɔːr/",
+      "pos": "preposition, conjunction",
+      "meaning_vi": "trước, trước khi",
+      "example_en": "Please call me before you come.",
+      "example_vi": "Gọi cho tôi trước khi bạn đến nhé."
+    },
+    {
+      "id": "w199",
+      "word": "every",
+      "ipa": "/ˈevri/",
+      "pos": "determiner",
+      "meaning_vi": "mỗi, mọi",
+      "example_en": "I call my mom every day.",
+      "example_vi": "Ngày nào tôi cũng gọi cho mẹ."
+    },
+    {
+      "id": "w200",
+      "word": "something",
+      "ipa": "/ˈsʌmθɪŋ/",
+      "pos": "pronoun",
+      "meaning_vi": "cái gì đó, điều gì đó",
+      "example_en": "I want to tell you something.",
+      "example_vi": "Tôi muốn nói với bạn một chuyện."
+    },
+    {
+      "id": "w201",
+      "word": "family",
+      "ipa": "/ˈfæməli/",
+      "pos": "noun",
+      "meaning_vi": "gia đình",
+      "example_en": "I have a big family.",
+      "example_vi": "Tôi có một gia đình lớn."
+    },
+    {
+      "id": "w202",
+      "word": "friend",
+      "ipa": "/frend/",
+      "pos": "noun",
+      "meaning_vi": "bạn, bạn bè",
+      "example_en": "She is my best friend.",
+      "example_vi": "Cô ấy là bạn thân nhất của tôi."
+    },
+    {
+      "id": "w203",
+      "word": "house",
+      "ipa": "/haʊs/",
+      "pos": "noun",
+      "meaning_vi": "ngôi nhà",
+      "example_en": "Their house has a big garden.",
+      "example_vi": "Nhà họ có một khu vườn lớn."
+    },
+    {
+      "id": "w204",
+      "word": "home",
+      "ipa": "/hoʊm/",
+      "pos": "noun, adverb",
+      "meaning_vi": "nhà, tổ ấm; về nhà",
+      "example_en": "I'm going home now.",
+      "example_vi": "Tôi về nhà đây."
+    },
+    {
+      "id": "w205",
+      "word": "school",
+      "ipa": "/skuːl/",
+      "pos": "noun",
+      "meaning_vi": "trường học",
+      "example_en": "My school is near the lake.",
+      "example_vi": "Trường tôi ở gần hồ."
+    },
+    {
+      "id": "w206",
+      "word": "student",
+      "ipa": "/ˈstuːdənt/",
+      "pos": "noun",
+      "meaning_vi": "học sinh, sinh viên",
+      "example_en": "He is a university student.",
+      "example_vi": "Anh ấy là sinh viên đại học."
+    },
+    {
+      "id": "w207",
+      "word": "teacher",
+      "ipa": "/ˈtiːtʃɚ/",
+      "pos": "noun",
+      "meaning_vi": "giáo viên",
+      "example_en": "My English teacher is from Canada.",
+      "example_vi": "Giáo viên tiếng Anh của tôi đến từ Canada."
+    },
+    {
+      "id": "w208",
+      "word": "job",
+      "ipa": "/dʒɑːb/",
+      "pos": "noun",
+      "meaning_vi": "công việc, việc làm",
+      "example_en": "I'm looking for a new job.",
+      "example_vi": "Tôi đang tìm việc mới."
+    },
+    {
+      "id": "w209",
+      "word": "money",
+      "ipa": "/ˈmʌni/",
+      "pos": "noun",
+      "meaning_vi": "tiền",
+      "example_en": "I don't have much money.",
+      "example_vi": "Tôi không có nhiều tiền."
+    },
+    {
+      "id": "w210",
+      "word": "water",
+      "ipa": "/ˈwɑːtɚ/",
+      "pos": "noun",
+      "meaning_vi": "nước",
+      "example_en": "Can I have a glass of water?",
+      "example_vi": "Cho tôi xin một cốc nước được không?"
+    },
+    {
+      "id": "w211",
+      "word": "food",
+      "ipa": "/fuːd/",
+      "pos": "noun",
+      "meaning_vi": "thức ăn, đồ ăn",
+      "example_en": "Vietnamese food is delicious.",
+      "example_vi": "Đồ ăn Việt Nam rất ngon."
+    },
+    {
+      "id": "w212",
+      "word": "city",
+      "ipa": "/ˈsɪti/",
+      "pos": "noun",
+      "meaning_vi": "thành phố",
+      "example_en": "Ho Chi Minh City is very crowded.",
+      "example_vi": "Thành phố Hồ Chí Minh rất đông đúc."
+    },
+    {
+      "id": "w213",
+      "word": "country",
+      "ipa": "/ˈkʌntri/",
+      "pos": "noun",
+      "meaning_vi": "đất nước; nông thôn",
+      "example_en": "Which country are you from?",
+      "example_vi": "Bạn đến từ nước nào?"
+    },
+    {
+      "id": "w214",
+      "word": "place",
+      "ipa": "/pleɪs/",
+      "pos": "noun",
+      "meaning_vi": "nơi, chỗ",
+      "example_en": "This is a nice place to live.",
+      "example_vi": "Đây là một nơi đáng sống."
+    },
+    {
+      "id": "w215",
+      "word": "room",
+      "ipa": "/ruːm/",
+      "pos": "noun",
+      "meaning_vi": "phòng",
+      "example_en": "My room is on the second floor.",
+      "example_vi": "Phòng tôi ở tầng hai."
+    },
+    {
+      "id": "w216",
+      "word": "week",
+      "ipa": "/wiːk/",
+      "pos": "noun",
+      "meaning_vi": "tuần",
+      "example_en": "I go swimming twice a week.",
+      "example_vi": "Tôi đi bơi hai lần một tuần."
+    },
+    {
+      "id": "w217",
+      "word": "month",
+      "ipa": "/mʌnθ/",
+      "pos": "noun",
+      "meaning_vi": "tháng",
+      "example_en": "I'll visit my parents next month.",
+      "example_vi": "Tháng sau tôi sẽ về thăm bố mẹ."
+    },
+    {
+      "id": "w218",
+      "word": "hour",
+      "ipa": "/aʊr/",
+      "pos": "noun",
+      "meaning_vi": "giờ, tiếng đồng hồ",
+      "example_en": "The flight takes two hours.",
+      "example_vi": "Chuyến bay mất hai tiếng."
+    },
+    {
+      "id": "w219",
+      "word": "minute",
+      "ipa": "/ˈmɪnɪt/",
+      "pos": "noun",
+      "meaning_vi": "phút",
+      "example_en": "Wait a minute, please.",
+      "example_vi": "Vui lòng đợi một phút."
+    },
+    {
+      "id": "w220",
+      "word": "morning",
+      "ipa": "/ˈmɔːrnɪŋ/",
+      "pos": "noun",
+      "meaning_vi": "buổi sáng",
+      "example_en": "I drink coffee every morning.",
+      "example_vi": "Sáng nào tôi cũng uống cà phê."
+    },
+    {
+      "id": "w221",
+      "word": "night",
+      "ipa": "/naɪt/",
+      "pos": "noun",
+      "meaning_vi": "ban đêm, buổi tối",
+      "example_en": "I couldn't sleep last night.",
+      "example_vi": "Tối qua tôi không ngủ được."
+    },
+    {
+      "id": "w222",
+      "word": "word",
+      "ipa": "/wɝːd/",
+      "pos": "noun",
+      "meaning_vi": "từ",
+      "example_en": "How do you spell this word?",
+      "example_vi": "Từ này đánh vần thế nào?"
+    },
+    {
+      "id": "w223",
+      "word": "question",
+      "ipa": "/ˈkwestʃən/",
+      "pos": "noun",
+      "meaning_vi": "câu hỏi",
+      "example_en": "That's a good question.",
+      "example_vi": "Đó là một câu hỏi hay."
+    },
+    {
+      "id": "w224",
+      "word": "problem",
+      "ipa": "/ˈprɑːbləm/",
+      "pos": "noun",
+      "meaning_vi": "vấn đề",
+      "example_en": "No problem!",
+      "example_vi": "Không vấn đề gì!"
+    },
+    {
+      "id": "w225",
+      "word": "idea",
+      "ipa": "/aɪˈdiːə/",
+      "pos": "noun",
+      "meaning_vi": "ý tưởng, ý kiến",
+      "example_en": "I have an idea.",
+      "example_vi": "Tôi có một ý này."
+    },
+    {
+      "id": "w226",
+      "word": "part",
+      "ipa": "/pɑːrt/",
+      "pos": "noun",
+      "meaning_vi": "phần, bộ phận",
+      "example_en": "This is the best part of the movie.",
+      "example_vi": "Đây là đoạn hay nhất của bộ phim."
+    },
+    {
+      "id": "w227",
+      "word": "number",
+      "ipa": "/ˈnʌmbɚ/",
+      "pos": "noun",
+      "meaning_vi": "số",
+      "example_en": "What's your phone number?",
+      "example_vi": "Số điện thoại của bạn là gì?"
+    },
+    {
+      "id": "w228",
+      "word": "name",
+      "ipa": "/neɪm/",
+      "pos": "noun",
+      "meaning_vi": "tên",
+      "example_en": "I forgot his name.",
+      "example_vi": "Tôi quên mất tên anh ấy."
+    },
+    {
+      "id": "w229",
+      "word": "hand",
+      "ipa": "/hænd/",
+      "pos": "noun",
+      "meaning_vi": "bàn tay",
+      "example_en": "Raise your hand if you know the answer.",
+      "example_vi": "Giơ tay lên nếu bạn biết câu trả lời."
+    },
+    {
+      "id": "w230",
+      "word": "eye",
+      "ipa": "/aɪ/",
+      "pos": "noun",
+      "meaning_vi": "mắt",
+      "example_en": "She has beautiful eyes.",
+      "example_vi": "Cô ấy có đôi mắt đẹp."
+    },
+    {
+      "id": "w231",
+      "word": "head",
+      "ipa": "/hed/",
+      "pos": "noun",
+      "meaning_vi": "đầu",
+      "example_en": "My head hurts.",
+      "example_vi": "Tôi bị đau đầu."
+    },
+    {
+      "id": "w232",
+      "word": "body",
+      "ipa": "/ˈbɑːdi/",
+      "pos": "noun",
+      "meaning_vi": "cơ thể",
+      "example_en": "Exercise is good for your body.",
+      "example_vi": "Tập thể dục tốt cho cơ thể."
+    },
+    {
+      "id": "w233",
+      "word": "health",
+      "ipa": "/helθ/",
+      "pos": "noun",
+      "meaning_vi": "sức khỏe",
+      "example_en": "Smoking is bad for your health.",
+      "example_vi": "Hút thuốc có hại cho sức khỏe."
+    },
+    {
+      "id": "w234",
+      "word": "book",
+      "ipa": "/bʊk/",
+      "pos": "noun, verb",
+      "meaning_vi": "quyển sách; đặt (vé, phòng, bàn)",
+      "example_en": "I booked a table for two.",
+      "example_vi": "Tôi đã đặt bàn cho hai người."
+    },
+    {
+      "id": "w235",
+      "word": "car",
+      "ipa": "/kɑːr/",
+      "pos": "noun",
+      "meaning_vi": "xe hơi, ô tô",
+      "example_en": "He drives an old car.",
+      "example_vi": "Anh ấy lái một chiếc xe cũ."
+    },
+    {
+      "id": "w236",
+      "word": "door",
+      "ipa": "/dɔːr/",
+      "pos": "noun",
+      "meaning_vi": "cửa ra vào",
+      "example_en": "Someone is at the door.",
+      "example_vi": "Có ai đó ở ngoài cửa."
+    },
+    {
+      "id": "w237",
+      "word": "story",
+      "ipa": "/ˈstɔːri/",
+      "pos": "noun",
+      "meaning_vi": "câu chuyện",
+      "example_en": "Tell me a story.",
+      "example_vi": "Kể cho tôi một câu chuyện đi."
+    },
+    {
+      "id": "w238",
+      "word": "game",
+      "ipa": "/ɡeɪm/",
+      "pos": "noun",
+      "meaning_vi": "trò chơi; trận đấu",
+      "example_en": "Let's play a game.",
+      "example_vi": "Mình chơi một trò chơi nhé."
+    },
+    {
+      "id": "w239",
+      "word": "company",
+      "ipa": "/ˈkʌmpəni/",
+      "pos": "noun",
+      "meaning_vi": "công ty",
+      "example_en": "She works for a big company.",
+      "example_vi": "Cô ấy làm việc cho một công ty lớn."
+    },
+    {
+      "id": "w240",
+      "word": "business",
+      "ipa": "/ˈbɪznəs/",
+      "pos": "noun",
+      "meaning_vi": "việc kinh doanh; doanh nghiệp",
+      "example_en": "He runs a small business.",
+      "example_vi": "Anh ấy điều hành một doanh nghiệp nhỏ."
+    },
+    {
+      "id": "w241",
+      "word": "office",
+      "ipa": "/ˈɑːfɪs/",
+      "pos": "noun",
+      "meaning_vi": "văn phòng",
+      "example_en": "I'm still at the office.",
+      "example_vi": "Tôi vẫn đang ở văn phòng."
+    },
+    {
+      "id": "w242",
+      "word": "group",
+      "ipa": "/ɡruːp/",
+      "pos": "noun",
+      "meaning_vi": "nhóm",
+      "example_en": "We worked in a group of four.",
+      "example_vi": "Chúng tôi làm việc theo nhóm bốn người."
+    },
+    {
+      "id": "w243",
+      "word": "government",
+      "ipa": "/ˈɡʌvɚnmənt/",
+      "pos": "noun",
+      "meaning_vi": "chính phủ",
+      "example_en": "The government plans to build more schools.",
+      "example_vi": "Chính phủ có kế hoạch xây thêm trường học."
+    },
+    {
+      "id": "w244",
+      "word": "education",
+      "ipa": "/ˌedʒəˈkeɪʃən/",
+      "pos": "noun",
+      "meaning_vi": "giáo dục",
+      "example_en": "Education is very important.",
+      "example_vi": "Giáo dục rất quan trọng."
+    },
+    {
+      "id": "w245",
+      "word": "information",
+      "ipa": "/ˌɪnfɚˈmeɪʃən/",
+      "pos": "noun",
+      "meaning_vi": "thông tin",
+      "example_en": "I need more information.",
+      "example_vi": "Tôi cần thêm thông tin."
+    },
+    {
+      "id": "w246",
+      "word": "experience",
+      "ipa": "/ɪkˈspɪriəns/",
+      "pos": "noun",
+      "meaning_vi": "kinh nghiệm; trải nghiệm",
+      "example_en": "Do you have any work experience?",
+      "example_vi": "Bạn có kinh nghiệm làm việc không?"
+    },
+    {
+      "id": "w247",
+      "word": "environment",
+      "ipa": "/ɪnˈvaɪrənmənt/",
+      "pos": "noun",
+      "meaning_vi": "môi trường",
+      "example_en": "We must protect the environment.",
+      "example_vi": "Chúng ta phải bảo vệ môi trường."
+    },
+    {
+      "id": "w248",
+      "word": "technology",
+      "ipa": "/tekˈnɑːlədʒi/",
+      "pos": "noun",
+      "meaning_vi": "công nghệ",
+      "example_en": "Technology changes our lives.",
+      "example_vi": "Công nghệ thay đổi cuộc sống của chúng ta."
+    },
+    {
+      "id": "w249",
+      "word": "area",
+      "ipa": "/ˈeriə/",
+      "pos": "noun",
+      "meaning_vi": "khu vực; lĩnh vực",
+      "example_en": "I live in a quiet area.",
+      "example_vi": "Tôi sống ở một khu yên tĩnh."
+    },
+    {
+      "id": "w250",
+      "word": "reason",
+      "ipa": "/ˈriːzən/",
+      "pos": "noun",
+      "meaning_vi": "lý do",
+      "example_en": "What's the reason for the delay?",
+      "example_vi": "Lý do của sự chậm trễ là gì?"
+    },
+    {
+      "id": "w251",
+      "word": "result",
+      "ipa": "/rɪˈzʌlt/",
+      "pos": "noun",
+      "meaning_vi": "kết quả",
+      "example_en": "I'm happy with the result.",
+      "example_vi": "Tôi hài lòng với kết quả."
+    },
+    {
+      "id": "w252",
+      "word": "moment",
+      "ipa": "/ˈmoʊmənt/",
+      "pos": "noun",
+      "meaning_vi": "khoảnh khắc, chốc lát",
+      "example_en": "Just a moment, please.",
+      "example_vi": "Xin chờ một chút."
+    },
+    {
+      "id": "w253",
+      "word": "weather",
+      "ipa": "/ˈweðɚ/",
+      "pos": "noun",
+      "meaning_vi": "thời tiết",
+      "example_en": "The weather is nice today.",
+      "example_vi": "Hôm nay thời tiết đẹp."
+    },
+    {
+      "id": "w254",
+      "word": "language",
+      "ipa": "/ˈlæŋɡwɪdʒ/",
+      "pos": "noun",
+      "meaning_vi": "ngôn ngữ",
+      "example_en": "English is a global language.",
+      "example_vi": "Tiếng Anh là ngôn ngữ toàn cầu."
+    },
+    {
+      "id": "w255",
+      "word": "culture",
+      "ipa": "/ˈkʌltʃɚ/",
+      "pos": "noun",
+      "meaning_vi": "văn hóa",
+      "example_en": "I'm interested in Japanese culture.",
+      "example_vi": "Tôi quan tâm đến văn hóa Nhật Bản."
+    },
+    {
+      "id": "w256",
+      "word": "music",
+      "ipa": "/ˈmjuːzɪk/",
+      "pos": "noun",
+      "meaning_vi": "âm nhạc",
+      "example_en": "What kind of music do you like?",
+      "example_vi": "Bạn thích thể loại nhạc nào?"
+    },
+    {
+      "id": "w257",
+      "word": "movie",
+      "ipa": "/ˈmuːvi/",
+      "pos": "noun",
+      "meaning_vi": "bộ phim",
+      "example_en": "Let's watch a movie tonight.",
+      "example_vi": "Tối nay mình xem phim nhé."
+    },
+    {
+      "id": "w258",
+      "word": "weekend",
+      "ipa": "/ˈwiːkend/",
+      "pos": "noun",
+      "meaning_vi": "cuối tuần",
+      "example_en": "What are you doing this weekend?",
+      "example_vi": "Cuối tuần này bạn làm gì?"
+    },
+    {
+      "id": "w259",
+      "word": "price",
+      "ipa": "/praɪs/",
+      "pos": "noun",
+      "meaning_vi": "giá cả",
+      "example_en": "The price is too high.",
+      "example_vi": "Giá cao quá."
+    },
+    {
+      "id": "w260",
+      "word": "plan",
+      "ipa": "/plæn/",
+      "pos": "noun, verb",
+      "meaning_vi": "kế hoạch; lên kế hoạch",
+      "example_en": "Do you have any plans for tonight?",
+      "example_vi": "Tối nay bạn có kế hoạch gì không?"
+    },
+    {
+      "id": "w261",
+      "word": "great",
+      "ipa": "/ɡreɪt/",
+      "pos": "adjective",
+      "meaning_vi": "tuyệt vời; to lớn",
+      "example_en": "That's a great idea!",
+      "example_vi": "Ý kiến tuyệt quá!"
+    },
+    {
+      "id": "w262",
+      "word": "little",
+      "ipa": "/ˈlɪtəl/",
+      "pos": "adjective",
+      "meaning_vi": "nhỏ; (a little) một chút",
+      "example_en": "I speak a little English.",
+      "example_vi": "Tôi nói được một chút tiếng Anh."
+    },
+    {
+      "id": "w263",
+      "word": "old",
+      "ipa": "/oʊld/",
+      "pos": "adjective",
+      "meaning_vi": "già, cũ",
+      "example_en": "How old are you?",
+      "example_vi": "Bạn bao nhiêu tuổi?"
+    },
+    {
+      "id": "w264",
+      "word": "big",
+      "ipa": "/bɪɡ/",
+      "pos": "adjective",
+      "meaning_vi": "to, lớn",
+      "example_en": "This shirt is too big for me.",
+      "example_vi": "Cái áo này quá rộng với tôi."
+    },
+    {
+      "id": "w265",
+      "word": "small",
+      "ipa": "/smɑːl/",
+      "pos": "adjective",
+      "meaning_vi": "nhỏ",
+      "example_en": "I live in a small town.",
+      "example_vi": "Tôi sống ở một thị trấn nhỏ."
+    },
+    {
+      "id": "w266",
+      "word": "long",
+      "ipa": "/lɑːŋ/",
+      "pos": "adjective",
+      "meaning_vi": "dài; lâu",
+      "example_en": "It was a long day.",
+      "example_vi": "Hôm nay là một ngày dài."
+    },
+    {
+      "id": "w267",
+      "word": "high",
+      "ipa": "/haɪ/",
+      "pos": "adjective",
+      "meaning_vi": "cao",
+      "example_en": "The mountain is very high.",
+      "example_vi": "Ngọn núi rất cao."
+    },
+    {
+      "id": "w268",
+      "word": "different",
+      "ipa": "/ˈdɪfɚənt/",
+      "pos": "adjective",
+      "meaning_vi": "khác, khác biệt",
+      "example_en": "We have different opinions.",
+      "example_vi": "Chúng tôi có ý kiến khác nhau."
+    },
+    {
+      "id": "w269",
+      "word": "important",
+      "ipa": "/ɪmˈpɔːrtənt/",
+      "pos": "adjective",
+      "meaning_vi": "quan trọng",
+      "example_en": "This meeting is very important.",
+      "example_vi": "Cuộc họp này rất quan trọng."
+    },
+    {
+      "id": "w270",
+      "word": "young",
+      "ipa": "/jʌŋ/",
+      "pos": "adjective",
+      "meaning_vi": "trẻ",
+      "example_en": "She looks very young.",
+      "example_vi": "Trông cô ấy rất trẻ."
+    },
+    {
+      "id": "w271",
+      "word": "early",
+      "ipa": "/ˈɝːli/",
+      "pos": "adjective, adverb",
+      "meaning_vi": "sớm",
+      "example_en": "I get up early.",
+      "example_vi": "Tôi dậy sớm."
+    },
+    {
+      "id": "w272",
+      "word": "late",
+      "ipa": "/leɪt/",
+      "pos": "adjective, adverb",
+      "meaning_vi": "muộn, trễ",
+      "example_en": "Sorry, I'm late.",
+      "example_vi": "Xin lỗi, tôi đến muộn."
+    },
+    {
+      "id": "w273",
+      "word": "bad",
+      "ipa": "/bæd/",
+      "pos": "adjective",
+      "meaning_vi": "xấu, tệ",
+      "example_en": "I had a bad dream.",
+      "example_vi": "Tôi đã gặp ác mộng."
+    },
+    {
+      "id": "w274",
+      "word": "easy",
+      "ipa": "/ˈiːzi/",
+      "pos": "adjective",
+      "meaning_vi": "dễ",
+      "example_en": "This test is easy.",
+      "example_vi": "Bài kiểm tra này dễ."
+    },
+    {
+      "id": "w275",
+      "word": "difficult",
+      "ipa": "/ˈdɪfɪkəlt/",
+      "pos": "adjective",
+      "meaning_vi": "khó",
+      "example_en": "English pronunciation is difficult.",
+      "example_vi": "Phát âm tiếng Anh khó."
+    },
+    {
+      "id": "w276",
+      "word": "hard",
+      "ipa": "/hɑːrd/",
+      "pos": "adjective, adverb",
+      "meaning_vi": "khó; chăm chỉ; cứng",
+      "example_en": "She works very hard.",
+      "example_vi": "Cô ấy làm việc rất chăm chỉ."
+    },
+    {
+      "id": "w277",
+      "word": "same",
+      "ipa": "/seɪm/",
+      "pos": "adjective",
+      "meaning_vi": "giống nhau, cùng",
+      "example_en": "We are in the same class.",
+      "example_vi": "Chúng tôi học cùng lớp."
+    },
+    {
+      "id": "w278",
+      "word": "able",
+      "ipa": "/ˈeɪbəl/",
+      "pos": "adjective",
+      "meaning_vi": "(be able to) có thể, có khả năng",
+      "example_en": "I was able to finish on time.",
+      "example_vi": "Tôi đã kịp hoàn thành đúng hạn."
+    },
+    {
+      "id": "w279",
+      "word": "free",
+      "ipa": "/friː/",
+      "pos": "adjective",
+      "meaning_vi": "miễn phí; rảnh",
+      "example_en": "Are you free tomorrow?",
+      "example_vi": "Ngày mai bạn rảnh không?"
+    },
+    {
+      "id": "w280",
+      "word": "sure",
+      "ipa": "/ʃʊr/",
+      "pos": "adjective",
+      "meaning_vi": "chắc chắn",
+      "example_en": "Are you sure?",
+      "example_vi": "Bạn chắc chứ?"
+    },
+    {
+      "id": "w281",
+      "word": "happy",
+      "ipa": "/ˈhæpi/",
+      "pos": "adjective",
+      "meaning_vi": "vui, hạnh phúc",
+      "example_en": "I'm so happy to see you.",
+      "example_vi": "Tôi rất vui được gặp bạn."
+    },
+    {
+      "id": "w282",
+      "word": "busy",
+      "ipa": "/ˈbɪzi/",
+      "pos": "adjective",
+      "meaning_vi": "bận",
+      "example_en": "I'm busy this afternoon.",
+      "example_vi": "Chiều nay tôi bận."
+    },
+    {
+      "id": "w283",
+      "word": "ready",
+      "ipa": "/ˈredi/",
+      "pos": "adjective",
+      "meaning_vi": "sẵn sàng",
+      "example_en": "Are you ready to go?",
+      "example_vi": "Bạn sẵn sàng đi chưa?"
+    },
+    {
+      "id": "w284",
+      "word": "real",
+      "ipa": "/ˈriːəl/",
+      "pos": "adjective",
+      "meaning_vi": "thật",
+      "example_en": "Is this a real diamond?",
+      "example_vi": "Đây có phải kim cương thật không?"
+    },
+    {
+      "id": "w285",
+      "word": "true",
+      "ipa": "/truː/",
+      "pos": "adjective",
+      "meaning_vi": "đúng, có thật",
+      "example_en": "Is it true?",
+      "example_vi": "Có thật không?"
+    },
+    {
+      "id": "w286",
+      "word": "possible",
+      "ipa": "/ˈpɑːsəbəl/",
+      "pos": "adjective",
+      "meaning_vi": "có thể (xảy ra, làm được)",
+      "example_en": "Is it possible to change my ticket?",
+      "example_vi": "Có thể đổi vé của tôi không?"
+    },
+    {
+      "id": "w287",
+      "word": "popular",
+      "ipa": "/ˈpɑːpjəlɚ/",
+      "pos": "adjective",
+      "meaning_vi": "phổ biến, được yêu thích",
+      "example_en": "This song is very popular.",
+      "example_vi": "Bài hát này rất nổi tiếng."
+    },
+    {
+      "id": "w288",
+      "word": "expensive",
+      "ipa": "/ɪkˈspensɪv/",
+      "pos": "adjective",
+      "meaning_vi": "đắt",
+      "example_en": "This restaurant is too expensive.",
+      "example_vi": "Nhà hàng này đắt quá."
+    },
+    {
+      "id": "w289",
+      "word": "cheap",
+      "ipa": "/tʃiːp/",
+      "pos": "adjective",
+      "meaning_vi": "rẻ",
+      "example_en": "Street food here is cheap.",
+      "example_vi": "Đồ ăn đường phố ở đây rẻ."
+    },
+    {
+      "id": "w290",
+      "word": "interesting",
+      "ipa": "/ˈɪntrəstɪŋ/",
+      "pos": "adjective",
+      "meaning_vi": "thú vị",
+      "example_en": "This book is really interesting.",
+      "example_vi": "Quyển sách này thật sự thú vị."
+    },
+    {
+      "id": "w291",
+      "word": "really",
+      "ipa": "/ˈriːəli/",
+      "pos": "adverb",
+      "meaning_vi": "thật sự, rất",
+      "example_en": "I really like it.",
+      "example_vi": "Tôi thật sự thích nó."
+    },
+    {
+      "id": "w292",
+      "word": "never",
+      "ipa": "/ˈnevɚ/",
+      "pos": "adverb",
+      "meaning_vi": "không bao giờ",
+      "example_en": "I never eat meat.",
+      "example_vi": "Tôi không bao giờ ăn thịt."
+    },
+    {
+      "id": "w293",
+      "word": "always",
+      "ipa": "/ˈɑːlweɪz/",
+      "pos": "adverb",
+      "meaning_vi": "luôn luôn",
+      "example_en": "She always smiles.",
+      "example_vi": "Cô ấy luôn mỉm cười."
+    },
+    {
+      "id": "w294",
+      "word": "often",
+      "ipa": "/ˈɑːfən/",
+      "pos": "adverb",
+      "meaning_vi": "thường, hay",
+      "example_en": "I often go to the gym.",
+      "example_vi": "Tôi hay đến phòng tập."
+    },
+    {
+      "id": "w295",
+      "word": "sometimes",
+      "ipa": "/ˈsʌmtaɪmz/",
+      "pos": "adverb",
+      "meaning_vi": "thỉnh thoảng",
+      "example_en": "Sometimes I cook at home.",
+      "example_vi": "Thỉnh thoảng tôi nấu ăn ở nhà."
+    },
+    {
+      "id": "w296",
+      "word": "again",
+      "ipa": "/əˈɡen/",
+      "pos": "adverb",
+      "meaning_vi": "lại, lần nữa",
+      "example_en": "Can you say that again?",
+      "example_vi": "Bạn nói lại được không?"
+    },
+    {
+      "id": "w297",
+      "word": "already",
+      "ipa": "/ɑːlˈredi/",
+      "pos": "adverb",
+      "meaning_vi": "đã, rồi",
+      "example_en": "I've already eaten.",
+      "example_vi": "Tôi ăn rồi."
+    },
+    {
+      "id": "w298",
+      "word": "maybe",
+      "ipa": "/ˈmeɪbi/",
+      "pos": "adverb",
+      "meaning_vi": "có lẽ",
+      "example_en": "Maybe he's right.",
+      "example_vi": "Có lẽ anh ấy đúng."
+    },
+    {
+      "id": "w299",
+      "word": "together",
+      "ipa": "/təˈɡeðɚ/",
+      "pos": "adverb",
+      "meaning_vi": "cùng nhau",
+      "example_en": "Let's study together.",
+      "example_vi": "Mình cùng học nhé."
+    },
+    {
+      "id": "w300",
+      "word": "enough",
+      "ipa": "/ɪˈnʌf/",
+      "pos": "determiner, adverb",
+      "meaning_vi": "đủ",
+      "example_en": "Do we have enough time?",
+      "example_vi": "Chúng ta có đủ thời gian không?"
+    }
+  ]
+}

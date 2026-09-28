@@ -1,0 +1,403 @@
+{
+  "_huong_dan": "groups: danh sách nhóm hiện tượng (id, name, explanation, example). items: mỗi câu cần id (duy nhất), group (trùng với id của một nhóm), full (câu đầy đủ), reduced (cách người bản xứ đọc), meaning_vi, note_vi (giải thích ngắn), youglish_query (cụm từ tìm trên YouGlish).",
+  "groups": [
+    {
+      "id": "linking",
+      "name": "Nối âm (Linking)",
+      "explanation": "Khi một từ kết thúc bằng phụ âm và từ sau bắt đầu bằng nguyên âm, người bản xứ kéo phụ âm cuối sang từ sau. Vì vậy hai, ba từ nghe như dính thành một từ dài.",
+      "example": "turn off → tur-noff"
+    },
+    {
+      "id": "weak_forms",
+      "name": "Dạng yếu (Weak forms)",
+      "explanation": "Các từ nhỏ như to, and, of, can, for, you, them… khi không được nhấn sẽ đọc rất nhẹ và nhanh, nguyên âm thường biến thành /ə/. Nếu chờ nghe dạng đầy đủ, bạn sẽ bỏ lỡ chúng.",
+      "example": "to → tə, and → n, of → ə, can → kən"
+    },
+    {
+      "id": "flap_t",
+      "name": "Âm T bật kiểu Mỹ (Flap T)",
+      "explanation": "Trong giọng Mỹ, T hoặc TT nằm giữa hai nguyên âm (kể cả giữa hai từ) và không được nhấn sẽ đọc nhanh, nhẹ gần giống âm “đ” của tiếng Việt.",
+      "example": "water → wader, better → bedder"
+    },
+    {
+      "id": "assimilation",
+      "name": "Biến âm (Assimilation)",
+      "explanation": "Hai âm đứng cạnh nhau ảnh hưởng lẫn nhau và biến thành âm khác. Hay gặp nhất: /d/ + /j/ thành “j” (did you → didja), /t/ + /j/ thành “ch” (don't you → doncha).",
+      "example": "did you → didja, don't you → doncha"
+    },
+    {
+      "id": "elision",
+      "name": "Mất âm (Elision)",
+      "explanation": "Một âm, thường là /t/ hoặc /d/, bị bỏ đi khi kẹp giữa hai phụ âm khác. Người nghe vẫn hiểu nhờ ngữ cảnh, nên người nói không cần phát âm đủ.",
+      "example": "next day → nex day"
+    },
+    {
+      "id": "reductions",
+      "name": "Rút gọn phổ biến",
+      "explanation": "Những cụm cực kỳ hay dùng trong hội thoại được nói nhanh đến mức nghe như một từ mới. Khi viết thân mật người Mỹ cũng viết như vậy.",
+      "example": "going to → gonna, want to → wanna, let me → lemme"
+    }
+  ],
+  "items": [
+    {
+      "id": "cs-link-01",
+      "group": "linking",
+      "full": "Turn off the light.",
+      "reduced": "Tur-noff the light.",
+      "meaning_vi": "Tắt đèn đi.",
+      "note_vi": "Âm /n/ cuối của “turn” nối sang “off”.",
+      "youglish_query": "turn off the light"
+    },
+    {
+      "id": "cs-link-02",
+      "group": "linking",
+      "full": "Pick it up.",
+      "reduced": "Pi-ki-tup.",
+      "meaning_vi": "Nhặt nó lên.",
+      "note_vi": "/k/ nối sang “it”, /t/ nối sang “up”: ba từ thành một khối.",
+      "youglish_query": "pick it up"
+    },
+    {
+      "id": "cs-link-03",
+      "group": "linking",
+      "full": "Come on in.",
+      "reduced": "Co-mo-nin.",
+      "meaning_vi": "Vào đi.",
+      "note_vi": "/m/ nối sang “on”, /n/ nối sang “in”.",
+      "youglish_query": "come on in"
+    },
+    {
+      "id": "cs-link-04",
+      "group": "linking",
+      "full": "Check it out.",
+      "reduced": "Che-ki-dout.",
+      "meaning_vi": "Xem thử đi.",
+      "note_vi": "/k/ nối sang “it”; /t/ của “it” nằm giữa hai nguyên âm nên đọc nhẹ như “d”.",
+      "youglish_query": "check it out"
+    },
+    {
+      "id": "cs-link-05",
+      "group": "linking",
+      "full": "Hold on a minute.",
+      "reduced": "Hol-do-na minute.",
+      "meaning_vi": "Đợi một chút.",
+      "note_vi": "/d/ nối sang “on”, /n/ nối sang “a”.",
+      "youglish_query": "hold on a minute"
+    },
+    {
+      "id": "cs-link-06",
+      "group": "linking",
+      "full": "Can I have an apple?",
+      "reduced": "Ca-nai ha-va-napple?",
+      "meaning_vi": "Cho tôi một quả táo được không?",
+      "note_vi": "/n/ nối sang “I”, /v/ nối sang “an”, /n/ của “an” nối sang “apple”.",
+      "youglish_query": "can I have an"
+    },
+    {
+      "id": "cs-link-07",
+      "group": "linking",
+      "full": "Thanks a lot.",
+      "reduced": "Thank-sa-lot.",
+      "meaning_vi": "Cảm ơn nhiều.",
+      "note_vi": "Âm /s/ cuối của “thanks” nối sang “a”.",
+      "youglish_query": "thanks a lot"
+    },
+    {
+      "id": "cs-weak-01",
+      "group": "weak_forms",
+      "full": "I have to go to work.",
+      "reduced": "I hafta go tə work.",
+      "meaning_vi": "Tôi phải đi làm.",
+      "note_vi": "“to” đọc nhẹ thành /tə/; “have to” còn thành “hafta”.",
+      "youglish_query": "have to go to work"
+    },
+    {
+      "id": "cs-weak-02",
+      "group": "weak_forms",
+      "full": "Salt and pepper, please.",
+      "reduced": "Salt 'n' pepper, please.",
+      "meaning_vi": "Cho xin muối và tiêu.",
+      "note_vi": "“and” chỉ còn lại âm /n/.",
+      "youglish_query": "salt and pepper"
+    },
+    {
+      "id": "cs-weak-03",
+      "group": "weak_forms",
+      "full": "I'd like a cup of coffee.",
+      "reduced": "I'd like a cuppa coffee.",
+      "meaning_vi": "Tôi muốn một tách cà phê.",
+      "note_vi": "“of” chỉ còn /ə/ và dính vào “cup” thành “cuppa”.",
+      "youglish_query": "cup of coffee"
+    },
+    {
+      "id": "cs-weak-04",
+      "group": "weak_forms",
+      "full": "I can speak a little English.",
+      "reduced": "I kən speak a little English.",
+      "meaning_vi": "Tôi nói được một chút tiếng Anh.",
+      "note_vi": "“can” không nhấn đọc là /kən/, còn “can't” được nhấn và giữ âm /æ/. Đây là cách phân biệt can và can't khi nghe.",
+      "youglish_query": "I can speak"
+    },
+    {
+      "id": "cs-weak-05",
+      "group": "weak_forms",
+      "full": "This is for you.",
+      "reduced": "This is fer ya.",
+      "meaning_vi": "Cái này dành cho bạn.",
+      "note_vi": "“for” đọc nhẹ thành /fɚ/, “you” thành /jə/.",
+      "youglish_query": "this is for you"
+    },
+    {
+      "id": "cs-weak-06",
+      "group": "weak_forms",
+      "full": "Tell them I said hi.",
+      "reduced": "Tell 'em I said hi.",
+      "meaning_vi": "Nói với họ là tôi gửi lời chào.",
+      "note_vi": "“them” mất âm /ð/ đầu, chỉ còn /əm/.",
+      "youglish_query": "tell them I said"
+    },
+    {
+      "id": "cs-weak-07",
+      "group": "weak_forms",
+      "full": "Where are you from?",
+      "reduced": "Where're ya from?",
+      "meaning_vi": "Bạn đến từ đâu?",
+      "note_vi": "“are” chỉ còn /ɚ/ dính vào “where”, “you” thành /jə/.",
+      "youglish_query": "where are you from"
+    },
+    {
+      "id": "cs-flap-01",
+      "group": "flap_t",
+      "full": "Can I have some water?",
+      "reduced": "Can I have some wader?",
+      "meaning_vi": "Cho tôi xin chút nước.",
+      "note_vi": "“water” thành “wader”: /t/ giữa hai nguyên âm đọc nhẹ như “d”.",
+      "youglish_query": "some water"
+    },
+    {
+      "id": "cs-flap-02",
+      "group": "flap_t",
+      "full": "It's getting better.",
+      "reduced": "It's gedding bedder.",
+      "meaning_vi": "Mọi thứ đang tốt lên.",
+      "note_vi": "“getting” và “better” đều có TT giữa hai nguyên âm nên đọc thành “d”.",
+      "youglish_query": "getting better"
+    },
+    {
+      "id": "cs-flap-03",
+      "group": "flap_t",
+      "full": "What a beautiful city!",
+      "reduced": "Whada beaudiful ciddy!",
+      "meaning_vi": "Thành phố đẹp quá!",
+      "note_vi": "Flap T xuất hiện cả trong từ (beautiful, city) lẫn giữa hai từ (what a → whada).",
+      "youglish_query": "beautiful city"
+    },
+    {
+      "id": "cs-flap-04",
+      "group": "flap_t",
+      "full": "Let it go.",
+      "reduced": "Le-dit go.",
+      "meaning_vi": "Hãy để nó qua đi.",
+      "note_vi": "/t/ cuối của “let” đứng trước nguyên âm của “it” nên đọc thành “d”.",
+      "youglish_query": "let it go"
+    },
+    {
+      "id": "cs-flap-05",
+      "group": "flap_t",
+      "full": "I've got a lot of homework.",
+      "reduced": "I've gada lodda homework.",
+      "meaning_vi": "Tôi có rất nhiều bài tập về nhà.",
+      "note_vi": "“got a” thành “gada”, “lot of” thành “lodda”: vừa flap T vừa dạng yếu của “of”.",
+      "youglish_query": "got a lot of"
+    },
+    {
+      "id": "cs-flap-06",
+      "group": "flap_t",
+      "full": "Wait a minute.",
+      "reduced": "Wai-da minute.",
+      "meaning_vi": "Đợi một phút.",
+      "note_vi": "/t/ của “wait” nối với “a” và đọc thành “d”.",
+      "youglish_query": "wait a minute"
+    },
+    {
+      "id": "cs-assim-01",
+      "group": "assimilation",
+      "full": "Did you eat yet?",
+      "reduced": "Didja eat yet?",
+      "meaning_vi": "Bạn ăn chưa?",
+      "note_vi": "/d/ + /j/ biến thành /dʒ/ (giống “j” trong “job”).",
+      "youglish_query": "did you eat"
+    },
+    {
+      "id": "cs-assim-02",
+      "group": "assimilation",
+      "full": "Don't you like it?",
+      "reduced": "Doncha like it?",
+      "meaning_vi": "Bạn không thích nó à?",
+      "note_vi": "/t/ + /j/ biến thành /tʃ/ (giống “ch”).",
+      "youglish_query": "don't you like"
+    },
+    {
+      "id": "cs-assim-03",
+      "group": "assimilation",
+      "full": "What are you doing?",
+      "reduced": "Whatcha doin'?",
+      "meaning_vi": "Bạn đang làm gì vậy?",
+      "note_vi": "“what are you” dồn lại: /t/ + /j/ thành /tʃ/, “are” gần như biến mất.",
+      "youglish_query": "what are you doing"
+    },
+    {
+      "id": "cs-assim-04",
+      "group": "assimilation",
+      "full": "Nice to meet you.",
+      "reduced": "Nice ta meechu.",
+      "meaning_vi": "Rất vui được gặp bạn.",
+      "note_vi": "/t/ cuối của “meet” + /j/ của “you” thành /tʃ/: meet you → meechu.",
+      "youglish_query": "nice to meet you"
+    },
+    {
+      "id": "cs-assim-05",
+      "group": "assimilation",
+      "full": "Would you like some tea?",
+      "reduced": "Wouldja like some tea?",
+      "meaning_vi": "Bạn có muốn uống trà không?",
+      "note_vi": "/d/ + /j/ thành /dʒ/: would you → wouldja.",
+      "youglish_query": "would you like"
+    },
+    {
+      "id": "cs-assim-06",
+      "group": "assimilation",
+      "full": "I bet you can do it.",
+      "reduced": "I betcha can do it.",
+      "meaning_vi": "Tôi cá là bạn làm được.",
+      "note_vi": "/t/ + /j/ thành /tʃ/: bet you → betcha.",
+      "youglish_query": "I bet you"
+    },
+    {
+      "id": "cs-assim-07",
+      "group": "assimilation",
+      "full": "I'll be there in ten minutes.",
+      "reduced": "I'll be there in tem minutes.",
+      "meaning_vi": "Mười phút nữa tôi sẽ tới.",
+      "note_vi": "/n/ đứng trước /m/, /p/, /b/ bị môi kéo thành /m/: ten minutes → tem minutes.",
+      "youglish_query": "in ten minutes"
+    },
+    {
+      "id": "cs-elis-01",
+      "group": "elision",
+      "full": "I'll see you next week.",
+      "reduced": "I'll see ya nex week.",
+      "meaning_vi": "Tuần sau gặp nhé.",
+      "note_vi": "/t/ trong “next” kẹp giữa /ks/ và /w/ nên biến mất.",
+      "youglish_query": "see you next week"
+    },
+    {
+      "id": "cs-elis-02",
+      "group": "elision",
+      "full": "I stayed up late last night.",
+      "reduced": "I stayed up late las night.",
+      "meaning_vi": "Tối qua tôi thức khuya.",
+      "note_vi": "/t/ của “last” kẹp giữa /s/ và /n/ nên bị bỏ.",
+      "youglish_query": "last night"
+    },
+    {
+      "id": "cs-elis-03",
+      "group": "elision",
+      "full": "The next day, we went home.",
+      "reduced": "The nex day, we wen home.",
+      "meaning_vi": "Ngày hôm sau, chúng tôi về nhà.",
+      "note_vi": "“next day” thành “nex day”; /t/ của “went” cũng mất trước /h/.",
+      "youglish_query": "the next day"
+    },
+    {
+      "id": "cs-elis-04",
+      "group": "elision",
+      "full": "I just need to rest.",
+      "reduced": "I jus need ta rest.",
+      "meaning_vi": "Tôi chỉ cần nghỉ ngơi thôi.",
+      "note_vi": "/t/ của “just” mất trước /n/; “to” đọc nhẹ thành /tə/.",
+      "youglish_query": "I just need to"
+    },
+    {
+      "id": "cs-elis-05",
+      "group": "elision",
+      "full": "I don't think so.",
+      "reduced": "I don' think so.",
+      "meaning_vi": "Tôi không nghĩ vậy.",
+      "note_vi": "/t/ cuối của “don't” gần như không phát âm trước /θ/.",
+      "youglish_query": "I don't think so"
+    },
+    {
+      "id": "cs-elis-06",
+      "group": "elision",
+      "full": "She must be tired.",
+      "reduced": "She mus' be tired.",
+      "meaning_vi": "Chắc cô ấy mệt rồi.",
+      "note_vi": "/t/ của “must” mất trước /b/.",
+      "youglish_query": "must be tired"
+    },
+    {
+      "id": "cs-reduc-01",
+      "group": "reductions",
+      "full": "I'm going to call you later.",
+      "reduced": "I'm gonna call ya later.",
+      "meaning_vi": "Lát nữa tôi sẽ gọi cho bạn.",
+      "note_vi": "going to → gonna (chỉ dùng khi nói về dự định, không dùng khi “đi đến đâu”).",
+      "youglish_query": "going to call you"
+    },
+    {
+      "id": "cs-reduc-02",
+      "group": "reductions",
+      "full": "Do you want to grab some coffee?",
+      "reduced": "D'ya wanna grab some coffee?",
+      "meaning_vi": "Bạn có muốn đi uống cà phê không?",
+      "note_vi": "want to → wanna; “do you” rút thành “d'ya”.",
+      "youglish_query": "do you want to grab"
+    },
+    {
+      "id": "cs-reduc-03",
+      "group": "reductions",
+      "full": "I've got to go now.",
+      "reduced": "I gotta go now.",
+      "meaning_vi": "Tôi phải đi bây giờ.",
+      "note_vi": "(have) got to → gotta; “I've” thường bị nuốt gần hết.",
+      "youglish_query": "I've got to go"
+    },
+    {
+      "id": "cs-reduc-04",
+      "group": "reductions",
+      "full": "What are you trying to prove?",
+      "reduced": "Whaddaya tryna prove?",
+      "meaning_vi": "Bạn đang cố chứng minh điều gì vậy?",
+      "note_vi": "what are you → whaddaya, trying to → tryna.",
+      "youglish_query": "what are you trying to"
+    },
+    {
+      "id": "cs-reduc-05",
+      "group": "reductions",
+      "full": "Let me see. Give me a second.",
+      "reduced": "Lemme see. Gimme a second.",
+      "meaning_vi": "Để tôi xem nào. Cho tôi một giây.",
+      "note_vi": "let me → lemme, give me → gimme.",
+      "youglish_query": "give me a second"
+    },
+    {
+      "id": "cs-reduc-06",
+      "group": "reductions",
+      "full": "I don't know. It's kind of weird.",
+      "reduced": "I dunno. It's kinda weird.",
+      "meaning_vi": "Tôi không biết. Nó hơi kỳ kỳ.",
+      "note_vi": "don't know → dunno, kind of → kinda (nghĩa là “hơi hơi”, “kiểu như”).",
+      "youglish_query": "kind of weird"
+    },
+    {
+      "id": "cs-reduc-07",
+      "group": "reductions",
+      "full": "You should have told me. I could have helped.",
+      "reduced": "You shoulda told me. I coulda helped.",
+      "meaning_vi": "Lẽ ra bạn nên nói với tôi. Tôi đã có thể giúp mà.",
+      "note_vi": "should have → shoulda, could have → coulda: “have” chỉ còn /ə/.",
+      "youglish_query": "should have told me"
+    }
+  ]
+}
