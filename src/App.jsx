@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import Loading from './components/Loading.jsx'
@@ -7,12 +8,14 @@ import { DataProvider, MigrationMissingError, useData } from './context/DataCont
 import { StudyTrackerProvider } from './context/StudyTracker.jsx'
 import { ToastProvider } from './context/ToastContext.jsx'
 import { isSupabaseConfigured } from './lib/supabase.js'
+import { setDefaultAccent } from './lib/tts.js'
 import LoginPage from './pages/LoginPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 import SessionPage from './pages/SessionPage.jsx'
 import VocabPage from './pages/VocabPage.jsx'
 import VocabReviewPage from './pages/VocabReviewPage.jsx'
 import CardEditPage from './pages/CardEditPage.jsx'
+import ImportPage from './pages/ImportPage.jsx'
 import ConnectedSpeechPage from './pages/ConnectedSpeechPage.jsx'
 import ConnectedPracticePage from './pages/ConnectedPracticePage.jsx'
 import DictationPage from './pages/DictationPage.jsx'
@@ -49,7 +52,9 @@ function NotFound() {
 }
 
 function AppRoutes() {
-  const { status, error, reload } = useData()
+  const { status, error, reload, settings } = useData()
+  const accent = settings?.accent
+  useEffect(() => setDefaultAccent(accent), [accent])
 
   if (status === 'loading') return <Loading full text="Đang tải dữ liệu của bạn…" />
   if (status === 'seeding') return <Loading full text="Đang chuẩn bị bộ từ vựng cho bạn…" />
@@ -91,6 +96,7 @@ function AppRoutes() {
           <Route index element={<HomePage />} />
           <Route path="vocab" element={<VocabPage />} />
           <Route path="vocab/new" element={<CardEditPage />} />
+          <Route path="vocab/import" element={<ImportPage />} />
           <Route path="vocab/:id" element={<CardEditPage />} />
           <Route path="connected" element={<ConnectedSpeechPage />} />
           <Route path="dictation" element={<DictationPage />} />

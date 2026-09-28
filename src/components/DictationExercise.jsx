@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import AnswerBox from './AnswerBox.jsx'
 import DiffView from './DiffView.jsx'
+import MistakeWords from './MistakeWords.jsx'
 import RateSelector from './RateSelector.jsx'
 import SpeakButton from './SpeakButton.jsx'
 import YouGlishButton from './YouGlishButton.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { useTracker } from '../context/StudyTracker.jsx'
 import { gradeAnswer } from '../lib/grading.js'
+import { missedWords } from '../lib/mistakes.js'
 
 // Bài chép chính tả cho 1 câu.
 // - Câu có sẵn: nghe bằng giọng đọc của máy (chỉnh tốc độ, nghe lại thoải mái).
@@ -32,6 +34,7 @@ export default function DictationExercise({
   const startedAt = useRef(0)
   const nextRef = useRef(null)
   const isClip = Boolean(clipId)
+  const missed = useMemo(() => (result ? missedWords(text, answer, result) : []), [result, text, answer])
 
   useEffect(() => {
     startedAt.current = Date.now()
@@ -95,6 +98,12 @@ export default function DictationExercise({
         <>
           <DiffView result={result} answerText={text} />
           {meaning && <p className="muted meaning">Nghĩa: {meaning}</p>}
+          <MistakeWords
+            items={missed}
+            sentence={text}
+            sentenceMeaning={meaning}
+            title="Từ bạn chưa nghe ra: bấm để thêm vào thẻ ôn tập"
+          />
           <div className="button-row">
             {!isClip && <SpeakButton text={text} rate={rate} label="Nghe lại" />}
             <YouGlishButton query={youglishQuery} />

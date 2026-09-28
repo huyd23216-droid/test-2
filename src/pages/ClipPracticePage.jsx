@@ -3,10 +3,11 @@ import { Link, useParams } from 'react-router-dom'
 import DictationExercise from '../components/DictationExercise.jsx'
 import Icon from '../components/Icon.jsx'
 import PageHeader from '../components/PageHeader.jsx'
+import YouTubePlayer from '../components/YouTubePlayer.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { useStudyTimer } from '../context/StudyTracker.jsx'
 import { formatSeconds } from '../lib/dates.js'
-import { youtubeWatchUrl } from '../lib/youtube.js'
+import { parseYouTubeId, youtubeWatchUrl } from '../lib/youtube.js'
 
 export default function ClipPracticePage() {
   const { id } = useParams()
@@ -28,18 +29,18 @@ export default function ClipPracticePage() {
   const attempts = history.filter((h) => h.clip_id === clip.id)
   const best = attempts.length ? Math.round(Math.max(...attempts.map((h) => h.score)) * 100) : null
 
+  const videoId = parseYouTubeId(clip.youtube_url)
   const player = (
     <div className="clip-player">
+      {videoId && <YouTubePlayer videoId={videoId} start={clip.start_seconds} end={clip.end_seconds} />}
       {url ? (
-        <a className="btn btn-primary btn-lg btn-block" href={url} target="_blank" rel="noopener noreferrer">
-          <Icon name="external" size={20} /> Mở video tại {formatSeconds(clip.start_seconds)}
+        <a className="btn btn-ghost btn-block" href={url} target="_blank" rel="noopener noreferrer">
+          <Icon name="external" size={18} /> Mở trên YouTube tại {formatSeconds(clip.start_seconds)}
         </a>
       ) : (
         <p className="notice notice-warn">Link YouTube của clip này không hợp lệ. Bạn sửa lại link nhé.</p>
       )}
-      <p className="hint">
-        Nghe đoạn {range} (xem lại bao nhiêu lần cũng được), rồi quay lại đây gõ câu thoại.
-      </p>
+      <p className="hint">Nghe đoạn {range} bao nhiêu lần cũng được, rồi gõ lại câu thoại.</p>
     </div>
   )
 

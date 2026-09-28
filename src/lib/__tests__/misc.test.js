@@ -4,11 +4,14 @@ import { parseYouTubeId, parseYouTubeStart, youtubeWatchUrl } from '../youtube.j
 import { addDays, mondayOf, parseTimestamp, formatSeconds } from '../dates.js'
 import { validateContent, SEED_CARDS, CS_ITEMS, DICTATION_SENTENCES, CS_GROUPS } from '../content.js'
 import { posLabel } from '../labels.js'
+import { accentFor } from '../tts.js'
 
 describe('youglish', () => {
   it('builds the URL', () => {
     expect(youglishUrl("don't you")).toBe('https://youglish.com/pronounce/don\'t%20you/english/us')
     expect(youglishUrl(' what  are you ')).toBe('https://youglish.com/pronounce/what%20are%20you/english/us')
+    expect(youglishUrl('water', 'uk')).toBe('https://youglish.com/pronounce/water/english/uk')
+    expect(youglishUrl('water', 'mixed')).toBe('https://youglish.com/pronounce/water/english')
   })
 })
 
@@ -22,6 +25,17 @@ describe('youtube', () => {
     expect(parseYouTubeStart('https://youtu.be/dQw4w9WgXcQ?t=1m23s')).toBe(83)
     expect(parseYouTubeStart('https://youtu.be/dQw4w9WgXcQ?t=95')).toBe(95)
     expect(youtubeWatchUrl('https://youtu.be/dQw4w9WgXcQ', 83)).toBe('https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=83s')
+  })
+})
+
+describe('accent', () => {
+  it('keeps one accent per sentence in mixed mode', () => {
+    expect(accentFor('Hello there', 'us')).toBe('us')
+    expect(accentFor('Hello there', 'uk')).toBe('uk')
+    const a = accentFor('What are you trying to prove?', 'mixed')
+    expect(accentFor('What are you trying to prove?', 'mixed')).toBe(a)
+    const picks = new Set(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].map((t) => accentFor(t, 'mixed')))
+    expect(picks).toEqual(new Set(['us', 'uk']))
   })
 })
 

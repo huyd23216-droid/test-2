@@ -48,7 +48,11 @@ export default function Flashcard({ card, rate, retention, onGrade, badge }) {
               {card.ipa && <span lang="en">{card.ipa}</span>}
               {card.pos && <span className="fc-pos">{posLabel(card.pos)}</span>}
             </p>
-            <p className="fc-meaning">{card.meaning_vi}</p>
+            {card.meaning_vi ? (
+              <p className="fc-meaning">{card.meaning_vi}</p>
+            ) : (
+              <p className="hint">(Thẻ chưa có nghĩa. Bạn thêm ở mục Từ vựng nhé.)</p>
+            )}
             {card.example_en && (
               <div className="fc-example">
                 <div className="fc-example-en">

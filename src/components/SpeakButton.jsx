@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon.jsx'
-import { isSpeechSupported, speak, stopSpeaking } from '../lib/tts.js'
+import { ACCENTS, accentFor, getDefaultAccent, isSpeechSupported, speak, stopSpeaking } from '../lib/tts.js'
 
 // Nút đọc câu tiếng Anh. variant: "icon" (tròn nhỏ) | "big" (nút to cho bài nghe)
 export default function SpeakButton({ text, rate = 1, label = 'Nghe', variant = 'default', onPlay, className = '' }) {
@@ -43,6 +43,9 @@ export default function SpeakButton({ text, rate = 1, label = 'Nghe', variant = 
     <button type="button" className={classes} onClick={handleClick} aria-label={`${label}: ${text}`}>
       <Icon name="speaker" size={variant === 'big' ? 30 : 20} />
       {variant !== 'icon' && <span>{speaking ? 'Đang đọc…' : label}</span>}
+      {variant === 'big' && getDefaultAccent() === 'mixed' && (
+        <small className="speak-accent">{ACCENTS[accentFor(text)].label}</small>
+      )}
     </button>
   )
 }

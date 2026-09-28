@@ -6,6 +6,7 @@ import { useAuth } from './AuthContext.jsx'
 import { useData } from './DataContext.jsx'
 import { todayString } from '../lib/dates.js'
 import { uuid } from '../lib/ids.js'
+import { beaconUpsert } from '../lib/supabase.js'
 
 const TrackerContext = createContext(null)
 
@@ -14,46 +15,75 @@ const NEW_SESSION_GAP_MS = 30 * 60_000
 const FLUSH_EVERY_MS = 20_000
 const MIN_SECONDS_TO_SAVE = 15
 
+// Khi trang bị ẩn/đóng: ghi buổi học vào localStorage (đồng bộ, không bị ngắt
+// giữa chừng) để lần mở app sau gửi lại nếu máy chủ chưa nhận được.
+const pendingKey = (userId) => `pending-session:${userId}`
+
+function stashRow(userId, row) {
+  try {
+    localStorage.setItem(pendingKey(userId), JSON.stringify(row))
+  } catch {
+    // bỏ qua
+  }
+}
+
+function takeStashedRow(userId) {
+  try {
+    const raw = localStorage.getItem(pendingKey(userId))
+    localStorage.removeItem(pendingKey(userId))
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
+const activityTotal = (row) => Object.values(row?.activities ?? {}).reduce((a, b) => a + (Number(b) || 0), 0)
+
 export function StudyTrackerProvider({ children }) {
   const { user } = useAuth()
-  const { saveSession } = useData()
+  const { saveSession, sessions } = useData()
 
   const current = useRef(null)
   const activeScreens = useRef(0)
   const activeKind = useRef('free')
   const lastInteraction = useRef(0)
-  const chain = useRef(Promise.resolve())
   const debounce = useRef(null)
   const saveRef = useRef(saveSession)
   useEffect(() => {
     saveRef.current = saveSession
   }, [saveSession])
 
-  const flush = useCallback(() => {
-    const cur = current.current
-    if (!cur || !cur.dirty) return chain.current
-    const hasActivity = Object.keys(cur.activities).length > 0
-    if (!hasActivity && cur.duration_seconds < MIN_SECONDS_TO_SAVE) return chain.current
-    cur.dirty = false
-    const row = {
-      id: cur.id,
-      user_id: user.id,
-      study_date: cur.study_date,
-      kind: cur.kind,
-      started_at: cur.started_at,
-      ended_at: new Date().toISOString(),
-      duration_seconds: Math.round(cur.duration_seconds),
-      activities: { ...cur.activities },
-    }
-    // Ghi tuần tự để bản cũ không đè lên bản mới
-    chain.current = chain.current
-      .then(() => saveRef.current(row))
-      .catch((err) => {
+  // Lưu buổi học (qua hàng đợi đồng bộ). beacon = trang sắp ẩn/đóng: gửi thêm
+  // một request keepalive trực tiếp để không mất mấy phút học cuối.
+  const flush = useCallback(
+    ({ beacon = false } = {}) => {
+      const cur = current.current
+      if (!cur) return
+      const hasActivity = Object.keys(cur.activities).length > 0
+      if (!hasActivity && cur.duration_seconds < MIN_SECONDS_TO_SAVE) return
+      const row = {
+        id: cur.id,
+        user_id: user.id,
+        study_date: cur.study_date,
+        kind: cur.kind,
+        started_at: cur.started_at,
+        ended_at: new Date().toISOString(),
+        duration_seconds: Math.round(cur.duration_seconds),
+        activities: { ...cur.activities },
+      }
+      if (beacon) {
+        stashRow(user.id, row)
+        beaconUpsert('study_sessions', row)
+      }
+      if (!cur.dirty) return
+      cur.dirty = false
+      Promise.resolve(saveRef.current(row)).catch((err) => {
         console.error(err)
         cur.dirty = true
       })
-    return chain.current
-  }, [user.id])
+    },
+    [user.id],
+  )
 
   const startNew = useCallback(
     (kind) => {
@@ -91,6 +121,19 @@ export function StudyTrackerProvider({ children }) {
     [startNew],
   )
 
+  // Gửi lại buổi học đã cất lúc đóng trang lần trước (nếu máy chủ chưa có bản mới hơn)
+  const restored = useRef(false)
+  useEffect(() => {
+    if (restored.current) return
+    restored.current = true
+    const row = takeStashedRow(user.id)
+    if (!row) return
+    const known = sessions.find((x) => x.id === row.id)
+    const newer =
+      !known || row.duration_seconds > (known.duration_seconds ?? 0) || activityTotal(row) > activityTotal(known)
+    if (newer) saveRef.current(row)
+  }, [user.id, sessions])
+
   useEffect(() => {
     const mark = () => {
       lastInteraction.current = Date.now()
@@ -106,19 +149,20 @@ export function StudyTrackerProvider({ children }) {
       cur.duration_seconds += 1
       cur.dirty = true
     }, 1000)
-    const flusher = setInterval(flush, FLUSH_EVERY_MS)
+    const flusher = setInterval(() => flush(), FLUSH_EVERY_MS)
     const onHide = () => {
-      if (document.visibilityState === 'hidden') flush()
+      if (document.visibilityState === 'hidden') flush({ beacon: true })
     }
+    const onPageHide = () => flush({ beacon: true })
     document.addEventListener('visibilitychange', onHide)
-    window.addEventListener('pagehide', flush)
+    window.addEventListener('pagehide', onPageHide)
 
     return () => {
       events.forEach((e) => window.removeEventListener(e, mark))
       clearInterval(tick)
       clearInterval(flusher)
       document.removeEventListener('visibilitychange', onHide)
-      window.removeEventListener('pagehide', flush)
+      window.removeEventListener('pagehide', onPageHide)
       flush()
     }
   }, [ensureSession, flush])
@@ -145,7 +189,7 @@ export function StudyTrackerProvider({ children }) {
       cur.activities[key] = (cur.activities[key] ?? 0) + amount
       cur.dirty = true
       clearTimeout(debounce.current)
-      debounce.current = setTimeout(flush, 1500)
+      debounce.current = setTimeout(() => flush(), 1500)
     },
     [ensureSession, flush],
   )

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PageHeader from '../components/PageHeader.jsx'
 import RateSelector from '../components/RateSelector.jsx'
 import SpeakButton from '../components/SpeakButton.jsx'
@@ -6,16 +6,25 @@ import Icon from '../components/Icon.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { useToast } from '../context/ToastContext.jsx'
-import { exportAllData } from '../lib/db.js'
+import { exportAllData, restoreData } from '../lib/db.js'
+import { prepareRestore, summarizeBackup, validateBackup } from '../lib/backup.js'
 import { getTheme, setTheme } from '../lib/theme.js'
 import { todayString } from '../lib/dates.js'
 import { RETENTION_OPTIONS } from '../config.js'
 import {
-  getEnglishVoices,
+  ACCENTS,
   getPreferredVoiceURI,
+  getVoices,
   isSpeechSupported,
+  setDefaultAccent,
   setPreferredVoiceURI,
 } from '../lib/tts.js'
+
+const ACCENT_OPTIONS = [
+  { id: 'us', label: 'Mỹ' },
+  { id: 'uk', label: 'Anh' },
+  { id: 'mixed', label: 'Xen kẽ' },
+]
 
 const THEMES = [
   { id: 'system', label: 'Theo máy' },
@@ -24,10 +33,11 @@ const THEMES = [
 ]
 
 function useVoices() {
-  const [voices, setVoices] = useState(getEnglishVoices)
+  const read = () => ({ us: getVoices('us'), uk: getVoices('uk') })
+  const [voices, setVoices] = useState(read)
   useEffect(() => {
     if (!isSpeechSupported()) return
-    const update = () => setVoices(getEnglishVoices())
+    const update = () => setVoices(read())
     window.speechSynthesis.addEventListener?.('voiceschanged', update)
     return () => window.speechSynthesis.removeEventListener?.('voiceschanged', update)
   }, [])
@@ -48,12 +58,14 @@ function downloadJson(data, filename) {
 
 export default function SettingsPage() {
   const { user, signOut } = useAuth()
-  const { settings, updateSettings } = useData()
+  const { settings, updateSettings, reload, pending } = useData()
   const { showToast } = useToast()
   const voices = useVoices()
-  const [voiceURI, setVoiceURI] = useState(getPreferredVoiceURI)
+  const [voiceURIs, setVoiceURIs] = useState(() => ({ us: getPreferredVoiceURI('us'), uk: getPreferredVoiceURI('uk') }))
   const [theme, setThemeState] = useState(getTheme)
   const [exporting, setExporting] = useState(false)
+  const [restoring, setRestoring] = useState(null) // { done, total } khi đang khôi phục
+  const fileRef = useRef(null)
 
   const newPerDay = settings.new_words_per_day
   const changeNewPerDay = (delta) => {
@@ -75,37 +87,109 @@ export default function SettingsPage() {
     }
   }
 
+  const restoreFromFile = async (file) => {
+    if (!file) return
+    let data
+    try {
+      data = JSON.parse(await file.text())
+    } catch {
+      showToast('File không phải JSON hợp lệ.', { tone: 'warn' })
+      return
+    }
+    const problem = validateBackup(data)
+    if (problem) {
+      showToast(problem, { tone: 'warn' })
+      return
+    }
+    if (!navigator.onLine || pending > 0) {
+      showToast('Cần có mạng và đồng bộ xong các thay đổi đang chờ rồi mới khôi phục được.', { tone: 'warn' })
+      return
+    }
+    const ok = window.confirm(
+      `Khôi phục ${summarizeBackup(data)} từ file sao lưu?\n\nDữ liệu trùng sẽ được ghi đè bằng bản trong file, dữ liệu khác được giữ nguyên.`,
+    )
+    if (!ok) return
+    setRestoring({ done: 0, total: 1 })
+    try {
+      await restoreData(user.id, prepareRestore(data, user.id), (done, total) => setRestoring({ done, total }))
+      await reload()
+      showToast('Đã khôi phục dữ liệu.')
+    } catch (err) {
+      console.error(err)
+      showToast('Khôi phục chưa xong. Bạn kiểm tra mạng rồi thử lại (làm lại nhiều lần cũng không bị trùng).', {
+        tone: 'warn',
+      })
+    } finally {
+      setRestoring(null)
+    }
+  }
+
   return (
     <div className="page">
       <PageHeader title="Cài đặt" />
 
       <section className="card settings-block">
         <h2>Giọng đọc</h2>
+        <div className="segmented segmented-block" role="group" aria-label="Giọng đọc">
+          {ACCENT_OPTIONS.map((a) => (
+            <button
+              key={a.id}
+              type="button"
+              className={settings.accent === a.id ? 'active' : ''}
+              aria-pressed={settings.accent === a.id}
+              onClick={() => {
+                setDefaultAccent(a.id)
+                updateSettings({ accent: a.id })
+              }}
+            >
+              {a.label}
+            </button>
+          ))}
+        </div>
+        <p className="hint">
+          {settings.accent === 'mixed'
+            ? 'Mỗi câu được đọc bằng giọng Mỹ hoặc Anh (cố định cho từng câu), giống bài nghe IELTS có nhiều giọng.'
+            : settings.accent === 'uk'
+              ? 'Giọng Anh-Anh, hay gặp trong bài nghe IELTS.'
+              : 'Giọng Anh-Mỹ, phổ biến trong phim và podcast.'}
+        </p>
         <RateSelector
           label="Tốc độ mặc định"
           value={settings.tts_rate}
           onChange={(r) => updateSettings({ tts_rate: r })}
         />
-        {isSpeechSupported() && voices.length > 0 && (
-          <label className="field">
-            <span>Giọng en-US trên thiết bị này</span>
-            <select
-              value={voiceURI}
-              onChange={(e) => {
-                setVoiceURI(e.target.value)
-                setPreferredVoiceURI(e.target.value)
-              }}
-            >
-              <option value="">Tự chọn giọng tốt nhất</option>
-              {voices.map((v) => (
-                <option key={v.voiceURI} value={v.voiceURI}>
-                  {v.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        <SpeakButton text="What are you trying to prove?" rate={settings.tts_rate} label="Nghe thử" />
+        {isSpeechSupported() &&
+          (settings.accent === 'mixed' ? ['us', 'uk'] : [settings.accent]).map((acc) => (
+            <label className="field" key={acc}>
+              <span>
+                {ACCENTS[acc].label} trên thiết bị này ({ACCENTS[acc].lang})
+              </span>
+              {voices[acc].length > 0 ? (
+                <select
+                  value={voiceURIs[acc]}
+                  onChange={(e) => {
+                    setVoiceURIs((v) => ({ ...v, [acc]: e.target.value }))
+                    setPreferredVoiceURI(e.target.value, acc)
+                  }}
+                >
+                  <option value="">Tự chọn giọng tốt nhất</option>
+                  {voices[acc].map((v) => (
+                    <option key={v.voiceURI} value={v.voiceURI}>
+                      {v.name}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <small className="hint">
+                  Thiết bị chưa có giọng {ACCENTS[acc].lang}. Trên Mac/iPhone: Cài đặt → Trợ năng → Nội dung được đọc →
+                  Giọng nói → English (UK) để tải thêm.
+                </small>
+              )}
+            </label>
+          ))}
+        <div className="button-row">
+          <SpeakButton text="What are you trying to prove?" rate={settings.tts_rate} label="Nghe thử" />
+        </div>
         {!isSpeechSupported() && (
           <p className="hint">Trình duyệt này chưa hỗ trợ đọc tiếng Anh. Bạn thử Safari hoặc Chrome nhé.</p>
         )}
@@ -171,10 +255,29 @@ export default function SettingsPage() {
       <section className="card settings-block">
         <h2>Dữ liệu của bạn</h2>
         <p className="hint">
-          Tải về toàn bộ thẻ, tiến độ, lịch sử và clip dưới dạng file JSON để sao lưu.
+          Tải về toàn bộ thẻ, tiến độ, lịch sử và clip dưới dạng file JSON để sao lưu. File này cũng dùng để khôi phục
+          (kể cả sang tài khoản mới).
         </p>
         <button type="button" className="btn btn-secondary btn-block" onClick={exportData} disabled={exporting}>
           <Icon name="download" size={20} /> {exporting ? 'Đang chuẩn bị…' : 'Xuất dữ liệu (JSON)'}
+        </button>
+        <input
+          ref={fileRef}
+          type="file"
+          accept="application/json,.json"
+          hidden
+          onChange={(e) => {
+            restoreFromFile(e.target.files?.[0])
+            e.target.value = ''
+          }}
+        />
+        <button
+          type="button"
+          className="btn btn-ghost btn-block"
+          onClick={() => fileRef.current?.click()}
+          disabled={Boolean(restoring)}
+        >
+          {restoring ? `Đang khôi phục… ${restoring.done}/${restoring.total}` : 'Khôi phục từ file sao lưu'}
         </button>
       </section>
 

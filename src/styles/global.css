@@ -1567,3 +1567,159 @@ textarea:focus {
   background: var(--primary);
   animation: pulse 1.1s ease-in-out infinite;
 }
+
+.speak-accent {
+  font-size: 0.7rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* ============ YouTube nhúng ============ */
+.yt {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.yt-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+}
+
+.yt-host,
+.yt-host iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.yt-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  color: #e8e8e8;
+  font-size: 0.9rem;
+}
+
+.yt-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.yt-controls .button-row {
+  justify-content: center;
+  align-items: center;
+}
+
+.clip-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ============ Nhập từ ============ */
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.check input {
+  width: 22px;
+  height: 22px;
+  min-height: 0;
+  margin: 2px 0 0;
+  padding: 0;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+
+.input-with-button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input-with-button .btn {
+  flex-shrink: 0;
+  min-height: 48px;
+}
+
+.import-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.import-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.import-list li.is-off {
+  opacity: 0.6;
+}
+
+.tool-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: -6px;
+}
+
+.tool-links .chip {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--primary-strong);
+}
+
+/* ============ Từ nghe sai ============ */
+.mistakes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip-add {
+  border-style: dashed;
+  color: var(--primary-strong);
+  font-weight: 600;
+}
+
+.chip-done {
+  background: var(--good-bg);
+  border-color: transparent;
+  color: var(--good-text);
+}
+
+.chip-muted {
+  color: var(--muted);
+  cursor: default;
+}

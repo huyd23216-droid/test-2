@@ -1,13 +1,23 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
+import MistakeWords from '../components/MistakeWords.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { DICTATION_LEVELS, DICTATION_SENTENCES } from '../lib/content.js'
 import { formatDateTime, formatSeconds } from '../lib/dates.js'
+import { aggregateMistakes } from '../lib/mistakes.js'
 
 export default function DictationPage() {
   const { dictationStats, history, clips } = useData()
   const recent = history.slice(0, 8)
+  const mistakes = useMemo(() => {
+    const meaningOf = new Map([
+      ...DICTATION_SENTENCES.map((d) => [d.text, d.meaning_vi]),
+      ...clips.map((c) => [c.transcript, c.meaning_vi]),
+    ])
+    return aggregateMistakes(history).map((m) => ({ ...m, meaning: meaningOf.get(m.sentence) ?? '' }))
+  }, [history, clips])
 
   return (
     <div className="page">
@@ -82,6 +92,14 @@ export default function DictationPage() {
           </ul>
         )}
       </section>
+
+      {mistakes.length > 0 && (
+        <section>
+          <h2 className="section-title">Từ hay nghe sai</h2>
+          <p className="hint">Những từ bạn gõ sai hoặc bỏ sót từ 2 lần trở lên. Tạo thẻ để ôn, kèm câu bạn đã nghe.</p>
+          <MistakeWords items={mistakes} />
+        </section>
+      )}
 
       {recent.length > 0 && (
         <section>

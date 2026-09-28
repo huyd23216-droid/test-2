@@ -56,6 +56,12 @@ export default function VocabPage() {
         }
       />
 
+      <div className="tool-links">
+        <Link to="/vocab/import" className="chip">
+          Nhập danh sách từ
+        </Link>
+      </div>
+
       <div className="stats stats-3">
         <StatCard value={stats.dueCards.length} label="đến hạn" />
         <StatCard value={stats.mastered} label="đã thuộc" />

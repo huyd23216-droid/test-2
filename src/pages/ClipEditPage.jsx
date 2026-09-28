@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import PageHeader from '../components/PageHeader.jsx'
+import YouTubePlayer from '../components/YouTubePlayer.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { useToast } from '../context/ToastContext.jsx'
 import { formatSeconds, parseTimestamp } from '../lib/dates.js'
@@ -22,6 +23,7 @@ export default function ClipEditPage() {
     meaning_vi: clip?.meaning_vi ?? '',
   }))
   const [busy, setBusy] = useState(false)
+  const playerApi = useRef(null)
 
   if (id && !clip) {
     return (
@@ -42,6 +44,14 @@ export default function ClipEditPage() {
   }
 
   const urlInvalid = form.youtube_url.trim() !== '' && !parseYouTubeId(form.youtube_url)
+  const previewId = parseYouTubeId(form.youtube_url)
+
+  // Lấy thời điểm đang phát trong video làm mốc bắt đầu/kết thúc
+  const captureTime = (field) => {
+    const t = playerApi.current?.getCurrentTime()
+    if (t == null) return
+    setForm((f) => ({ ...f, [field]: formatSeconds(Math.floor(t)) }))
+  }
 
   const submit = async (e) => {
     e.preventDefault()
@@ -115,6 +125,20 @@ export default function ClipEditPage() {
           />
           {urlInvalid && <small className="field-note">Link này chưa phải link video YouTube.</small>}
         </label>
+        {previewId && (
+          <div className="clip-preview">
+            <YouTubePlayer videoId={previewId} start={parseTimestamp(form.start) || 0} controls="none" apiRef={playerApi} />
+            <div className="button-row">
+              <button type="button" className="btn btn-secondary btn-sm" onClick={() => captureTime('start')}>
+                Lấy mốc bắt đầu
+              </button>
+              <button type="button" className="btn btn-secondary btn-sm" onClick={() => captureTime('end')}>
+                Lấy mốc kết thúc
+              </button>
+            </div>
+            <p className="hint">Phát video, dừng đúng chỗ câu thoại bắt đầu/kết thúc rồi bấm nút để điền mốc thời gian.</p>
+          </div>
+        )}
         <div className="field-row">
           <label className="field">
             <span>Bắt đầu (phút:giây)</span>

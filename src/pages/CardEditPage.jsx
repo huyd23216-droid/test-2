@@ -5,11 +5,12 @@ import SpeakButton from '../components/SpeakButton.jsx'
 import YouGlishButton from '../components/YouGlishButton.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { useToast } from '../context/ToastContext.jsx'
-import { POS_OPTIONS } from '../lib/labels.js'
+import { POS_OPTIONS, posLabel } from '../lib/labels.js'
 import { isNewCard } from '../lib/srs.js'
 import { describeDue } from '../lib/dates.js'
+import { lookupWord } from '../lib/lookup.js'
 
-const EMPTY = { word: '', ipa: '', pos: 'noun', meaning_vi: '', example_en: '', example_vi: '', youglish_query: '' }
+const EMPTY = { word: '', ipa: '', pos: '', meaning_vi: '', example_en: '', example_vi: '', youglish_query: '' }
 
 export default function CardEditPage() {
   const { id } = useParams()
@@ -19,6 +20,7 @@ export default function CardEditPage() {
   const card = id ? cards.find((c) => c.id === id) : null
   const [form, setForm] = useState(() => (card ? { ...EMPTY, ...card, youglish_query: card.youglish_query ?? '' } : EMPTY))
   const [busy, setBusy] = useState(false)
+  const [looking, setLooking] = useState(false)
 
   if (id && !card) {
     return (
@@ -30,6 +32,26 @@ export default function CardEditPage() {
   }
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }))
+
+  // Tra từ tự động, chỉ điền vào các ô còn trống
+  const autofill = async () => {
+    const word = form.word.trim()
+    if (!word) return
+    setLooking(true)
+    const found = await lookupWord(word)
+    setLooking(false)
+    const filled = Object.entries(found).filter(([k, v]) => v && k in EMPTY && !form[k]?.trim?.())
+    if (filled.length === 0) {
+      showToast('Chưa tra được thêm thông tin cho từ này (hoặc đang offline).', { tone: 'warn' })
+      return
+    }
+    setForm((f) => {
+      const next = { ...f }
+      for (const [k, v] of filled) if (!String(next[k] ?? '').trim()) next[k] = v
+      return next
+    })
+    showToast('Đã tự điền. Nghĩa được dịch tự động, bạn xem lại nhé.')
+  }
   const posKnown = POS_OPTIONS.some((o) => o.value === form.pos)
 
   const submit = async (e) => {
@@ -95,7 +117,17 @@ export default function CardEditPage() {
       <form className="form" onSubmit={submit}>
         <label className="field">
           <span>Từ tiếng Anh *</span>
-          <input value={form.word} onChange={set('word')} required lang="en" autoCapitalize="none" autoCorrect="off" />
+          <div className="input-with-button">
+            <input value={form.word} onChange={set('word')} required lang="en" autoCapitalize="none" autoCorrect="off" />
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={autofill}
+              disabled={looking || !form.word.trim()}
+            >
+              {looking ? 'Đang tra…' : 'Tự điền'}
+            </button>
+          </div>
         </label>
         <div className="field-row">
           <label className="field">
@@ -105,7 +137,7 @@ export default function CardEditPage() {
           <label className="field">
             <span>Loại từ</span>
             <select value={form.pos} onChange={set('pos')}>
-              {!posKnown && <option value={form.pos}>{form.pos || '(trống)'}</option>}
+              {!posKnown && <option value={form.pos}>{form.pos ? posLabel(form.pos) : '(chọn loại từ)'}</option>}
               {POS_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>
                   {o.label}

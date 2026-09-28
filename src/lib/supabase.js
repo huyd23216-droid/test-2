@@ -33,6 +33,31 @@ export const supabase = isSupabaseConfigured
     })
   : null
 
+// Gửi upsert ngay lập tức bằng fetch keepalive, dùng token đang lưu trên máy.
+// Dùng khi trang sắp đóng (không kịp chờ các bước bất đồng bộ của supabase-js).
+export function beaconUpsert(table, row) {
+  if (!isSupabaseConfigured) return false
+  try {
+    const storageKey = supabase.auth.storageKey ?? `sb-${new URL(url).hostname.split('.')[0]}-auth-token`
+    const token = JSON.parse(localStorage.getItem(storageKey) || 'null')?.access_token
+    if (!token) return false
+    fetch(`${url}/rest/v1/${table}`, {
+      method: 'POST',
+      keepalive: true,
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates,return=minimal',
+      },
+      body: JSON.stringify(row),
+    }).catch(() => {})
+    return true
+  } catch {
+    return false
+  }
+}
+
 function readAuthErrorFromUrl() {
   if (typeof window === 'undefined') return null
   const params = new URLSearchParams(window.location.hash.replace(/^#/, ''))

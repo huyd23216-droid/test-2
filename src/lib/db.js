@@ -123,26 +123,47 @@ export function fetchStudySessions(userId) {
   )
 }
 
-// ---------- Xuất dữ liệu ----------
+// ---------- Xuất / khôi phục dữ liệu ----------
 export async function exportAllData(user) {
-  const [settings, cards, connected, dictation, sessions, clips] = await Promise.all([
+  const all = (table, order) =>
+    fetchAll(() => supabase.from(table).select('*').eq('user_id', user.id).order(order).order(order === 'id' ? 'created_at' : 'id'))
+  const [settings, cards, connected, listening, dictation, sessions, clips] = await Promise.all([
     supabase.from('user_settings').select('*').eq('user_id', user.id).maybeSingle().then(unwrap),
-    fetchAll(() => supabase.from('cards').select('*').eq('user_id', user.id).order('position').order('id')),
+    all('cards', 'position'),
     fetchAll(() => supabase.from('connected_speech_progress').select('*').eq('user_id', user.id).order('item_id')),
-    fetchAll(() => supabase.from('dictation_history').select('*').eq('user_id', user.id).order('created_at').order('id')),
-    fetchAll(() => supabase.from('study_sessions').select('*').eq('user_id', user.id).order('study_date').order('id')),
-    fetchAll(() => supabase.from('clips').select('*').eq('user_id', user.id).order('created_at').order('id')),
+    fetchAll(() => supabase.from('listening_progress').select('*').eq('user_id', user.id).order('item_id')),
+    all('dictation_history', 'created_at'),
+    all('study_sessions', 'study_date'),
+    all('clips', 'created_at'),
   ])
   return {
     app: 'tieng-anh-moi-ngay',
-    format_version: 1,
+    format_version: 2,
     exported_at: new Date().toISOString(),
     user: { id: user.id, email: user.email },
     user_settings: settings,
     cards,
     connected_speech_progress: connected,
+    listening_progress: listening,
     dictation_history: dictation,
     study_sessions: sessions,
     clips,
+  }
+}
+
+// Ghi dữ liệu đã chuẩn bị bởi prepareRestore() (src/lib/backup.js)
+export async function restoreData(userId, { settings, tables }, onProgress) {
+  if (settings && Object.keys(settings).length) {
+    unwrap(await supabase.from('user_settings').update(settings).eq('user_id', userId))
+  }
+  const total = tables.reduce((sum, t) => sum + t.rows.length, 0)
+  let done = 0
+  for (const { table, rows, onConflict } of tables) {
+    for (let i = 0; i < rows.length; i += 500) {
+      const chunk = rows.slice(i, i + 500)
+      unwrap(await supabase.from(table).upsert(chunk, onConflict ? { onConflict } : undefined))
+      done += chunk.length
+      onProgress?.(done, total)
+    }
   }
 }
