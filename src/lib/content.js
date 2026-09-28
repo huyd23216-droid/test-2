@@ -3,6 +3,7 @@ import vocabulary from '../data/vocabulary.json'
 import connectedSpeech from '../data/connected-speech.json'
 import dictation from '../data/dictation.json'
 import ieltsSets from '../data/ielts-sets.json'
+import listeningDrills from '../data/listening-drills.json'
 
 // Thứ tự trong file JSON = thứ tự học thẻ mới
 export const SEED_CARDS = vocabulary.cards.map((card, index) => ({ ...card, position: index + 1 }))
@@ -26,6 +27,9 @@ export function seedCardsFor(enabledSets = []) {
 export const CS_GROUPS = connectedSpeech.groups
 export const CS_ITEMS = connectedSpeech.items
 export const CS_GROUP_BY_ID = Object.fromEntries(CS_GROUPS.map((g) => [g.id, g]))
+
+export const DRILLS = listeningDrills.drills
+export const DRILL_BY_ID = Object.fromEntries(DRILLS.map((d) => [d.id, d]))
 
 export const DICTATION_LEVELS = dictation.levels
 export const DICTATION_SENTENCES = dictation.sentences
@@ -52,12 +56,13 @@ function checkFields(list, label, fields, errors) {
 // Trả về danh sách lỗi (rỗng = dữ liệu hợp lệ). Chạy `npm test` sau khi sửa JSON.
 const CARD_FIELDS = ['word', 'ipa', 'pos', 'meaning_vi', 'example_en', 'example_vi']
 
-export function validateContent(data = { vocabulary, connectedSpeech, dictation, ieltsSets }) {
+export function validateContent(data = { vocabulary, connectedSpeech, dictation, ieltsSets, listeningDrills }) {
   const errors = []
   const v = data.vocabulary?.cards
   const cs = data.connectedSpeech
   const d = data.dictation
   const sets = data.ieltsSets?.sets ?? []
+  const drills = data.listeningDrills?.drills ?? []
 
   if (!Array.isArray(v)) errors.push('vocabulary.json: thiếu mảng "cards"')
   else {
@@ -65,6 +70,20 @@ export function validateContent(data = { vocabulary, connectedSpeech, dictation,
     // id thẻ phải duy nhất trên mọi file từ vựng (vocabulary.json + ielts-sets.json)
     checkUniqueIds([...v, ...sets.flatMap((s) => s.cards ?? [])], 'thẻ từ vựng (mọi file)', errors)
   }
+
+  checkUniqueIds(drills, 'listening-drills.drills', errors)
+  checkFields(drills, 'listening-drills.drills', ['name', 'explanation'], errors)
+  checkUniqueIds(drills.flatMap((d) => d.items ?? []), 'listening-drills (mọi mục)', errors)
+  drills.forEach((d) =>
+    (d.items ?? []).forEach((item) => {
+      const opts = item.options ?? []
+      if (opts.length < 2 || opts.some((o) => !nonEmpty(o))) {
+        errors.push(`listening-drills (${item.id}): cần ít nhất 2 câu trong "options"`)
+      } else if (new Set(opts).size !== opts.length) {
+        errors.push(`listening-drills (${item.id}): các câu trong "options" bị trùng nhau`)
+      }
+    }),
+  )
 
   checkUniqueIds(sets, 'ielts-sets.sets', errors)
   sets.forEach((set) => {

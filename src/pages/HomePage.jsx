@@ -117,6 +117,13 @@ export default function HomePage() {
               <small>3 mức độ và clip YouTube của bạn</small>
             </span>
           </Link>
+          <Link to="/listen" className="module">
+            <Icon name="headphones" />
+            <span>
+              <strong>Luyện nghe thêm</strong>
+              <small>Điền từ còn thiếu, phân biệt âm dễ nhầm</small>
+            </span>
+          </Link>
         </div>
       </section>
     </div>

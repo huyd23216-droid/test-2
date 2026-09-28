@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useMemo } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import MistakeWords from '../components/MistakeWords.jsx'
 import PageHeader from '../components/PageHeader.jsx'
@@ -11,6 +11,10 @@ import { aggregateMistakes } from '../lib/mistakes.js'
 export default function DictationPage() {
   const { dictationStats, history, clips } = useData()
   const recent = history.slice(0, 8)
+  const location = useLocation()
+  useEffect(() => {
+    if (location.hash === '#clips') document.getElementById('clips')?.scrollIntoView()
+  }, [location.hash])
   const mistakes = useMemo(() => {
     const meaningOf = new Map([
       ...DICTATION_SENTENCES.map((d) => [d.text, d.meaning_vi]),
@@ -53,7 +57,7 @@ export default function DictationPage() {
         })}
       </div>
 
-      <section>
+      <section id="clips">
         <div className="section-head">
           <h2 className="section-title">Clip thật từ YouTube</h2>
           <Link to="/dictation/clips/new" className="btn btn-secondary btn-sm">

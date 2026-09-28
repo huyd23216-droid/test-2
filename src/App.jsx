@@ -24,6 +24,11 @@ import DictationPracticePage from './pages/DictationPracticePage.jsx'
 import ClipEditPage from './pages/ClipEditPage.jsx'
 import ClipPracticePage from './pages/ClipPracticePage.jsx'
 import SettingsPage from './pages/SettingsPage.jsx'
+import ListenHubPage from './pages/ListenHubPage.jsx'
+import GapFillPage from './pages/GapFillPage.jsx'
+import DrillsPage from './pages/DrillsPage.jsx'
+import DrillPracticePage from './pages/DrillPracticePage.jsx'
+import StatsPage from './pages/StatsPage.jsx'
 
 function ConfigMissing() {
   return (
@@ -104,6 +109,9 @@ function AppRoutes() {
           <Route path="dictation" element={<DictationPage />} />
           <Route path="dictation/clips/new" element={<ClipEditPage />} />
           <Route path="dictation/clips/:id/edit" element={<ClipEditPage />} />
+          <Route path="listen" element={<ListenHubPage />} />
+          <Route path="listen/drills" element={<DrillsPage />} />
+          <Route path="stats" element={<StatsPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
@@ -113,6 +121,8 @@ function AppRoutes() {
           <Route path="connected/practice" element={<ConnectedPracticePage />} />
           <Route path="dictation/practice" element={<DictationPracticePage />} />
           <Route path="dictation/clips/:id" element={<ClipPracticePage />} />
+          <Route path="listen/gapfill" element={<GapFillPage />} />
+          <Route path="listen/drills/:id" element={<DrillPracticePage />} />
         </Route>
       </Routes>
     </StudyTrackerProvider>

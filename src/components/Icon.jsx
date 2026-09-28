@@ -20,6 +20,9 @@ const PATHS = {
   edit: 'M4 20h4L19 9l-4-4L4 16z',
   search: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4',
   clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
+  ear: 'M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-6 0M10 9a2 2 0 0 1 4 0',
+  chart: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+  headphones: 'M4 15v-3a8 8 0 0 1 16 0v3M4 15h3v5H5a1 1 0 0 1-1-1zM20 15h-3v5h2a1 1 0 0 0 1-1z',
 }
 
 export default function Icon({ name, size = 22, className = '', title }) {
