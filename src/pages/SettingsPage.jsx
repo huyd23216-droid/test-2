@@ -11,6 +11,8 @@ import { prepareRestore, summarizeBackup, validateBackup } from '../lib/backup.j
 import { getTheme, setTheme } from '../lib/theme.js'
 import { todayString } from '../lib/dates.js'
 import { RETENTION_OPTIONS } from '../config.js'
+import { buildReminderIcs } from '../lib/ics.js'
+import { currentSubscription, pushSupport, subscribePush, unsubscribePush } from '../lib/push.js'
 import {
   ACCENTS,
   getPreferredVoiceURI,
@@ -58,7 +60,7 @@ function downloadJson(data, filename) {
 
 export default function SettingsPage() {
   const { user, signOut } = useAuth()
-  const { settings, updateSettings, reload, pending } = useData()
+  const { settings, updateSettings, reload, pending, savePushSubscription, removePushSubscription } = useData()
   const { showToast } = useToast()
   const voices = useVoices()
   const [voiceURIs, setVoiceURIs] = useState(() => ({ us: getPreferredVoiceURI('us'), uk: getPreferredVoiceURI('uk') }))
@@ -66,6 +68,67 @@ export default function SettingsPage() {
   const [exporting, setExporting] = useState(false)
   const [restoring, setRestoring] = useState(null) // { done, total } khi đang khôi phục
   const fileRef = useRef(null)
+
+  const [pushBusy, setPushBusy] = useState(false)
+  const [deviceSubscribed, setDeviceSubscribed] = useState(false)
+  const support = pushSupport()
+  useEffect(() => {
+    if (!support.ok) return
+    currentSubscription().then((sub) => setDeviceSubscribed(Boolean(sub)))
+  }, [support.ok])
+
+  const reminderTime = String(settings.reminder_time || '20:00').slice(0, 5)
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Ho_Chi_Minh'
+  const pushOn = settings.reminder_enabled && deviceSubscribed
+
+  const downloadCalendar = () => {
+    const ics = buildReminderIcs({ time: reminderTime, url: window.location.origin })
+    const blob = new Blob([ics], { type: 'text/calendar' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'nhac-hoc-tieng-anh.ics'
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const togglePush = async () => {
+    setPushBusy(true)
+    try {
+      if (pushOn) {
+        const endpoint = await unsubscribePush()
+        if (endpoint) removePushSubscription(endpoint)
+        updateSettings({ reminder_enabled: false })
+        setDeviceSubscribed(false)
+        showToast('Đã tắt thông báo nhắc học.')
+      } else {
+        const sub = await subscribePush()
+        savePushSubscription(sub)
+        updateSettings({ reminder_enabled: true, reminder_time: reminderTime, timezone })
+        setDeviceSubscribed(true)
+        showToast(`Đã bật. App sẽ nhắc lúc ${reminderTime} nếu hôm đó bạn chưa học.`)
+      }
+    } catch (err) {
+      console.error(err)
+      showToast(
+        err.message === 'denied'
+          ? 'Thông báo đang bị chặn. Bạn cho phép thông báo trong cài đặt trình duyệt rồi thử lại nhé.'
+          : 'Chưa bật được thông báo. Bạn thử lại sau nhé.',
+        { tone: 'warn' },
+      )
+    } finally {
+      setPushBusy(false)
+    }
+  }
+
+  const PUSH_HINTS = {
+    'not-configured': 'Thông báo đẩy cần cấu hình thêm trên Supabase (xem README, mục Nhắc học). Lời nhắc qua Lịch ở trên dùng được ngay.',
+    'ios-install': 'Trên iPhone: thêm app ra màn hình chính (Chia sẻ → Thêm vào MH chính), mở app từ đó rồi bật thông báo tại đây.',
+    dev: 'Thông báo chỉ hoạt động ở bản đã deploy (không chạy ở chế độ npm run dev).',
+    unsupported: 'Trình duyệt này chưa hỗ trợ thông báo đẩy. Bạn dùng lời nhắc qua Lịch nhé.',
+  }
 
   const newPerDay = settings.new_words_per_day
   const changeNewPerDay = (delta) => {
@@ -230,6 +293,39 @@ export default function SettingsPage() {
           App dùng thuật toán FSRS để xếp lịch ôn sao cho đến hạn bạn vẫn nhớ khoảng {Math.round(Number(settings.desired_retention) * 100)}%
           số từ. Mức cao hơn thì nhớ chắc hơn nhưng phải ôn nhiều hơn. 90% là mức cân bằng.
         </p>
+      </section>
+
+      <section className="card settings-block">
+        <h2>Nhắc học nhẹ nhàng</h2>
+        <p className="hint">
+          Mặc định tắt. Chỉ nhắc 1 lần mỗi ngày, và không nhắc nếu hôm đó bạn đã học rồi.
+        </p>
+        <label className="field">
+          <span>Giờ nhắc</span>
+          <input
+            type="time"
+            value={reminderTime}
+            onChange={(e) => e.target.value && updateSettings({ reminder_time: e.target.value, timezone })}
+          />
+        </label>
+        <button type="button" className="btn btn-secondary btn-block" onClick={downloadCalendar}>
+          <Icon name="clock" size={20} /> Thêm lời nhắc vào Lịch (Mac, iPhone, Google)
+        </button>
+        <p className="hint">
+          Tải về một sự kiện lặp lại hằng ngày lúc {reminderTime}, mở file là thêm được vào ứng dụng Lịch.
+        </p>
+        {support.ok ? (
+          <button
+            type="button"
+            className={`btn btn-block ${pushOn ? 'btn-ghost' : 'btn-secondary'}`}
+            onClick={togglePush}
+            disabled={pushBusy}
+          >
+            {pushBusy ? 'Đang xử lý…' : pushOn ? 'Tắt thông báo nhắc học' : 'Bật thông báo trên thiết bị này'}
+          </button>
+        ) : (
+          <p className="hint">{PUSH_HINTS[support.reason]}</p>
+        )}
       </section>
 
       <section className="card settings-block">

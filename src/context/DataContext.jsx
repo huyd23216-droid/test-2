@@ -496,6 +496,23 @@ export function DataProvider({ children }) {
     [queue],
   )
 
+  // ---------- Thông báo nhắc học ----------
+  const savePushSubscription = useCallback(
+    (sub) =>
+      queue.enqueue({
+        table: 'push_subscriptions',
+        action: 'upsert',
+        values: { user_id: userId, ...sub, user_agent: navigator.userAgent.slice(0, 200) },
+        onConflict: 'user_id,endpoint',
+      }),
+    [queue, userId],
+  )
+
+  const removePushSubscription = useCallback(
+    (endpoint) => queue.enqueue({ table: 'push_subscriptions', action: 'delete', match: { user_id: userId, endpoint } }),
+    [queue, userId],
+  )
+
   // ---------- Số liệu tổng hợp ----------
   const csProgress = useMemo(() => new Map(csRows.map((r) => [r.item_id, r])), [csRows])
   const listeningProgress = useMemo(() => new Map(listening.map((r) => [r.item_id, r])), [listening])
@@ -561,12 +578,15 @@ export function DataProvider({ children }) {
       removeClip,
       sessions,
       saveSession,
+      savePushSubscription,
+      removePushSubscription,
       stats,
     }),
     [
       status, error, offline, pending, load, today, settings, updateSettings, cards, gradeCard, addCard, addCards,
       editCard, removeCard, enableSet, disableSet, csProgress, recordConnectedSpeech, listeningProgress, recordListening, history,
-      dictationStats, recordDictation, clips, addClip, editClip, removeClip, sessions, saveSession, stats,
+      dictationStats, recordDictation, clips, addClip, editClip, removeClip, sessions, saveSession,
+      savePushSubscription, removePushSubscription, stats,
     ],
   )
 
