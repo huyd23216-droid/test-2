@@ -57,6 +57,9 @@ export default function VocabPage() {
       />
 
       <div className="tool-links">
+        <Link to="/vocab/sets" className="chip">
+          Bộ từ IELTS theo chủ đề
+        </Link>
         <Link to="/vocab/import" className="chip">
           Nhập danh sách từ
         </Link>

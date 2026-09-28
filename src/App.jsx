@@ -16,6 +16,7 @@ import VocabPage from './pages/VocabPage.jsx'
 import VocabReviewPage from './pages/VocabReviewPage.jsx'
 import CardEditPage from './pages/CardEditPage.jsx'
 import ImportPage from './pages/ImportPage.jsx'
+import SetsPage from './pages/SetsPage.jsx'
 import ConnectedSpeechPage from './pages/ConnectedSpeechPage.jsx'
 import ConnectedPracticePage from './pages/ConnectedPracticePage.jsx'
 import DictationPage from './pages/DictationPage.jsx'
@@ -97,6 +98,7 @@ function AppRoutes() {
           <Route path="vocab" element={<VocabPage />} />
           <Route path="vocab/new" element={<CardEditPage />} />
           <Route path="vocab/import" element={<ImportPage />} />
+          <Route path="vocab/sets" element={<SetsPage />} />
           <Route path="vocab/:id" element={<CardEditPage />} />
           <Route path="connected" element={<ConnectedSpeechPage />} />
           <Route path="dictation" element={<DictationPage />} />

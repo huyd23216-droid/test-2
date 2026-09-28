@@ -50,17 +50,28 @@ function checkFields(list, label, fields, errors) {
 }
 
 // Trả về danh sách lỗi (rỗng = dữ liệu hợp lệ). Chạy `npm test` sau khi sửa JSON.
-export function validateContent(data = { vocabulary, connectedSpeech, dictation }) {
+const CARD_FIELDS = ['word', 'ipa', 'pos', 'meaning_vi', 'example_en', 'example_vi']
+
+export function validateContent(data = { vocabulary, connectedSpeech, dictation, ieltsSets }) {
   const errors = []
   const v = data.vocabulary?.cards
   const cs = data.connectedSpeech
   const d = data.dictation
+  const sets = data.ieltsSets?.sets ?? []
 
   if (!Array.isArray(v)) errors.push('vocabulary.json: thiếu mảng "cards"')
   else {
-    checkUniqueIds(v, 'vocabulary.cards', errors)
-    checkFields(v, 'vocabulary.cards', ['word', 'ipa', 'pos', 'meaning_vi', 'example_en', 'example_vi'], errors)
+    checkFields(v, 'vocabulary.cards', CARD_FIELDS, errors)
+    // id thẻ phải duy nhất trên mọi file từ vựng (vocabulary.json + ielts-sets.json)
+    checkUniqueIds([...v, ...sets.flatMap((s) => s.cards ?? [])], 'thẻ từ vựng (mọi file)', errors)
   }
+
+  checkUniqueIds(sets, 'ielts-sets.sets', errors)
+  sets.forEach((set) => {
+    if (!nonEmpty(set.name)) errors.push(`ielts-sets (${set.id}): thiếu "name"`)
+    if (!Array.isArray(set.cards)) errors.push(`ielts-sets (${set.id}): thiếu mảng "cards"`)
+    else checkFields(set.cards, `ielts-sets.${set.id}`, CARD_FIELDS, errors)
+  })
 
   if (!Array.isArray(cs?.groups) || !Array.isArray(cs?.items)) {
     errors.push('connected-speech.json: cần có mảng "groups" và "items"')

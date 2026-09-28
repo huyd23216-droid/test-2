@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { youglishUrl } from '../youglish.js'
 import { parseYouTubeId, parseYouTubeStart, youtubeWatchUrl } from '../youtube.js'
 import { addDays, mondayOf, parseTimestamp, formatSeconds } from '../dates.js'
-import { validateContent, SEED_CARDS, CS_ITEMS, DICTATION_SENTENCES, CS_GROUPS } from '../content.js'
+import { validateContent, SEED_CARDS, CS_ITEMS, DICTATION_SENTENCES, CS_GROUPS, IELTS_SETS, seedCardsFor } from '../content.js'
 import { posLabel } from '../labels.js'
 import { accentFor } from '../tts.js'
 
@@ -66,11 +66,19 @@ describe('content JSON', () => {
     }
   })
 
+  it('has IELTS topic sets that are only added when enabled', () => {
+    expect(IELTS_SETS.length).toBeGreaterThanOrEqual(9)
+    expect(IELTS_SETS.reduce((n, s) => n + s.cards.length, 0)).toBeGreaterThanOrEqual(200)
+    expect(seedCardsFor([]).length).toBe(SEED_CARDS.length)
+    expect(seedCardsFor(['ielts-education']).length).toBe(SEED_CARDS.length + 20)
+  })
+
   it('reports broken data', () => {
     const errors = validateContent({
       vocabulary: { cards: [{ id: 'a', word: 'x' }, { id: 'a', word: 'y' }] },
       connectedSpeech: { groups: [], items: [{ id: 'c', group: 'nope' }] },
       dictation: { levels: [{ level: 1 }], sentences: [{ id: 'd', level: 5, text: 'Hi' }] },
+      ieltsSets: { sets: [{ id: 's', name: 'S', cards: [{ id: 'a', word: 'dup' }] }] },
     })
     expect(errors.some((e) => e.includes('bị trùng'))).toBe(true)
     expect(errors.some((e) => e.includes('không tồn tại'))).toBe(true)

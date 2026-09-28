@@ -3,8 +3,8 @@
 // tiếp khi có mạng. Các thay đổi cùng `key` (vd chấm nhiều lần 1 thẻ) được gộp.
 //
 // Một thao tác (op):
-//   { table, action: 'upsert' | 'update' | 'delete', values?, match?, onConflict?,
-//     ignoreDuplicates?, key? }
+//   { table, action: 'upsert' | 'update' | 'delete', values?, match?, inFilter?,
+//     onConflict?, ignoreDuplicates?, key? }
 import { supabase } from './supabase.js'
 import { idbGet, idbSet } from './idb.js'
 import { uuid } from './ids.js'
@@ -36,7 +36,8 @@ async function execute(op) {
     } else if (op.action === 'update') {
       res = await q.update(op.values).match(op.match)
     } else if (op.action === 'delete') {
-      res = await q.delete().match(op.match)
+      // inFilter: xóa nhiều dòng một lần, vd { column: 'id', values: [...] }
+      res = op.inFilter ? await q.delete().in(op.inFilter.column, op.inFilter.values) : await q.delete().match(op.match)
     } else {
       return { ok: false, retry: false, error: new Error(`Thao tác lạ: ${op.action}`) }
     }

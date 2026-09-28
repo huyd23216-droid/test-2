@@ -8,7 +8,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { useAuth } from './AuthContext.jsx'
 import { useToast } from './ToastContext.jsx'
 import * as db from '../lib/db.js'
-import { CS_ITEMS, seedCardsFor } from '../lib/content.js'
+import { CS_ITEMS, IELTS_SET_BY_ID, seedCardsFor } from '../lib/content.js'
 import { schedule, isDue, isNewCard, compareNewCards } from '../lib/srs.js'
 import { todayString } from '../lib/dates.js'
 import { computeStreak, studyDatesFromSessions, weekSeconds } from '../lib/streak.js'
@@ -57,8 +57,11 @@ async function fetchUserData(userId, onSeeding) {
   ])
 
   const haveSeeds = new Set(cards.map((c) => c.seed_id).filter(Boolean))
+  const haveWords = new Set(cards.map((c) => c.word.trim().toLowerCase()))
   const removed = new Set(settings.removed_seed_ids ?? [])
-  const missing = seedCardsFor(settings.enabled_sets).filter((s) => !haveSeeds.has(s.id) && !removed.has(s.id))
+  const missing = seedCardsFor(settings.enabled_sets).filter(
+    (s) => !haveSeeds.has(s.id) && !removed.has(s.id) && !haveWords.has(s.word.trim().toLowerCase()),
+  )
   if (missing.length > 0) {
     onSeeding?.()
     await db.insertSeedCards(userId, missing)
@@ -338,6 +341,56 @@ export function DataProvider({ children }) {
     [queue, updateSettings],
   )
 
+  // ---------- Bộ từ IELTS ----------
+  // Bật bộ từ: thêm các từ chưa có vào đầu hàng từ mới. Trả về số thẻ đã thêm.
+  const enableSet = useCallback(
+    (setId) => {
+      const set = IELTS_SET_BY_ID[setId]
+      if (!set) return 0
+      const current = latest.current.settings
+      if (!current.enabled_sets.includes(setId)) {
+        updateSettings({ enabled_sets: [...current.enabled_sets, setId] })
+      }
+      const haveSeeds = new Set(latest.current.cards.map((c) => c.seed_id).filter(Boolean))
+      const haveWords = new Set(latest.current.cards.map((c) => c.word.trim().toLowerCase()))
+      const removed = new Set(current.removed_seed_ids ?? [])
+      const rows = set.cards
+        .filter((c) => !haveSeeds.has(c.id) && !removed.has(c.id) && !haveWords.has(c.word.trim().toLowerCase()))
+        .map((c) => ({
+          seed_id: c.id,
+          word: c.word,
+          ipa: c.ipa ?? '',
+          pos: c.pos ?? '',
+          meaning_vi: c.meaning_vi ?? '',
+          example_en: c.example_en ?? '',
+          example_vi: c.example_vi ?? '',
+          youglish_query: c.youglish_query || null,
+        }))
+      if (rows.length) addCards(rows)
+      return rows.length
+    },
+    [updateSettings, addCards],
+  )
+
+  // Gỡ bộ từ: xóa các thẻ CHƯA HỌC của bộ, giữ lại thẻ đã học
+  const disableSet = useCallback(
+    (setId) => {
+      const set = IELTS_SET_BY_ID[setId]
+      const current = latest.current.settings
+      updateSettings({ enabled_sets: current.enabled_sets.filter((id) => id !== setId) })
+      if (!set) return 0
+      const ids = new Set(set.cards.map((c) => c.id))
+      const doomed = latest.current.cards.filter((c) => ids.has(c.seed_id) && isNewCard(c)).map((c) => c.id)
+      if (doomed.length) {
+        const gone = new Set(doomed)
+        setCards((list) => list.filter((c) => !gone.has(c.id)))
+        queue.enqueue({ table: 'cards', action: 'delete', inFilter: { column: 'id', values: doomed } })
+      }
+      return doomed.length
+    },
+    [queue, updateSettings],
+  )
+
   // ---------- Nối âm ----------
   const recordConnectedSpeech = useCallback(
     (itemId, result, mode) => {
@@ -493,6 +546,8 @@ export function DataProvider({ children }) {
       addCards,
       editCard,
       removeCard,
+      enableSet,
+      disableSet,
       csProgress,
       recordConnectedSpeech,
       listeningProgress,
@@ -510,7 +565,7 @@ export function DataProvider({ children }) {
     }),
     [
       status, error, offline, pending, load, today, settings, updateSettings, cards, gradeCard, addCard, addCards,
-      editCard, removeCard, csProgress, recordConnectedSpeech, listeningProgress, recordListening, history,
+      editCard, removeCard, enableSet, disableSet, csProgress, recordConnectedSpeech, listeningProgress, recordListening, history,
       dictationStats, recordDictation, clips, addClip, editClip, removeClip, sessions, saveSession, stats,
     ],
   )
