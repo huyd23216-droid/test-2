@@ -1,36 +1,56 @@
-// Nạp toàn bộ dữ liệu của user một lần, giữ trong bộ nhớ và cập nhật lạc quan
-// (hiển thị ngay, lưu lên Supabase ở phía sau). Khi quay lại app sau hơn
-// 1 phút, dữ liệu được tải lại để đồng bộ với thiết bị khác.
+// Dữ liệu của user theo kiểu "offline-first":
+// - Mọi thay đổi hiển thị ngay, lưu vào hàng đợi trên máy rồi mới gửi lên
+//   Supabase. Mất mạng vẫn học được, có mạng lại thì tự đồng bộ.
+// - Một bản sao dữ liệu được lưu trên máy để mở app khi không có mạng.
+// - Khi quay lại app sau hơn 1 phút, dữ liệu được tải lại để đồng bộ với
+//   thiết bị khác.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useAuth } from './AuthContext.jsx'
 import { useToast } from './ToastContext.jsx'
 import * as db from '../lib/db.js'
-import { SEED_CARDS, CS_ITEMS } from '../lib/content.js'
+import { CS_ITEMS, seedCardsFor } from '../lib/content.js'
 import { schedule, isDue, isNewCard, compareNewCards } from '../lib/srs.js'
 import { todayString } from '../lib/dates.js'
 import { computeStreak, studyDatesFromSessions, weekSeconds } from '../lib/streak.js'
 import { buildDictationStats } from '../lib/planner.js'
+import { createSyncQueue, isNetworkError } from '../lib/syncQueue.js'
+import { idbGet, idbSet } from '../lib/idb.js'
+import { uuid } from '../lib/ids.js'
 import { MASTERED_INTERVAL_DAYS, DEFAULT_SETTINGS } from '../config.js'
 
 const DataContext = createContext(null)
 const RELOAD_AFTER_MS = 60_000
-const SAVE_ERROR = 'Chưa lưu được lên máy chủ. Bạn kiểm tra kết nối mạng giúp mình nhé.'
+const FETCH_TIMEOUT_MS = 8000
 
-const replaceById = (list, row, key = 'id') => {
+const offlineError = () => Object.assign(new Error('offline'), { status: 0 })
+
+function withTimeout(promise, ms) {
+  if (!ms) return promise
+  return Promise.race([promise, new Promise((_, reject) => setTimeout(() => reject(offlineError()), ms))])
+}
+
+const replaceBy = (list, row, key = 'id') => {
   const idx = list.findIndex((r) => r[key] === row[key])
   if (idx === -1) return [...list, row]
   const copy = [...list]
-  copy[idx] = row
+  copy[idx] = { ...copy[idx], ...row }
   return copy
 }
 
 // Đọc toàn bộ dữ liệu của user; nạp các thẻ khởi đầu còn thiếu
-// (lần đầu đăng nhập, hoặc khi vocabulary.json có thêm từ mới).
+// (lần đầu đăng nhập, hoặc khi file JSON có thêm từ mới).
+export class MigrationMissingError extends Error {}
+
 async function fetchUserData(userId, onSeeding) {
-  const settings = await db.getOrCreateSettings(userId)
-  let [cards, csRows, history, sessions, clips] = await Promise.all([
+  const rawSettings = await db.getOrCreateSettings(userId)
+  if (!('desired_retention' in rawSettings)) {
+    throw new MigrationMissingError('Chưa chạy migration 20260929000000_extensions.sql')
+  }
+  const settings = { ...DEFAULT_SETTINGS, ...rawSettings }
+  let [cards, csRows, listening, history, sessions, clips] = await Promise.all([
     db.fetchCards(userId),
     db.fetchConnectedSpeechProgress(userId),
+    db.fetchListeningProgress(userId),
     db.fetchDictationHistory(userId),
     db.fetchStudySessions(userId),
     db.fetchClips(userId),
@@ -38,7 +58,7 @@ async function fetchUserData(userId, onSeeding) {
 
   const haveSeeds = new Set(cards.map((c) => c.seed_id).filter(Boolean))
   const removed = new Set(settings.removed_seed_ids ?? [])
-  const missing = SEED_CARDS.filter((s) => !haveSeeds.has(s.id) && !removed.has(s.id))
+  const missing = seedCardsFor(settings.enabled_sets).filter((s) => !haveSeeds.has(s.id) && !removed.has(s.id))
   if (missing.length > 0) {
     onSeeding?.()
     await db.insertSeedCards(userId, missing)
@@ -46,7 +66,7 @@ async function fetchUserData(userId, onSeeding) {
     cards = await db.fetchCards(userId)
   }
 
-  return { settings, cards, csRows, history, sessions, clips }
+  return { settings, cards, csRows, listening, history, sessions, clips }
 }
 
 export function DataProvider({ children }) {
@@ -56,9 +76,12 @@ export function DataProvider({ children }) {
 
   const [status, setStatus] = useState('loading') // loading | seeding | ready | error
   const [error, setError] = useState(null)
+  const [offline, setOffline] = useState(false) // đang dùng bản sao trên máy
+  const [pending, setPending] = useState(0) // số thay đổi chờ đồng bộ
   const [settings, setSettings] = useState(null)
   const [cards, setCards] = useState([])
   const [csRows, setCsRows] = useState([])
+  const [listening, setListening] = useState([])
   const [history, setHistory] = useState([])
   const [sessions, setSessions] = useState([])
   const [clips, setClips] = useState([])
@@ -66,23 +89,63 @@ export function DataProvider({ children }) {
 
   const lastLoadedAt = useRef(0)
   const loading = useRef(false)
-  const csRowsRef = useRef(csRows)
-  const settingsRef = useRef(settings)
+  const latest = useRef({})
   useEffect(() => {
-    csRowsRef.current = csRows
-    settingsRef.current = settings
-  }, [csRows, settings])
+    latest.current = { settings, cards, csRows, listening }
+  }, [settings, cards, csRows, listening])
 
-  const apply = useCallback((data) => {
+  const [queue] = useState(() =>
+    createSyncQueue(userId, {
+      onChange: setPending,
+      onDrop: () => showToast('Có một thay đổi không lưu được lên máy chủ và đã bị bỏ qua.', { tone: 'warn' }),
+    }),
+  )
+  useEffect(() => () => queue.dispose(), [queue])
+
+  const snapshotKey = `snapshot:${userId}`
+
+  const apply = useCallback((data, { fromCache = false } = {}) => {
     setSettings({ ...DEFAULT_SETTINGS, ...data.settings })
-    setCards(data.cards)
-    setCsRows(data.csRows)
-    setHistory(data.history)
-    setSessions(data.sessions)
-    setClips(data.clips)
-    lastLoadedAt.current = Date.now()
+    setCards(data.cards ?? [])
+    setCsRows(data.csRows ?? [])
+    setListening(data.listening ?? [])
+    setHistory(data.history ?? [])
+    setSessions(data.sessions ?? [])
+    setClips(data.clips ?? [])
+    setOffline(fromCache)
+    if (!fromCache) lastLoadedAt.current = Date.now()
     setStatus('ready')
   }, [])
+
+  // Gửi hết thay đổi đang chờ rồi tải dữ liệu mới nhất từ máy chủ.
+  // Không được thì dùng bản sao trên máy.
+  const syncAndFetch = useCallback(
+    async ({ onSeeding, useCacheOnError, keepLocalIfPending = false }) => {
+      try {
+        if (navigator.onLine === false) throw offlineError()
+        const flushed = await queue.flush()
+        if (!flushed) throw offlineError()
+        // Đã có bản sao trên máy thì không bắt chờ lâu khi mạng chập chờn
+        const hasCache = useCacheOnError && Boolean(await idbGet(snapshotKey))
+        const data = await withTimeout(fetchUserData(userId, onSeeding), hasCache ? FETCH_TIMEOUT_MS : 0)
+        // Có thay đổi mới phát sinh trong lúc tải → giữ dữ liệu trên máy (mới hơn)
+        if (keepLocalIfPending && queue.size() > 0) {
+          setOffline(false)
+          return true
+        }
+        apply(data)
+        return true
+      } catch (err) {
+        if (!useCacheOnError || err instanceof MigrationMissingError) throw err
+        const cached = await idbGet(snapshotKey)
+        if (!cached) throw err
+        console.warn('Dùng dữ liệu đã lưu trên máy:', err.message)
+        apply(cached, { fromCache: true })
+        return false
+      }
+    },
+    [queue, userId, apply, snapshotKey],
+  )
 
   const fail = useCallback((err) => {
     console.error(err)
@@ -90,7 +153,18 @@ export function DataProvider({ children }) {
     setStatus('error')
   }, [])
 
-  // Tải lại: silent = chạy nền (không che màn hình, bỏ qua lỗi mạng)
+  // Lần tải đầu tiên
+  useEffect(() => {
+    if (loading.current) return
+    loading.current = true
+    syncAndFetch({ onSeeding: () => setStatus('seeding'), useCacheOnError: true })
+      .catch(fail)
+      .finally(() => {
+        loading.current = false
+      })
+  }, [syncAndFetch, fail])
+
+  // Tải lại: silent = chạy nền (không che màn hình)
   const load = useCallback(
     async ({ silent = false } = {}) => {
       if (loading.current) return
@@ -100,119 +174,174 @@ export function DataProvider({ children }) {
         setError(null)
       }
       try {
-        apply(await fetchUserData(userId, silent ? undefined : () => setStatus('seeding')))
+        await syncAndFetch({
+          onSeeding: silent ? undefined : () => setStatus('seeding'),
+          useCacheOnError: !silent,
+          keepLocalIfPending: silent,
+        })
       } catch (err) {
-        if (silent) console.error(err)
+        if (silent) console.warn(err)
         else fail(err)
       } finally {
         loading.current = false
       }
     },
-    [userId, apply, fail],
+    [syncAndFetch, fail],
   )
 
-  // Lần tải đầu tiên
+  // Lưu bản sao dữ liệu trên máy để dùng khi offline
   useEffect(() => {
-    if (loading.current) return
-    loading.current = true
-    fetchUserData(userId, () => setStatus('seeding'))
-      .then(apply, fail)
-      .finally(() => {
-        loading.current = false
-      })
-  }, [userId, apply, fail])
+    if (status !== 'ready') return
+    const t = setTimeout(() => {
+      idbSet(snapshotKey, { settings, cards, csRows, listening, history, sessions, clips, saved_at: Date.now() })
+    }, 800)
+    return () => clearTimeout(t)
+  }, [status, snapshotKey, settings, cards, csRows, listening, history, sessions, clips])
 
-  // Đồng bộ khi quay lại app + cập nhật "hôm nay" khi qua ngày mới
+  // Đồng bộ khi quay lại app / có mạng lại + cập nhật "hôm nay" khi qua ngày mới
   useEffect(() => {
-    const onVisible = () => {
-      if (document.visibilityState !== 'visible') return
+    const refresh = () => {
       setToday(todayString())
-      if (lastLoadedAt.current && Date.now() - lastLoadedAt.current > RELOAD_AFTER_MS) {
-        load({ silent: true })
-      }
+      if (document.visibilityState !== 'visible') return
+      const stale = Date.now() - lastLoadedAt.current > RELOAD_AFTER_MS
+      if (offline || stale) load({ silent: true })
+      else queue.flush()
     }
-    document.addEventListener('visibilitychange', onVisible)
-    window.addEventListener('focus', onVisible)
+    document.addEventListener('visibilitychange', refresh)
+    window.addEventListener('focus', refresh)
+    window.addEventListener('online', refresh)
     const timer = setInterval(() => setToday(todayString()), 60_000)
     return () => {
-      document.removeEventListener('visibilitychange', onVisible)
-      window.removeEventListener('focus', onVisible)
+      document.removeEventListener('visibilitychange', refresh)
+      window.removeEventListener('focus', refresh)
+      window.removeEventListener('online', refresh)
       clearInterval(timer)
     }
-  }, [load])
+  }, [load, offline, queue])
 
   // ---------- Cài đặt ----------
   const updateSettings = useCallback(
-    async (patch) => {
-      const before = settingsRef.current
+    (patch) => {
       setSettings((s) => ({ ...s, ...patch }))
-      try {
-        const saved = await db.updateSettings(userId, patch)
-        setSettings((s) => ({ ...s, ...saved }))
-        return true
-      } catch (err) {
-        console.error(err)
-        setSettings(before)
-        showToast(SAVE_ERROR, { tone: 'warn' })
-        return false
-      }
+      queue.enqueue({ table: 'user_settings', action: 'update', values: patch, match: { user_id: userId }, key: 'settings' })
+      return true
     },
-    [userId, showToast],
+    [queue, userId],
   )
 
   // ---------- Thẻ từ vựng ----------
   const gradeCard = useCallback(
-    async (card, grade) => {
-      const patch = schedule(card, grade, todayString())
+    (card, grade) => {
+      const retention = Number(latest.current.settings?.desired_retention) || DEFAULT_SETTINGS.desired_retention
+      const patch = schedule(card, grade, todayString(), new Date(), retention)
       const updated = { ...card, ...patch }
-      setCards((list) => replaceById(list, updated))
-      try {
-        const saved = await db.updateCard(card.id, patch)
-        setCards((list) => replaceById(list, saved))
-      } catch (err) {
-        console.error(err)
-        setCards((list) => replaceById(list, card))
-        showToast(SAVE_ERROR, { tone: 'warn' })
-      }
+      setCards((list) => replaceBy(list, updated))
+      queue.enqueue({ table: 'cards', action: 'update', values: patch, match: { id: card.id }, key: `card:${card.id}` })
       return updated
     },
-    [showToast],
+    [queue],
   )
 
-  const addCard = useCallback(
-    async (fields) => {
-      const saved = await db.insertCard(userId, fields)
-      setCards((list) => [...list, saved])
-      return saved
-    },
-    [userId],
-  )
-
-  const editCard = useCallback(async (id, fields) => {
-    const saved = await db.updateCard(id, fields)
-    setCards((list) => replaceById(list, saved))
-    return saved
+  // Thẻ mới bạn tự thêm được xếp lên đầu hàng từ mới
+  const frontPosition = useCallback(() => {
+    const positions = latest.current.cards.filter(isNewCard).map((c) => c.position)
+    return Math.min(0, ...positions) - 1
   }, [])
 
-  const removeCard = useCallback(
-    async (card) => {
-      if (card.seed_id) {
-        // Ghi nhớ trước để thẻ khởi đầu đã xóa không bị tự nạp lại
-        const removed = new Set(settingsRef.current?.removed_seed_ids ?? [])
-        removed.add(card.seed_id)
-        const ok = await updateSettings({ removed_seed_ids: [...removed] })
-        if (!ok) throw new Error('Không lưu được cài đặt')
+  const addCard = useCallback(
+    (fields) => {
+      const row = {
+        id: uuid(),
+        user_id: userId,
+        seed_id: null,
+        position: frontPosition(),
+        ipa: '',
+        pos: '',
+        meaning_vi: '',
+        example_en: '',
+        example_vi: '',
+        youglish_query: null,
+        ...fields,
+        ease: 2.5,
+        interval_days: 0,
+        repetitions: 0,
+        lapses: 0,
+        reviews_count: 0,
+        due_date: null,
+        created_at: new Date().toISOString(),
       }
-      await db.deleteCard(card.id)
-      setCards((list) => list.filter((c) => c.id !== card.id))
+      setCards((list) => [...list, row])
+      const { created_at: _created, ...values } = row
+      queue.enqueue({ table: 'cards', action: 'upsert', values, key: `card-new:${row.id}` })
+      return row
     },
-    [updateSettings],
+    [queue, userId, frontPosition],
+  )
+
+  // Thêm nhiều thẻ một lúc (nhập danh sách, bật bộ từ IELTS)
+  const addCards = useCallback(
+    (list) => {
+      const base = frontPosition() - list.length
+      const rows = list.map((fields, i) => ({
+        id: uuid(),
+        user_id: userId,
+        seed_id: null,
+        ipa: '',
+        pos: '',
+        meaning_vi: '',
+        example_en: '',
+        example_vi: '',
+        youglish_query: null,
+        ...fields,
+        position: base + i,
+        ease: 2.5,
+        interval_days: 0,
+        repetitions: 0,
+        lapses: 0,
+        reviews_count: 0,
+        due_date: null,
+      }))
+      setCards((current) => [...current, ...rows.map((r) => ({ ...r, created_at: new Date().toISOString() }))])
+      for (let i = 0; i < rows.length; i += 200) {
+        queue.enqueue({
+          table: 'cards',
+          action: 'upsert',
+          values: rows.slice(i, i + 200),
+          onConflict: 'user_id,seed_id',
+          ignoreDuplicates: true,
+        })
+      }
+      return rows
+    },
+    [queue, userId, frontPosition],
+  )
+
+  const editCard = useCallback(
+    (id, fields) => {
+      setCards((list) => list.map((c) => (c.id === id ? { ...c, ...fields } : c)))
+      queue.enqueue({ table: 'cards', action: 'update', values: fields, match: { id }, key: `card:${id}` })
+    },
+    [queue],
+  )
+
+  const removeCard = useCallback(
+    (card) => {
+      if (card.seed_id) {
+        // Ghi nhớ để thẻ khởi đầu đã xóa không bị tự nạp lại
+        const removed = new Set(latest.current.settings?.removed_seed_ids ?? [])
+        removed.add(card.seed_id)
+        updateSettings({ removed_seed_ids: [...removed] })
+      }
+      setCards((list) => list.filter((c) => c.id !== card.id))
+      queue.enqueue({ table: 'cards', action: 'delete', match: { id: card.id } })
+    },
+    [queue, updateSettings],
   )
 
   // ---------- Nối âm ----------
   const recordConnectedSpeech = useCallback(
-    async (itemId, result, mode) => {
-      const prev = csRowsRef.current.find((r) => r.item_id === itemId)
+    (itemId, result, mode) => {
+      const prev = latest.current.csRows.find((r) => r.item_id === itemId)
       const row = {
         user_id: userId,
         item_id: itemId,
@@ -224,63 +353,99 @@ export function DataProvider({ children }) {
         last_mode: mode,
         last_practiced_at: new Date().toISOString(),
       }
-      setCsRows((list) => replaceById(list, row, 'item_id'))
-      try {
-        const saved = await db.upsertConnectedSpeechProgress(row)
-        setCsRows((list) => replaceById(list, saved, 'item_id'))
-      } catch (err) {
-        console.error(err)
-        showToast(SAVE_ERROR, { tone: 'warn' })
-      }
+      setCsRows((list) => replaceBy(list, row, 'item_id'))
+      latest.current.csRows = replaceBy(latest.current.csRows, row, 'item_id')
+      queue.enqueue({
+        table: 'connected_speech_progress',
+        action: 'upsert',
+        values: row,
+        onConflict: 'user_id,item_id',
+        key: `cs:${itemId}`,
+      })
     },
-    [userId, showToast],
+    [queue, userId],
+  )
+
+  // ---------- Luyện nghe (điền từ, phân biệt âm) ----------
+  const recordListening = useCallback(
+    (itemId, kind, score) => {
+      const prev = latest.current.listening.find((r) => r.item_id === itemId)
+      const perfect = score >= 1
+      const row = {
+        user_id: userId,
+        item_id: itemId,
+        kind,
+        attempts: (prev?.attempts ?? 0) + 1,
+        correct_count: (prev?.correct_count ?? 0) + (perfect ? 1 : 0),
+        wrong_count: (prev?.wrong_count ?? 0) + (perfect ? 0 : 1),
+        last_score: score,
+        last_practiced_at: new Date().toISOString(),
+      }
+      setListening((list) => replaceBy(list, row, 'item_id'))
+      latest.current.listening = replaceBy(latest.current.listening, row, 'item_id')
+      queue.enqueue({
+        table: 'listening_progress',
+        action: 'upsert',
+        values: row,
+        onConflict: 'user_id,item_id',
+        key: `listen:${itemId}`,
+      })
+    },
+    [queue, userId],
   )
 
   // ---------- Chính tả ----------
   const recordDictation = useCallback(
-    async (entry) => {
-      try {
-        const saved = await db.insertDictation({ user_id: userId, ...entry })
-        setHistory((list) => [saved, ...list])
-      } catch (err) {
-        console.error(err)
-        showToast(SAVE_ERROR, { tone: 'warn' })
-      }
+    (entry) => {
+      const row = { id: uuid(), user_id: userId, created_at: new Date().toISOString(), ...entry }
+      setHistory((list) => [row, ...list])
+      queue.enqueue({ table: 'dictation_history', action: 'upsert', values: row })
+      return row
     },
-    [userId, showToast],
+    [queue, userId],
   )
 
   // ---------- Clip thật ----------
   const addClip = useCallback(
-    async (fields) => {
-      const saved = await db.insertClip(userId, fields)
-      setClips((list) => [saved, ...list])
-      return saved
+    (fields) => {
+      const now = new Date().toISOString()
+      const row = { id: uuid(), user_id: userId, ...fields }
+      setClips((list) => [{ ...row, created_at: now }, ...list])
+      queue.enqueue({ table: 'clips', action: 'upsert', values: row, key: `clip-new:${row.id}` })
+      return row
     },
-    [userId],
+    [queue, userId],
   )
 
-  const editClip = useCallback(async (id, fields) => {
-    const saved = await db.updateClip(id, fields)
-    setClips((list) => list.map((c) => (c.id === id ? saved : c)))
-    return saved
-  }, [])
+  const editClip = useCallback(
+    (id, fields) => {
+      setClips((list) => list.map((c) => (c.id === id ? { ...c, ...fields } : c)))
+      queue.enqueue({ table: 'clips', action: 'update', values: fields, match: { id }, key: `clip:${id}` })
+      return { id, ...fields }
+    },
+    [queue],
+  )
 
-  const removeClip = useCallback(async (id) => {
-    await db.deleteClip(id)
-    setClips((list) => list.filter((c) => c.id !== id))
-  }, [])
+  const removeClip = useCallback(
+    (id) => {
+      setClips((list) => list.filter((c) => c.id !== id))
+      queue.enqueue({ table: 'clips', action: 'delete', match: { id } })
+    },
+    [queue],
+  )
 
   // ---------- Buổi học ----------
-  const saveSession = useCallback(async (row) => {
-    setSessions((list) => replaceById(list, row))
-    const saved = await db.upsertStudySession(row)
-    setSessions((list) => replaceById(list, saved))
-    return saved
-  }, [])
+  const saveSession = useCallback(
+    (row) => {
+      setSessions((list) => replaceBy(list, row))
+      return queue.enqueue({ table: 'study_sessions', action: 'upsert', values: row, key: `session:${row.id}` })
+    },
+    [queue],
+  )
 
   // ---------- Số liệu tổng hợp ----------
   const csProgress = useMemo(() => new Map(csRows.map((r) => [r.item_id, r])), [csRows])
+  const listeningProgress = useMemo(() => new Map(listening.map((r) => [r.item_id, r])), [listening])
   const dictationStats = useMemo(() => buildDictationStats(history), [history])
 
   const stats = useMemo(() => {
@@ -316,6 +481,8 @@ export function DataProvider({ children }) {
     () => ({
       status,
       error,
+      offline,
+      pending,
       reload: load,
       today,
       settings,
@@ -323,10 +490,13 @@ export function DataProvider({ children }) {
       cards,
       gradeCard,
       addCard,
+      addCards,
       editCard,
       removeCard,
       csProgress,
       recordConnectedSpeech,
+      listeningProgress,
+      recordListening,
       history,
       dictationStats,
       recordDictation,
@@ -339,9 +509,9 @@ export function DataProvider({ children }) {
       stats,
     }),
     [
-      status, error, load, today, settings, updateSettings, cards, gradeCard, addCard, editCard,
-      removeCard, csProgress, recordConnectedSpeech, history, dictationStats, recordDictation,
-      clips, addClip, editClip, removeClip, sessions, saveSession, stats,
+      status, error, offline, pending, load, today, settings, updateSettings, cards, gradeCard, addCard, addCards,
+      editCard, removeCard, csProgress, recordConnectedSpeech, listeningProgress, recordListening, history,
+      dictationStats, recordDictation, clips, addClip, editClip, removeClip, sessions, saveSession, stats,
     ],
   )
 
@@ -351,3 +521,5 @@ export function DataProvider({ children }) {
 export function useData() {
   return useContext(DataContext)
 }
+
+export { isNetworkError }

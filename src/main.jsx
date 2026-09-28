@@ -7,6 +7,13 @@ import './styles/global.css'
 
 applyTheme()
 
+// Service worker chỉ bật ở bản build (tránh cache khi đang phát triển)
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => console.warn('Không đăng ký được service worker', err))
+  })
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>

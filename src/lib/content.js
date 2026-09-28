@@ -2,9 +2,26 @@
 import vocabulary from '../data/vocabulary.json'
 import connectedSpeech from '../data/connected-speech.json'
 import dictation from '../data/dictation.json'
+import ieltsSets from '../data/ielts-sets.json'
 
-// Thứ tự trong file JSON = thứ tự học thẻ mới (thẻ tự thêm có position 0, học trước)
+// Thứ tự trong file JSON = thứ tự học thẻ mới
 export const SEED_CARDS = vocabulary.cards.map((card, index) => ({ ...card, position: index + 1 }))
+
+// Bộ từ IELTS theo chủ đề (chỉ thêm vào tài khoản khi bạn bật)
+export const IELTS_SETS = ieltsSets.sets
+export const IELTS_SET_BY_ID = Object.fromEntries(IELTS_SETS.map((s) => [s.id, s]))
+const SET_POSITION_BASE = 100_000
+
+// Các thẻ khởi đầu cần có trong tài khoản: bộ cơ bản + các bộ IELTS đang bật
+export function seedCardsFor(enabledSets = []) {
+  const extra = enabledSets.flatMap((setId, setIndex) =>
+    (IELTS_SET_BY_ID[setId]?.cards ?? []).map((card, index) => ({
+      ...card,
+      position: SET_POSITION_BASE + setIndex * 1000 + index,
+    })),
+  )
+  return [...SEED_CARDS, ...extra]
+}
 
 export const CS_GROUPS = connectedSpeech.groups
 export const CS_ITEMS = connectedSpeech.items

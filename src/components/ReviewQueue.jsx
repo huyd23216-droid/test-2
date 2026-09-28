@@ -58,6 +58,7 @@ export default function ReviewQueue({ cardIds, onAnswer, onFinish }) {
         key={`${card.id}-${index}`}
         card={card}
         rate={settings?.tts_rate ?? 1}
+        retention={Number(settings?.desired_retention) || undefined}
         onGrade={handleGrade}
         badge={isNewCard(card) ? 'Từ mới' : null}
       />

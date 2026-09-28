@@ -14,9 +14,17 @@ export const DAILY_SESSION_DICTATION = 2
 // Mỗi tuần (thứ Hai → Chủ nhật) được nghỉ bấy nhiêu ngày mà không mất chuỗi
 export const STREAK_REST_DAYS_PER_WEEK = 2
 
+// Tỷ lệ nhớ mong muốn cho FSRS (càng cao thì ôn càng dày)
+export const RETENTION_OPTIONS = [0.85, 0.9, 0.95]
+
 // Mặc định khi tạo tài khoản
 export const DEFAULT_SETTINGS = {
   tts_rate: 1,
   new_words_per_day: 5,
   removed_seed_ids: [],
+  desired_retention: 0.9,
+  accent: 'us',
+  enabled_sets: [],
+  reminder_enabled: false,
+  reminder_time: '20:00',
 }

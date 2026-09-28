@@ -3,7 +3,7 @@ import Layout from './components/Layout.jsx'
 import Loading from './components/Loading.jsx'
 import PageHeader from './components/PageHeader.jsx'
 import { AuthProvider, useAuth } from './context/AuthContext.jsx'
-import { DataProvider, useData } from './context/DataContext.jsx'
+import { DataProvider, MigrationMissingError, useData } from './context/DataContext.jsx'
 import { StudyTrackerProvider } from './context/StudyTracker.jsx'
 import { ToastProvider } from './context/ToastContext.jsx'
 import { isSupabaseConfigured } from './lib/supabase.js'
@@ -49,10 +49,27 @@ function NotFound() {
 }
 
 function AppRoutes() {
-  const { status, reload } = useData()
+  const { status, error, reload } = useData()
 
   if (status === 'loading') return <Loading full text="Đang tải dữ liệu của bạn…" />
-  if (status === 'seeding') return <Loading full text="Đang chuẩn bị bộ từ vựng khởi đầu cho bạn…" />
+  if (status === 'seeding') return <Loading full text="Đang chuẩn bị bộ từ vựng cho bạn…" />
+  if (status === 'error' && error instanceof MigrationMissingError) {
+    return (
+      <div className="login">
+        <div className="login-card">
+          <h1>Cần cập nhật cơ sở dữ liệu</h1>
+          <p>
+            Phiên bản này có tính năng mới. Bạn mở Supabase → <strong>SQL Editor</strong>, dán toàn bộ file{' '}
+            <code>supabase/migrations/20260929000000_extensions.sql</code> rồi bấm <strong>Run</strong>.
+          </p>
+          <p className="hint">Dữ liệu cũ của bạn được giữ nguyên.</p>
+          <button type="button" className="btn btn-primary btn-block" onClick={() => reload()}>
+            Mình chạy xong rồi, thử lại
+          </button>
+        </div>
+      </div>
+    )
+  }
   if (status === 'error') {
     return (
       <div className="login">

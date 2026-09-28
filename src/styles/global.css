@@ -1534,3 +1534,36 @@ textarea:focus {
     transition: none !important;
   }
 }
+
+/* ============ Đồng bộ / offline ============ */
+.sync-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--note-bg);
+  color: var(--text);
+  font-size: 0.88rem;
+}
+
+.sync-banner-quiet {
+  background: transparent;
+  color: var(--muted);
+  padding: 4px 2px;
+}
+
+.sync-dot {
+  width: 9px;
+  height: 9px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--miss);
+  flex-shrink: 0;
+}
+
+.sync-dot-busy {
+  background: var(--primary);
+  animation: pulse 1.1s ease-in-out infinite;
+}

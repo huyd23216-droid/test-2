@@ -1,11 +1,17 @@
-// Mọi thao tác đọc/ghi Supabase nằm ở đây, để dễ thay đổi hoặc mở rộng sau này.
+// Các thao tác đọc dữ liệu từ Supabase. Việc ghi thay đổi đi qua hàng đợi
+// đồng bộ (src/lib/syncQueue.js) để vẫn dùng được khi mất mạng.
 import { supabase } from './supabase.js'
 import { DEFAULT_SETTINGS } from '../config.js'
 
 const PAGE_SIZE = 1000
 
-function unwrap({ data, error }) {
-  if (error) throw error
+function unwrap({ data, error, status }) {
+  if (error) {
+    const err = new Error(error.message)
+    err.status = status
+    err.code = error.code
+    throw err
+  }
   return data
 }
 
@@ -36,12 +42,6 @@ export async function getOrCreateSettings(userId) {
     return unwrap(await supabase.from('user_settings').select('*').eq('user_id', userId).single())
   }
   throw error
-}
-
-export async function updateSettings(userId, patch) {
-  return unwrap(
-    await supabase.from('user_settings').update(patch).eq('user_id', userId).select().single(),
-  )
 }
 
 // ---------- Thẻ từ vựng ----------
@@ -81,20 +81,6 @@ export async function insertSeedCards(userId, seeds) {
   return inserted
 }
 
-export async function insertCard(userId, fields) {
-  return unwrap(
-    await supabase.from('cards').insert({ user_id: userId, position: 0, ...fields }).select().single(),
-  )
-}
-
-export async function updateCard(id, patch) {
-  return unwrap(await supabase.from('cards').update(patch).eq('id', id).select().single())
-}
-
-export async function deleteCard(id) {
-  unwrap(await supabase.from('cards').delete().eq('id', id))
-}
-
 // ---------- Nối âm ----------
 export function fetchConnectedSpeechProgress(userId) {
   return fetchAll(() =>
@@ -102,19 +88,15 @@ export function fetchConnectedSpeechProgress(userId) {
   )
 }
 
-export async function upsertConnectedSpeechProgress(row) {
-  return unwrap(
-    await supabase
-      .from('connected_speech_progress')
-      .upsert(row, { onConflict: 'user_id,item_id' })
-      .select()
-      .single(),
+export function fetchListeningProgress(userId) {
+  return fetchAll(() =>
+    supabase.from('listening_progress').select('*').eq('user_id', userId).order('item_id'),
   )
 }
 
 // ---------- Chính tả ----------
-const HISTORY_COLUMNS =
-  'id, source, sentence_id, clip_id, level, sentence, score, correct_words, total_words, created_at'
+export const HISTORY_COLUMNS =
+  'id, source, sentence_id, clip_id, level, sentence, answer, score, correct_words, total_words, created_at'
 
 export function fetchDictationHistory(userId) {
   return fetchAll(() =>
@@ -127,10 +109,6 @@ export function fetchDictationHistory(userId) {
   )
 }
 
-export async function insertDictation(row) {
-  return unwrap(await supabase.from('dictation_history').insert(row).select(HISTORY_COLUMNS).single())
-}
-
 // ---------- Clip thật ----------
 export function fetchClips(userId) {
   return fetchAll(() =>
@@ -138,27 +116,11 @@ export function fetchClips(userId) {
   )
 }
 
-export async function insertClip(userId, fields) {
-  return unwrap(await supabase.from('clips').insert({ user_id: userId, ...fields }).select().single())
-}
-
-export async function updateClip(id, patch) {
-  return unwrap(await supabase.from('clips').update(patch).eq('id', id).select().single())
-}
-
-export async function deleteClip(id) {
-  unwrap(await supabase.from('clips').delete().eq('id', id))
-}
-
 // ---------- Buổi học ----------
 export function fetchStudySessions(userId) {
   return fetchAll(() =>
     supabase.from('study_sessions').select('*').eq('user_id', userId).order('study_date').order('id'),
   )
-}
-
-export async function upsertStudySession(row) {
-  return unwrap(await supabase.from('study_sessions').upsert(row).select().single())
 }
 
 // ---------- Xuất dữ liệu ----------

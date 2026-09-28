@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import SpeakButton from './SpeakButton.jsx'
 import YouGlishButton from './YouGlishButton.jsx'
 import { GRADES, GRADE_LABELS, nextIntervals } from '../lib/srs.js'
-import { describeInterval } from '../lib/dates.js'
+import { describeInterval, todayString } from '../lib/dates.js'
 import { posLabel } from '../lib/labels.js'
 
 // Thẻ từ vựng: mặt trước là từ + nút nghe, lật ra mặt sau để xem nghĩa và chấm.
 // Trên máy tính: phím Space để lật, phím 1–4 để chấm.
-export default function Flashcard({ card, rate, onGrade, badge }) {
+export default function Flashcard({ card, rate, retention, onGrade, badge }) {
   const [flipped, setFlipped] = useState(false)
-  const intervals = nextIntervals(card)
+  const intervals = nextIntervals(card, todayString(), retention)
 
   useEffect(() => {
     const onKey = (e) => {

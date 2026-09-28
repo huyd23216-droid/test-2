@@ -9,6 +9,7 @@ import { useToast } from '../context/ToastContext.jsx'
 import { exportAllData } from '../lib/db.js'
 import { getTheme, setTheme } from '../lib/theme.js'
 import { todayString } from '../lib/dates.js'
+import { RETENTION_OPTIONS } from '../config.js'
 import {
   getEnglishVoices,
   getPreferredVoiceURI,
@@ -124,6 +125,27 @@ export default function SettingsPage() {
           </button>
         </div>
         <p className="hint">Buổi học 10 phút sẽ lấy số từ mới này. Ít mà đều thì nhớ lâu hơn.</p>
+      </section>
+
+      <section className="card settings-block">
+        <h2>Mức ghi nhớ mong muốn</h2>
+        <div className="segmented segmented-block" role="group" aria-label="Mức ghi nhớ mong muốn">
+          {RETENTION_OPTIONS.map((r) => (
+            <button
+              key={r}
+              type="button"
+              className={Number(settings.desired_retention) === r ? 'active' : ''}
+              aria-pressed={Number(settings.desired_retention) === r}
+              onClick={() => updateSettings({ desired_retention: r })}
+            >
+              {Math.round(r * 100)}%
+            </button>
+          ))}
+        </div>
+        <p className="hint">
+          App dùng thuật toán FSRS để xếp lịch ôn sao cho đến hạn bạn vẫn nhớ khoảng {Math.round(Number(settings.desired_retention) * 100)}%
+          số từ. Mức cao hơn thì nhớ chắc hơn nhưng phải ôn nhiều hơn. 90% là mức cân bằng.
+        </p>
       </section>
 
       <section className="card settings-block">

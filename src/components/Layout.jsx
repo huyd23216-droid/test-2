@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import Icon from './Icon.jsx'
+import SyncBanner from './SyncBanner.jsx'
 
 const NAV = [
   { to: '/', label: 'Trang chủ', icon: 'home', end: true },
@@ -14,6 +15,7 @@ export default function Layout({ focus = false }) {
   return (
     <div className={`app ${focus ? 'app-focus' : ''}`}>
       <main className="main">
+        <SyncBanner />
         <Outlet />
       </main>
       {!focus && (
