@@ -27,12 +27,21 @@ function serviceKey(): string {
   }
 }
 
+const KEY_NAME = 'GOOGLE_TTS_API_KEY'
+
+// Chấp nhận cả khi tên secret bị gõ lệch (thừa khoảng trắng, chữ thường)
+function googleKey(): string {
+  const direct = Deno.env.get(KEY_NAME)?.trim()
+  if (direct) return direct
+  for (const [name, value] of Object.entries(Deno.env.toObject())) {
+    if (name.trim().toUpperCase() === KEY_NAME && value.trim()) return value.trim()
+  }
+  return ''
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors })
   if (req.method !== 'POST') return reply(405, { error: 'method_not_allowed' })
-
-  const apiKey = Deno.env.get('GOOGLE_TTS_API_KEY')
-  if (!apiKey) return reply(503, { error: 'not_configured' })
 
   const admin = createClient(Deno.env.get('SUPABASE_URL') ?? '', serviceKey(), {
     auth: { persistSession: false, autoRefreshToken: false },
@@ -41,6 +50,13 @@ Deno.serve(async (req) => {
   const token = (req.headers.get('authorization') ?? '').replace(/^Bearer\s+/i, '')
   const { data: auth } = token ? await admin.auth.getUser(token) : { data: { user: null } }
   if (!auth.user) return reply(401, { error: 'unauthorized' })
+
+  const apiKey = googleKey()
+  if (!apiKey) {
+    // Chỉ báo TÊN các secret có vẻ liên quan (không bao giờ trả về giá trị) để dễ sửa
+    const similar = Object.keys(Deno.env.toObject()).filter((n) => /google|tts|api_?key/i.test(n))
+    return reply(503, { error: 'not_configured', expected: KEY_NAME, similar })
+  }
 
   let text = ''
   let voice = ''
