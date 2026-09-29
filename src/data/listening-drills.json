@@ -1,0 +1,383 @@
+{
+  "_huong_dan": "Bài phân biệt âm: máy đọc ngẫu nhiên 1 trong các câu của mỗi mục (options), bạn chọn câu mình nghe được. Mỗi bài cần id, name, explanation, items. Mỗi mục cần id (duy nhất) và options (2-3 câu chỉ khác nhau ở chỗ cần luyện). Có thể thêm meaning_vi cho từng câu (không bắt buộc).",
+  "drills": [
+    {
+      "id": "can-cant",
+      "name": "can hay can't?",
+      "explanation": "Trong câu khẳng định, can thường được đọc nhẹ /kən/ (gần như “kờn”), còn can't được nhấn mạnh với âm /æ/ rõ ràng (/kænt/), âm t cuối thường gần như mất. Hãy nghe độ nhấn và độ dài, đừng chờ âm t.",
+      "items": [
+        {
+          "id": "can-cant-01",
+          "options": [
+            "I can swim.",
+            "I can't swim."
+          ]
+        },
+        {
+          "id": "can-cant-02",
+          "options": [
+            "She can drive a car.",
+            "She can't drive a car."
+          ]
+        },
+        {
+          "id": "can-cant-03",
+          "options": [
+            "We can come tomorrow.",
+            "We can't come tomorrow."
+          ]
+        },
+        {
+          "id": "can-cant-04",
+          "options": [
+            "You can park here.",
+            "You can't park here."
+          ]
+        },
+        {
+          "id": "can-cant-05",
+          "options": [
+            "He can speak Chinese.",
+            "He can't speak Chinese."
+          ]
+        },
+        {
+          "id": "can-cant-06",
+          "options": [
+            "I can hear you.",
+            "I can't hear you."
+          ]
+        },
+        {
+          "id": "can-cant-07",
+          "options": [
+            "They can help us.",
+            "They can't help us."
+          ]
+        },
+        {
+          "id": "can-cant-08",
+          "options": [
+            "I can find my keys.",
+            "I can't find my keys."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "teen-ty",
+      "name": "Số đếm: -teen hay -ty?",
+      "explanation": "Số -teen (13 đến 19) nhấn ở âm cuối: thir-TEEN, âm n cuối nghe rõ. Số -ty (30, 40…) nhấn ở âm đầu: THIR-ty, và giọng Mỹ đọc “ty” gần như “đi” (thirdy, fordy). Rất hay gặp trong IELTS Listening Part 1.",
+      "items": [
+        {
+          "id": "teen-ty-01",
+          "options": [
+            "The bus leaves in thirteen minutes.",
+            "The bus leaves in thirty minutes."
+          ]
+        },
+        {
+          "id": "teen-ty-02",
+          "options": [
+            "It costs fourteen dollars.",
+            "It costs forty dollars."
+          ]
+        },
+        {
+          "id": "teen-ty-03",
+          "options": [
+            "She is fifteen years old.",
+            "She is fifty years old."
+          ]
+        },
+        {
+          "id": "teen-ty-04",
+          "options": [
+            "There are sixteen students in the class.",
+            "There are sixty students in the class."
+          ]
+        },
+        {
+          "id": "teen-ty-05",
+          "options": [
+            "Turn to page seventeen.",
+            "Turn to page seventy."
+          ]
+        },
+        {
+          "id": "teen-ty-06",
+          "options": [
+            "I live at number eighteen.",
+            "I live at number eighty."
+          ]
+        },
+        {
+          "id": "teen-ty-07",
+          "options": [
+            "We need nineteen chairs.",
+            "We need ninety chairs."
+          ]
+        },
+        {
+          "id": "teen-ty-08",
+          "options": [
+            "He ran thirteen kilometers.",
+            "He ran thirty kilometers."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "past-ed",
+      "name": "Hiện tại hay quá khứ (đuôi -ed)?",
+      "explanation": "Đuôi -ed thường chỉ là một âm /t/ hoặc /d/ rất nhẹ, lại hay dính vào từ phía sau (worked in → work-tin). Nghe kỹ âm nhỏ ngay sau động từ. Riêng động từ tận cùng bằng t/d thì -ed thêm hẳn một âm tiết /ɪd/ (needed).",
+      "items": [
+        {
+          "id": "past-ed-01",
+          "options": [
+            "I work in a bank.",
+            "I worked in a bank."
+          ]
+        },
+        {
+          "id": "past-ed-02",
+          "options": [
+            "We watch a movie every night.",
+            "We watched a movie every night."
+          ]
+        },
+        {
+          "id": "past-ed-03",
+          "options": [
+            "They live in London.",
+            "They lived in London."
+          ]
+        },
+        {
+          "id": "past-ed-04",
+          "options": [
+            "I play tennis with my brother.",
+            "I played tennis with my brother."
+          ]
+        },
+        {
+          "id": "past-ed-05",
+          "options": [
+            "We talk about it all the time.",
+            "We talked about it all the time."
+          ]
+        },
+        {
+          "id": "past-ed-06",
+          "options": [
+            "I clean the kitchen after dinner.",
+            "I cleaned the kitchen after dinner."
+          ]
+        },
+        {
+          "id": "past-ed-07",
+          "options": [
+            "They open the shop at eight.",
+            "They opened the shop at eight."
+          ]
+        },
+        {
+          "id": "past-ed-08",
+          "options": [
+            "I need a new laptop.",
+            "I needed a new laptop."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plural-s",
+      "name": "Số ít hay số nhiều (âm -s cuối)?",
+      "explanation": "Âm -s cuối (/s/, /z/ hoặc /ɪz/) rất nhẹ, nhất là khi từ sau bắt đầu bằng phụ âm. Người Việt hay bỏ qua âm cuối, nên cần luyện nghe riêng. Đôi khi động từ đi kèm (is/are) cũng là manh mối.",
+      "items": [
+        {
+          "id": "plural-s-01",
+          "options": [
+            "I bought the book yesterday.",
+            "I bought the books yesterday."
+          ]
+        },
+        {
+          "id": "plural-s-02",
+          "options": [
+            "She likes the song.",
+            "She likes the songs."
+          ]
+        },
+        {
+          "id": "plural-s-03",
+          "options": [
+            "Can you pass me the cup?",
+            "Can you pass me the cups?"
+          ]
+        },
+        {
+          "id": "plural-s-04",
+          "options": [
+            "The student is here.",
+            "The students are here."
+          ]
+        },
+        {
+          "id": "plural-s-05",
+          "options": [
+            "I need the report today.",
+            "I need the reports today."
+          ]
+        },
+        {
+          "id": "plural-s-06",
+          "options": [
+            "We visited the museum.",
+            "We visited the museums."
+          ]
+        },
+        {
+          "id": "plural-s-07",
+          "options": [
+            "Put the box on the table.",
+            "Put the boxes on the table."
+          ]
+        },
+        {
+          "id": "plural-s-08",
+          "options": [
+            "I cleaned the window.",
+            "I cleaned the windows."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vowels",
+      "name": "Nguyên âm dễ nhầm",
+      "explanation": "Tiếng Anh phân biệt nguyên âm ngắn và dài (ship /ɪ/ với sheep /iː/), và nhiều cặp rất gần nhau (pen /e/ với pan /æ/, cup /ʌ/ với cap /æ/, walk /ɑː/ với work /ɝː/). Chỉ đổi nguyên âm là đã đổi nghĩa.",
+      "items": [
+        {
+          "id": "vowels-01",
+          "options": [
+            "Look at that ship.",
+            "Look at that sheep."
+          ]
+        },
+        {
+          "id": "vowels-02",
+          "options": [
+            "I want to live here.",
+            "I want to leave here."
+          ]
+        },
+        {
+          "id": "vowels-03",
+          "options": [
+            "Can you fill it?",
+            "Can you feel it?"
+          ]
+        },
+        {
+          "id": "vowels-04",
+          "options": [
+            "I need a new pen.",
+            "I need a new pan."
+          ]
+        },
+        {
+          "id": "vowels-05",
+          "options": [
+            "Pass me the cap.",
+            "Pass me the cup."
+          ]
+        },
+        {
+          "id": "vowels-06",
+          "options": [
+            "Did you see the man?",
+            "Did you see the men?"
+          ]
+        },
+        {
+          "id": "vowels-07",
+          "options": [
+            "I love to walk.",
+            "I love to work."
+          ]
+        },
+        {
+          "id": "vowels-08",
+          "options": [
+            "I want to go.",
+            "I won't go."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "final-consonants",
+      "name": "Phụ âm cuối",
+      "explanation": "Người Việt hay nuốt hoặc đọc sai phụ âm cuối, nên khi nghe cũng dễ bỏ qua. Nghe kỹ âm cuối cùng của từ: /t/ hay /d/, /k/ hay /g/, /s/ hay /z/, có âm cuối hay không.",
+      "items": [
+        {
+          "id": "final-consonants-01",
+          "options": [
+            "I need a white shirt.",
+            "I need a wide shirt."
+          ]
+        },
+        {
+          "id": "final-consonants-02",
+          "options": [
+            "Put it in the back.",
+            "Put it in the bag."
+          ]
+        },
+        {
+          "id": "final-consonants-03",
+          "options": [
+            "Where is my card?",
+            "Where is my car?"
+          ]
+        },
+        {
+          "id": "final-consonants-04",
+          "options": [
+            "I lost my coat.",
+            "I lost my code."
+          ]
+        },
+        {
+          "id": "final-consonants-05",
+          "options": [
+            "Can you see the cat?",
+            "Can you see the cap?"
+          ]
+        },
+        {
+          "id": "final-consonants-06",
+          "options": [
+            "She likes to ride.",
+            "She likes to write."
+          ]
+        },
+        {
+          "id": "final-consonants-07",
+          "options": [
+            "The price is right.",
+            "The prize is right."
+          ]
+        },
+        {
+          "id": "final-consonants-08",
+          "options": [
+            "I sent it.",
+            "I send it."
+          ]
+        }
+      ]
+    }
+  ]
+}

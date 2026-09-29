@@ -1,0 +1,2048 @@
+{
+  "_huong_dan": "Các bộ từ vựng IELTS theo chủ đề. Bạn bật bộ nào trong app (Từ vựng → Bộ từ IELTS) thì bộ đó mới được thêm vào thẻ của bạn. Mỗi bộ có id, name, description, cards. Mỗi thẻ có cùng các trường như vocabulary.json; id của thẻ phải duy nhất trên TẤT CẢ các file từ vựng và không đổi sau khi đã dùng.",
+  "sets": [
+    {
+      "id": "ielts-education",
+      "name": "Giáo dục",
+      "description": "Trường học, học tập, bằng cấp: chủ đề rất hay gặp trong IELTS Speaking và Writing.",
+      "cards": [
+        {
+          "id": "edu-01",
+          "word": "curriculum",
+          "ipa": "/kəˈrɪkjələm/",
+          "pos": "noun",
+          "meaning_vi": "chương trình giảng dạy",
+          "example_en": "The school changed its curriculum last year.",
+          "example_vi": "Trường đã thay đổi chương trình giảng dạy vào năm ngoái."
+        },
+        {
+          "id": "edu-02",
+          "word": "tuition",
+          "ipa": "/tuˈɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "học phí; sự giảng dạy",
+          "example_en": "University tuition is very expensive in some countries.",
+          "example_vi": "Học phí đại học rất đắt ở một số nước."
+        },
+        {
+          "id": "edu-03",
+          "word": "scholarship",
+          "ipa": "/ˈskɑːlɚʃɪp/",
+          "pos": "noun",
+          "meaning_vi": "học bổng",
+          "example_en": "She won a scholarship to study in Australia.",
+          "example_vi": "Cô ấy giành được học bổng du học Úc."
+        },
+        {
+          "id": "edu-04",
+          "word": "graduate",
+          "ipa": "/ˈɡrædʒuət/ (động từ: /ˈɡrædʒueɪt/)",
+          "pos": "noun, verb",
+          "meaning_vi": "người tốt nghiệp; tốt nghiệp",
+          "example_en": "He graduated from university two years ago.",
+          "example_vi": "Anh ấy tốt nghiệp đại học cách đây hai năm."
+        },
+        {
+          "id": "edu-05",
+          "word": "academic",
+          "ipa": "/ˌækəˈdemɪk/",
+          "pos": "adjective",
+          "meaning_vi": "thuộc về học thuật",
+          "example_en": "Academic writing requires a formal style.",
+          "example_vi": "Văn viết học thuật đòi hỏi văn phong trang trọng."
+        },
+        {
+          "id": "edu-06",
+          "word": "knowledge",
+          "ipa": "/ˈnɑːlɪdʒ/",
+          "pos": "noun",
+          "meaning_vi": "kiến thức",
+          "example_en": "Reading is a great way to gain knowledge.",
+          "example_vi": "Đọc sách là cách tuyệt vời để có thêm kiến thức."
+        },
+        {
+          "id": "edu-07",
+          "word": "skill",
+          "ipa": "/skɪl/",
+          "pos": "noun",
+          "meaning_vi": "kỹ năng",
+          "example_en": "Teamwork is an important skill at work.",
+          "example_vi": "Làm việc nhóm là một kỹ năng quan trọng trong công việc."
+        },
+        {
+          "id": "edu-08",
+          "word": "attend",
+          "ipa": "/əˈtend/",
+          "pos": "verb",
+          "meaning_vi": "tham dự, đi học",
+          "example_en": "All children should attend school.",
+          "example_vi": "Mọi trẻ em đều nên được đến trường."
+        },
+        {
+          "id": "edu-09",
+          "word": "assignment",
+          "ipa": "/əˈsaɪnmənt/",
+          "pos": "noun",
+          "meaning_vi": "bài tập (được giao)",
+          "example_en": "I have to finish my assignment by Friday.",
+          "example_vi": "Tôi phải hoàn thành bài tập trước thứ Sáu."
+        },
+        {
+          "id": "edu-10",
+          "word": "lecture",
+          "ipa": "/ˈlektʃɚ/",
+          "pos": "noun",
+          "meaning_vi": "bài giảng",
+          "example_en": "The lecture was about climate change.",
+          "example_vi": "Bài giảng nói về biến đổi khí hậu."
+        },
+        {
+          "id": "edu-11",
+          "word": "qualification",
+          "ipa": "/ˌkwɑːlɪfɪˈkeɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "bằng cấp, trình độ chuyên môn",
+          "example_en": "You need a teaching qualification for this job.",
+          "example_vi": "Bạn cần có bằng sư phạm cho công việc này."
+        },
+        {
+          "id": "edu-12",
+          "word": "literacy",
+          "ipa": "/ˈlɪtɚəsi/",
+          "pos": "noun",
+          "meaning_vi": "khả năng đọc viết",
+          "example_en": "Literacy rates have improved in many countries.",
+          "example_vi": "Tỷ lệ biết chữ đã được cải thiện ở nhiều quốc gia."
+        },
+        {
+          "id": "edu-13",
+          "word": "discipline",
+          "ipa": "/ˈdɪsəplɪn/",
+          "pos": "noun",
+          "meaning_vi": "kỷ luật; ngành học",
+          "example_en": "Good teachers help students develop self-discipline.",
+          "example_vi": "Giáo viên giỏi giúp học sinh rèn tính tự giác."
+        },
+        {
+          "id": "edu-14",
+          "word": "compulsory",
+          "ipa": "/kəmˈpʌlsɚi/",
+          "pos": "adjective",
+          "meaning_vi": "bắt buộc",
+          "example_en": "In many countries, school is compulsory until the age of sixteen.",
+          "example_vi": "Ở nhiều nước, đi học là bắt buộc đến năm mười sáu tuổi."
+        },
+        {
+          "id": "edu-15",
+          "word": "vocational",
+          "ipa": "/voʊˈkeɪʃənəl/",
+          "pos": "adjective",
+          "meaning_vi": "thuộc về hướng nghiệp, dạy nghề",
+          "example_en": "Vocational training prepares students for specific jobs.",
+          "example_vi": "Đào tạo nghề giúp học sinh chuẩn bị cho các công việc cụ thể."
+        },
+        {
+          "id": "edu-16",
+          "word": "enroll",
+          "ipa": "/ɪnˈroʊl/",
+          "pos": "verb",
+          "meaning_vi": "đăng ký (khóa học), nhập học (Anh-Anh viết: enrol)",
+          "example_en": "I enrolled in an online English course.",
+          "example_vi": "Tôi đã đăng ký một khóa tiếng Anh trực tuyến."
+        },
+        {
+          "id": "edu-17",
+          "word": "motivation",
+          "ipa": "/ˌmoʊtəˈveɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "động lực",
+          "example_en": "Students need motivation to learn well.",
+          "example_vi": "Học sinh cần có động lực để học tốt."
+        },
+        {
+          "id": "edu-18",
+          "word": "critical thinking",
+          "ipa": "/ˌkrɪtɪkəl ˈθɪŋkɪŋ/",
+          "pos": "phrase",
+          "meaning_vi": "tư duy phản biện",
+          "example_en": "Schools should teach critical thinking.",
+          "example_vi": "Trường học nên dạy tư duy phản biện."
+        },
+        {
+          "id": "edu-19",
+          "word": "distance learning",
+          "ipa": "/ˈdɪstəns ˌlɝːnɪŋ/",
+          "pos": "phrase",
+          "meaning_vi": "học từ xa",
+          "example_en": "Distance learning became popular during the pandemic.",
+          "example_vi": "Học từ xa trở nên phổ biến trong đại dịch."
+        },
+        {
+          "id": "edu-20",
+          "word": "peer",
+          "ipa": "/pɪr/",
+          "pos": "noun",
+          "meaning_vi": "bạn cùng trang lứa",
+          "example_en": "Teenagers are often influenced by their peers.",
+          "example_vi": "Thanh thiếu niên thường chịu ảnh hưởng của bạn bè cùng trang lứa."
+        }
+      ]
+    },
+    {
+      "id": "ielts-environment",
+      "name": "Môi trường",
+      "description": "Ô nhiễm, biến đổi khí hậu, năng lượng: chủ đề Writing Task 2 kinh điển.",
+      "cards": [
+        {
+          "id": "env-01",
+          "word": "pollution",
+          "ipa": "/pəˈluːʃən/",
+          "pos": "noun",
+          "meaning_vi": "sự ô nhiễm",
+          "example_en": "Air pollution is a serious problem in big cities.",
+          "example_vi": "Ô nhiễm không khí là vấn đề nghiêm trọng ở các thành phố lớn."
+        },
+        {
+          "id": "env-02",
+          "word": "climate change",
+          "ipa": "/ˈklaɪmət ˌtʃeɪndʒ/",
+          "pos": "phrase",
+          "meaning_vi": "biến đổi khí hậu",
+          "example_en": "Climate change affects everyone on the planet.",
+          "example_vi": "Biến đổi khí hậu ảnh hưởng đến mọi người trên hành tinh."
+        },
+        {
+          "id": "env-03",
+          "word": "global warming",
+          "ipa": "/ˌɡloʊbəl ˈwɔːrmɪŋ/",
+          "pos": "phrase",
+          "meaning_vi": "sự nóng lên toàn cầu",
+          "example_en": "Global warming is causing sea levels to rise.",
+          "example_vi": "Sự nóng lên toàn cầu đang làm mực nước biển dâng cao."
+        },
+        {
+          "id": "env-04",
+          "word": "renewable",
+          "ipa": "/rɪˈnuːəbəl/",
+          "pos": "adjective",
+          "meaning_vi": "có thể tái tạo",
+          "example_en": "Solar power is a renewable source of energy.",
+          "example_vi": "Năng lượng mặt trời là nguồn năng lượng tái tạo."
+        },
+        {
+          "id": "env-05",
+          "word": "sustainable",
+          "ipa": "/səˈsteɪnəbəl/",
+          "pos": "adjective",
+          "meaning_vi": "bền vững",
+          "example_en": "We need a more sustainable way of living.",
+          "example_vi": "Chúng ta cần một lối sống bền vững hơn."
+        },
+        {
+          "id": "env-06",
+          "word": "emission",
+          "ipa": "/iˈmɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "khí thải, sự thải ra",
+          "example_en": "Cars produce harmful emissions.",
+          "example_vi": "Ô tô thải ra khí thải độc hại."
+        },
+        {
+          "id": "env-07",
+          "word": "recycle",
+          "ipa": "/riːˈsaɪkəl/",
+          "pos": "verb",
+          "meaning_vi": "tái chế",
+          "example_en": "We recycle paper, glass and plastic.",
+          "example_vi": "Chúng tôi tái chế giấy, thủy tinh và nhựa."
+        },
+        {
+          "id": "env-08",
+          "word": "waste",
+          "ipa": "/weɪst/",
+          "pos": "noun, verb",
+          "meaning_vi": "rác thải; lãng phí",
+          "example_en": "Don't waste water.",
+          "example_vi": "Đừng lãng phí nước."
+        },
+        {
+          "id": "env-09",
+          "word": "fossil fuel",
+          "ipa": "/ˈfɑːsəl ˌfjuːəl/",
+          "pos": "phrase",
+          "meaning_vi": "nhiên liệu hóa thạch",
+          "example_en": "Coal and oil are fossil fuels.",
+          "example_vi": "Than và dầu mỏ là nhiên liệu hóa thạch."
+        },
+        {
+          "id": "env-10",
+          "word": "deforestation",
+          "ipa": "/diːˌfɔːrɪˈsteɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "nạn phá rừng",
+          "example_en": "Deforestation destroys the homes of many animals.",
+          "example_vi": "Nạn phá rừng phá hủy nơi sống của nhiều loài động vật."
+        },
+        {
+          "id": "env-11",
+          "word": "endangered",
+          "ipa": "/ɪnˈdeɪndʒɚd/",
+          "pos": "adjective",
+          "meaning_vi": "có nguy cơ tuyệt chủng",
+          "example_en": "Tigers are an endangered species.",
+          "example_vi": "Hổ là loài có nguy cơ tuyệt chủng."
+        },
+        {
+          "id": "env-12",
+          "word": "habitat",
+          "ipa": "/ˈhæbɪtæt/",
+          "pos": "noun",
+          "meaning_vi": "môi trường sống (của sinh vật)",
+          "example_en": "Pollution is destroying natural habitats.",
+          "example_vi": "Ô nhiễm đang phá hủy môi trường sống tự nhiên."
+        },
+        {
+          "id": "env-13",
+          "word": "conservation",
+          "ipa": "/ˌkɑːnsɚˈveɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "sự bảo tồn",
+          "example_en": "Wildlife conservation is very important.",
+          "example_vi": "Bảo tồn động vật hoang dã là rất quan trọng."
+        },
+        {
+          "id": "env-14",
+          "word": "drought",
+          "ipa": "/draʊt/",
+          "pos": "noun",
+          "meaning_vi": "hạn hán",
+          "example_en": "The drought lasted for three months.",
+          "example_vi": "Đợt hạn hán kéo dài ba tháng."
+        },
+        {
+          "id": "env-15",
+          "word": "flood",
+          "ipa": "/flʌd/",
+          "pos": "noun, verb",
+          "meaning_vi": "lũ lụt; làm ngập",
+          "example_en": "Heavy rain caused floods in the city.",
+          "example_vi": "Mưa lớn gây ngập lụt trong thành phố."
+        },
+        {
+          "id": "env-16",
+          "word": "carbon footprint",
+          "ipa": "/ˌkɑːrbən ˈfʊtprɪnt/",
+          "pos": "phrase",
+          "meaning_vi": "lượng khí thải carbon (của một người, một hoạt động)",
+          "example_en": "Flying less can reduce your carbon footprint.",
+          "example_vi": "Đi máy bay ít hơn có thể giảm lượng khí thải carbon của bạn."
+        },
+        {
+          "id": "env-17",
+          "word": "biodiversity",
+          "ipa": "/ˌbaɪoʊdaɪˈvɝːsəti/",
+          "pos": "noun",
+          "meaning_vi": "đa dạng sinh học",
+          "example_en": "Rainforests have rich biodiversity.",
+          "example_vi": "Rừng mưa nhiệt đới có đa dạng sinh học phong phú."
+        },
+        {
+          "id": "env-18",
+          "word": "greenhouse gas",
+          "ipa": "/ˈɡriːnhaʊs ˌɡæs/",
+          "pos": "phrase",
+          "meaning_vi": "khí nhà kính",
+          "example_en": "Carbon dioxide is a greenhouse gas.",
+          "example_vi": "Khí CO2 là một loại khí nhà kính."
+        },
+        {
+          "id": "env-19",
+          "word": "environmentally friendly",
+          "ipa": "/ɪnˌvaɪrənˌmentəli ˈfrendli/",
+          "pos": "phrase",
+          "meaning_vi": "thân thiện với môi trường",
+          "example_en": "Bicycles are an environmentally friendly way to travel.",
+          "example_vi": "Xe đạp là phương tiện đi lại thân thiện với môi trường."
+        },
+        {
+          "id": "env-20",
+          "word": "protect",
+          "ipa": "/prəˈtekt/",
+          "pos": "verb",
+          "meaning_vi": "bảo vệ",
+          "example_en": "We must protect our forests.",
+          "example_vi": "Chúng ta phải bảo vệ rừng."
+        }
+      ]
+    },
+    {
+      "id": "ielts-technology",
+      "name": "Công nghệ",
+      "description": "Internet, mạng xã hội, trí tuệ nhân tạo và ảnh hưởng tới cuộc sống.",
+      "cards": [
+        {
+          "id": "tech-01",
+          "word": "device",
+          "ipa": "/dɪˈvaɪs/",
+          "pos": "noun",
+          "meaning_vi": "thiết bị",
+          "example_en": "Most people use more than one device every day.",
+          "example_vi": "Hầu hết mọi người dùng hơn một thiết bị mỗi ngày."
+        },
+        {
+          "id": "tech-02",
+          "word": "artificial intelligence",
+          "ipa": "/ˌɑːrtɪfɪʃəl ɪnˈtelɪdʒəns/",
+          "pos": "phrase",
+          "meaning_vi": "trí tuệ nhân tạo",
+          "example_en": "Artificial intelligence is changing many industries.",
+          "example_vi": "Trí tuệ nhân tạo đang thay đổi nhiều ngành công nghiệp."
+        },
+        {
+          "id": "tech-03",
+          "word": "innovation",
+          "ipa": "/ˌɪnəˈveɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "sự đổi mới, cải tiến",
+          "example_en": "Innovation helps companies grow.",
+          "example_vi": "Đổi mới giúp các công ty phát triển."
+        },
+        {
+          "id": "tech-04",
+          "word": "digital",
+          "ipa": "/ˈdɪdʒɪtəl/",
+          "pos": "adjective",
+          "meaning_vi": "kỹ thuật số",
+          "example_en": "We live in a digital age.",
+          "example_vi": "Chúng ta sống trong thời đại kỹ thuật số."
+        },
+        {
+          "id": "tech-05",
+          "word": "access",
+          "ipa": "/ˈækses/",
+          "pos": "noun, verb",
+          "meaning_vi": "sự tiếp cận; truy cập",
+          "example_en": "Everyone should have access to the internet.",
+          "example_vi": "Mọi người đều nên được tiếp cận internet."
+        },
+        {
+          "id": "tech-06",
+          "word": "online",
+          "ipa": "/ˌɑːnˈlaɪn/",
+          "pos": "adjective, adverb",
+          "meaning_vi": "trực tuyến",
+          "example_en": "I buy most things online.",
+          "example_vi": "Tôi mua hầu hết mọi thứ trên mạng."
+        },
+        {
+          "id": "tech-07",
+          "word": "software",
+          "ipa": "/ˈsɑːftwer/",
+          "pos": "noun",
+          "meaning_vi": "phần mềm",
+          "example_en": "You need to update the software.",
+          "example_vi": "Bạn cần cập nhật phần mềm."
+        },
+        {
+          "id": "tech-08",
+          "word": "download",
+          "ipa": "/ˈdaʊnloʊd/",
+          "pos": "verb, noun",
+          "meaning_vi": "tải xuống",
+          "example_en": "You can download the app for free.",
+          "example_vi": "Bạn có thể tải ứng dụng miễn phí."
+        },
+        {
+          "id": "tech-09",
+          "word": "social media",
+          "ipa": "/ˌsoʊʃəl ˈmiːdiə/",
+          "pos": "phrase",
+          "meaning_vi": "mạng xã hội",
+          "example_en": "Teenagers spend hours on social media.",
+          "example_vi": "Thanh thiếu niên dành hàng giờ trên mạng xã hội."
+        },
+        {
+          "id": "tech-10",
+          "word": "privacy",
+          "ipa": "/ˈpraɪvəsi/",
+          "pos": "noun",
+          "meaning_vi": "sự riêng tư",
+          "example_en": "Many users worry about their privacy online.",
+          "example_vi": "Nhiều người dùng lo lắng về quyền riêng tư trên mạng."
+        },
+        {
+          "id": "tech-11",
+          "word": "automation",
+          "ipa": "/ˌɑːtəˈmeɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "sự tự động hóa",
+          "example_en": "Automation may replace some jobs.",
+          "example_vi": "Tự động hóa có thể thay thế một số công việc."
+        },
+        {
+          "id": "tech-12",
+          "word": "efficient",
+          "ipa": "/ɪˈfɪʃənt/",
+          "pos": "adjective",
+          "meaning_vi": "hiệu quả (không lãng phí)",
+          "example_en": "This new machine is more efficient.",
+          "example_vi": "Chiếc máy mới này hiệu quả hơn."
+        },
+        {
+          "id": "tech-13",
+          "word": "convenient",
+          "ipa": "/kənˈviːniənt/",
+          "pos": "adjective",
+          "meaning_vi": "tiện lợi",
+          "example_en": "Online shopping is very convenient.",
+          "example_vi": "Mua sắm trực tuyến rất tiện lợi."
+        },
+        {
+          "id": "tech-14",
+          "word": "rely on",
+          "ipa": "/rɪˈlaɪ ɑːn/",
+          "pos": "phrase",
+          "meaning_vi": "dựa vào, phụ thuộc vào",
+          "example_en": "We rely on our phones too much.",
+          "example_vi": "Chúng ta phụ thuộc vào điện thoại quá nhiều."
+        },
+        {
+          "id": "tech-15",
+          "word": "addicted",
+          "ipa": "/əˈdɪktɪd/",
+          "pos": "adjective",
+          "meaning_vi": "nghiện",
+          "example_en": "Some children are addicted to video games.",
+          "example_vi": "Một số trẻ em nghiện trò chơi điện tử."
+        },
+        {
+          "id": "tech-16",
+          "word": "cyberbullying",
+          "ipa": "/ˈsaɪbɚˌbʊliɪŋ/",
+          "pos": "noun",
+          "meaning_vi": "bắt nạt trên mạng",
+          "example_en": "Schools are trying to stop cyberbullying.",
+          "example_vi": "Các trường học đang cố ngăn chặn bắt nạt trên mạng."
+        },
+        {
+          "id": "tech-17",
+          "word": "invention",
+          "ipa": "/ɪnˈvenʃən/",
+          "pos": "noun",
+          "meaning_vi": "phát minh",
+          "example_en": "The internet is one of the greatest inventions.",
+          "example_vi": "Internet là một trong những phát minh vĩ đại nhất."
+        },
+        {
+          "id": "tech-18",
+          "word": "database",
+          "ipa": "/ˈdeɪtəbeɪs/",
+          "pos": "noun",
+          "meaning_vi": "cơ sở dữ liệu",
+          "example_en": "The company keeps customer details in a database.",
+          "example_vi": "Công ty lưu thông tin khách hàng trong cơ sở dữ liệu."
+        },
+        {
+          "id": "tech-19",
+          "word": "virtual",
+          "ipa": "/ˈvɝːtʃuəl/",
+          "pos": "adjective",
+          "meaning_vi": "ảo, trực tuyến",
+          "example_en": "We had a virtual meeting yesterday.",
+          "example_vi": "Hôm qua chúng tôi có một cuộc họp trực tuyến."
+        },
+        {
+          "id": "tech-20",
+          "word": "screen time",
+          "ipa": "/ˈskriːn ˌtaɪm/",
+          "pos": "phrase",
+          "meaning_vi": "thời gian dùng màn hình",
+          "example_en": "Parents should limit children's screen time.",
+          "example_vi": "Cha mẹ nên giới hạn thời gian dùng màn hình của trẻ."
+        }
+      ]
+    },
+    {
+      "id": "ielts-health",
+      "name": "Sức khỏe",
+      "description": "Ăn uống, tập luyện, bệnh tật, sức khỏe tinh thần.",
+      "cards": [
+        {
+          "id": "health-01",
+          "word": "diet",
+          "ipa": "/ˈdaɪət/",
+          "pos": "noun",
+          "meaning_vi": "chế độ ăn",
+          "example_en": "A balanced diet is important for good health.",
+          "example_vi": "Chế độ ăn cân bằng rất quan trọng cho sức khỏe."
+        },
+        {
+          "id": "health-02",
+          "word": "nutrition",
+          "ipa": "/nuˈtrɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "dinh dưỡng",
+          "example_en": "Good nutrition helps children grow.",
+          "example_vi": "Dinh dưỡng tốt giúp trẻ phát triển."
+        },
+        {
+          "id": "health-03",
+          "word": "obesity",
+          "ipa": "/oʊˈbiːsəti/",
+          "pos": "noun",
+          "meaning_vi": "béo phì",
+          "example_en": "Obesity is a growing problem among children.",
+          "example_vi": "Béo phì là vấn đề ngày càng tăng ở trẻ em."
+        },
+        {
+          "id": "health-04",
+          "word": "exercise",
+          "ipa": "/ˈeksɚsaɪz/",
+          "pos": "noun, verb",
+          "meaning_vi": "sự tập thể dục; tập thể dục",
+          "example_en": "Regular exercise keeps you fit.",
+          "example_vi": "Tập thể dục đều đặn giúp bạn khỏe mạnh."
+        },
+        {
+          "id": "health-05",
+          "word": "stress",
+          "ipa": "/stres/",
+          "pos": "noun",
+          "meaning_vi": "căng thẳng",
+          "example_en": "Too much work can cause stress.",
+          "example_vi": "Làm việc quá nhiều có thể gây căng thẳng."
+        },
+        {
+          "id": "health-06",
+          "word": "mental health",
+          "ipa": "/ˌmentəl ˈhelθ/",
+          "pos": "phrase",
+          "meaning_vi": "sức khỏe tinh thần",
+          "example_en": "Mental health is as important as physical health.",
+          "example_vi": "Sức khỏe tinh thần quan trọng như sức khỏe thể chất."
+        },
+        {
+          "id": "health-07",
+          "word": "disease",
+          "ipa": "/dɪˈziːz/",
+          "pos": "noun",
+          "meaning_vi": "bệnh",
+          "example_en": "Heart disease is common in older people.",
+          "example_vi": "Bệnh tim phổ biến ở người lớn tuổi."
+        },
+        {
+          "id": "health-08",
+          "word": "treatment",
+          "ipa": "/ˈtriːtmənt/",
+          "pos": "noun",
+          "meaning_vi": "sự điều trị",
+          "example_en": "The new treatment was very successful.",
+          "example_vi": "Phương pháp điều trị mới rất thành công."
+        },
+        {
+          "id": "health-09",
+          "word": "prevent",
+          "ipa": "/prɪˈvent/",
+          "pos": "verb",
+          "meaning_vi": "ngăn ngừa",
+          "example_en": "Washing your hands can prevent illness.",
+          "example_vi": "Rửa tay có thể ngăn ngừa bệnh tật."
+        },
+        {
+          "id": "health-10",
+          "word": "symptom",
+          "ipa": "/ˈsɪmptəm/",
+          "pos": "noun",
+          "meaning_vi": "triệu chứng",
+          "example_en": "Fever is a common symptom of the flu.",
+          "example_vi": "Sốt là triệu chứng thường gặp của cúm."
+        },
+        {
+          "id": "health-11",
+          "word": "lifestyle",
+          "ipa": "/ˈlaɪfstaɪl/",
+          "pos": "noun",
+          "meaning_vi": "lối sống",
+          "example_en": "He changed his lifestyle and lost weight.",
+          "example_vi": "Anh ấy thay đổi lối sống và đã giảm cân."
+        },
+        {
+          "id": "health-12",
+          "word": "sedentary",
+          "ipa": "/ˈsedənteri/",
+          "pos": "adjective",
+          "meaning_vi": "ít vận động",
+          "example_en": "Office workers often have a sedentary lifestyle.",
+          "example_vi": "Nhân viên văn phòng thường có lối sống ít vận động."
+        },
+        {
+          "id": "health-13",
+          "word": "healthcare",
+          "ipa": "/ˈhelθker/",
+          "pos": "noun",
+          "meaning_vi": "dịch vụ chăm sóc sức khỏe",
+          "example_en": "Everyone should have access to healthcare.",
+          "example_vi": "Ai cũng nên được tiếp cận dịch vụ y tế."
+        },
+        {
+          "id": "health-14",
+          "word": "patient",
+          "ipa": "/ˈpeɪʃənt/",
+          "pos": "noun, adjective",
+          "meaning_vi": "bệnh nhân; kiên nhẫn",
+          "example_en": "The doctor is seeing a patient now.",
+          "example_vi": "Bác sĩ đang khám cho một bệnh nhân."
+        },
+        {
+          "id": "health-15",
+          "word": "medicine",
+          "ipa": "/ˈmedɪsən/",
+          "pos": "noun",
+          "meaning_vi": "thuốc; y học",
+          "example_en": "Take this medicine twice a day.",
+          "example_vi": "Uống thuốc này hai lần một ngày."
+        },
+        {
+          "id": "health-16",
+          "word": "recover",
+          "ipa": "/rɪˈkʌvɚ/",
+          "pos": "verb",
+          "meaning_vi": "hồi phục",
+          "example_en": "She recovered quickly after the operation.",
+          "example_vi": "Cô ấy hồi phục nhanh sau ca phẫu thuật."
+        },
+        {
+          "id": "health-17",
+          "word": "junk food",
+          "ipa": "/ˈdʒʌŋk ˌfuːd/",
+          "pos": "phrase",
+          "meaning_vi": "đồ ăn vặt không lành mạnh",
+          "example_en": "Junk food is cheap but unhealthy.",
+          "example_vi": "Đồ ăn vặt rẻ nhưng không tốt cho sức khỏe."
+        },
+        {
+          "id": "health-18",
+          "word": "life expectancy",
+          "ipa": "/ˈlaɪf ɪkˌspektənsi/",
+          "pos": "phrase",
+          "meaning_vi": "tuổi thọ trung bình",
+          "example_en": "Life expectancy has increased in Vietnam.",
+          "example_vi": "Tuổi thọ trung bình ở Việt Nam đã tăng lên."
+        },
+        {
+          "id": "health-19",
+          "word": "well-being",
+          "ipa": "/ˌwelˈbiːɪŋ/",
+          "pos": "noun",
+          "meaning_vi": "sự khỏe mạnh, hạnh phúc",
+          "example_en": "Sleep is essential for your well-being.",
+          "example_vi": "Giấc ngủ rất cần thiết cho sức khỏe của bạn."
+        },
+        {
+          "id": "health-20",
+          "word": "balanced",
+          "ipa": "/ˈbælənst/",
+          "pos": "adjective",
+          "meaning_vi": "cân bằng",
+          "example_en": "Try to eat a balanced meal.",
+          "example_vi": "Hãy cố ăn một bữa ăn cân bằng."
+        }
+      ]
+    },
+    {
+      "id": "ielts-work",
+      "name": "Công việc và kinh tế",
+      "description": "Việc làm, nghề nghiệp, lương, doanh nghiệp.",
+      "cards": [
+        {
+          "id": "work-01",
+          "word": "employee",
+          "ipa": "/ɪmˈplɔɪiː/",
+          "pos": "noun",
+          "meaning_vi": "nhân viên",
+          "example_en": "The company has two hundred employees.",
+          "example_vi": "Công ty có hai trăm nhân viên."
+        },
+        {
+          "id": "work-02",
+          "word": "employer",
+          "ipa": "/ɪmˈplɔɪɚ/",
+          "pos": "noun",
+          "meaning_vi": "người sử dụng lao động",
+          "example_en": "My employer pays for my training.",
+          "example_vi": "Công ty trả tiền đào tạo cho tôi."
+        },
+        {
+          "id": "work-03",
+          "word": "salary",
+          "ipa": "/ˈsæləri/",
+          "pos": "noun",
+          "meaning_vi": "lương",
+          "example_en": "She earns a good salary.",
+          "example_vi": "Cô ấy có mức lương tốt."
+        },
+        {
+          "id": "work-04",
+          "word": "career",
+          "ipa": "/kəˈrɪr/",
+          "pos": "noun",
+          "meaning_vi": "sự nghiệp",
+          "example_en": "He wants a career in medicine.",
+          "example_vi": "Anh ấy muốn theo sự nghiệp y khoa."
+        },
+        {
+          "id": "work-05",
+          "word": "unemployment",
+          "ipa": "/ˌʌnɪmˈplɔɪmənt/",
+          "pos": "noun",
+          "meaning_vi": "tình trạng thất nghiệp",
+          "example_en": "Unemployment is high among young people.",
+          "example_vi": "Tỷ lệ thất nghiệp cao ở người trẻ."
+        },
+        {
+          "id": "work-06",
+          "word": "promotion",
+          "ipa": "/prəˈmoʊʃən/",
+          "pos": "noun",
+          "meaning_vi": "sự thăng chức; khuyến mãi",
+          "example_en": "She got a promotion last month.",
+          "example_vi": "Tháng trước cô ấy được thăng chức."
+        },
+        {
+          "id": "work-07",
+          "word": "colleague",
+          "ipa": "/ˈkɑːliːɡ/",
+          "pos": "noun",
+          "meaning_vi": "đồng nghiệp",
+          "example_en": "My colleagues are very helpful.",
+          "example_vi": "Đồng nghiệp của tôi rất hay giúp đỡ."
+        },
+        {
+          "id": "work-08",
+          "word": "deadline",
+          "ipa": "/ˈdedlaɪn/",
+          "pos": "noun",
+          "meaning_vi": "hạn chót",
+          "example_en": "The deadline for the report is tomorrow.",
+          "example_vi": "Hạn nộp báo cáo là ngày mai."
+        },
+        {
+          "id": "work-09",
+          "word": "flexible",
+          "ipa": "/ˈfleksəbəl/",
+          "pos": "adjective",
+          "meaning_vi": "linh hoạt",
+          "example_en": "I have flexible working hours.",
+          "example_vi": "Tôi có giờ làm việc linh hoạt."
+        },
+        {
+          "id": "work-10",
+          "word": "work-life balance",
+          "ipa": "/ˌwɝːk ˈlaɪf ˌbæləns/",
+          "pos": "phrase",
+          "meaning_vi": "cân bằng công việc và cuộc sống",
+          "example_en": "A good work-life balance makes people happier.",
+          "example_vi": "Cân bằng tốt giữa công việc và cuộc sống giúp mọi người hạnh phúc hơn."
+        },
+        {
+          "id": "work-11",
+          "word": "responsibility",
+          "ipa": "/rɪˌspɑːnsəˈbɪləti/",
+          "pos": "noun",
+          "meaning_vi": "trách nhiệm",
+          "example_en": "Managers have a lot of responsibility.",
+          "example_vi": "Quản lý phải gánh nhiều trách nhiệm."
+        },
+        {
+          "id": "work-12",
+          "word": "apply for",
+          "ipa": "/əˈplaɪ fɔːr/",
+          "pos": "phrase",
+          "meaning_vi": "nộp đơn xin",
+          "example_en": "I applied for a job at a bank.",
+          "example_vi": "Tôi đã nộp đơn xin việc ở một ngân hàng."
+        },
+        {
+          "id": "work-13",
+          "word": "interview",
+          "ipa": "/ˈɪntɚvjuː/",
+          "pos": "noun, verb",
+          "meaning_vi": "buổi phỏng vấn; phỏng vấn",
+          "example_en": "I have a job interview tomorrow.",
+          "example_vi": "Ngày mai tôi có một buổi phỏng vấn xin việc."
+        },
+        {
+          "id": "work-14",
+          "word": "industry",
+          "ipa": "/ˈɪndəstri/",
+          "pos": "noun",
+          "meaning_vi": "ngành công nghiệp",
+          "example_en": "The tourism industry is growing fast.",
+          "example_vi": "Ngành du lịch đang phát triển nhanh."
+        },
+        {
+          "id": "work-15",
+          "word": "profit",
+          "ipa": "/ˈprɑːfɪt/",
+          "pos": "noun",
+          "meaning_vi": "lợi nhuận",
+          "example_en": "The company made a big profit this year.",
+          "example_vi": "Công ty thu lợi nhuận lớn năm nay."
+        },
+        {
+          "id": "work-16",
+          "word": "invest",
+          "ipa": "/ɪnˈvest/",
+          "pos": "verb",
+          "meaning_vi": "đầu tư",
+          "example_en": "The government should invest in public transport.",
+          "example_vi": "Chính phủ nên đầu tư vào giao thông công cộng."
+        },
+        {
+          "id": "work-17",
+          "word": "customer",
+          "ipa": "/ˈkʌstəmɚ/",
+          "pos": "noun",
+          "meaning_vi": "khách hàng",
+          "example_en": "The shop has many regular customers.",
+          "example_vi": "Cửa hàng có nhiều khách quen."
+        },
+        {
+          "id": "work-18",
+          "word": "retire",
+          "ipa": "/rɪˈtaɪɚ/",
+          "pos": "verb",
+          "meaning_vi": "nghỉ hưu",
+          "example_en": "My father retired at sixty.",
+          "example_vi": "Bố tôi nghỉ hưu năm sáu mươi tuổi."
+        },
+        {
+          "id": "work-19",
+          "word": "freelance",
+          "ipa": "/ˈfriːlæns/",
+          "pos": "adjective, adverb",
+          "meaning_vi": "làm tự do",
+          "example_en": "She works as a freelance designer.",
+          "example_vi": "Cô ấy làm thiết kế tự do."
+        },
+        {
+          "id": "work-20",
+          "word": "workforce",
+          "ipa": "/ˈwɝːkfɔːrs/",
+          "pos": "noun",
+          "meaning_vi": "lực lượng lao động",
+          "example_en": "Women make up half of the workforce.",
+          "example_vi": "Phụ nữ chiếm một nửa lực lượng lao động."
+        }
+      ]
+    },
+    {
+      "id": "ielts-society",
+      "name": "Xã hội và đô thị",
+      "description": "Dân số, thành phố, nông thôn, giao thông, các vấn đề xã hội.",
+      "cards": [
+        {
+          "id": "soc-01",
+          "word": "population",
+          "ipa": "/ˌpɑːpjəˈleɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "dân số",
+          "example_en": "The population of the city is growing.",
+          "example_vi": "Dân số thành phố đang tăng."
+        },
+        {
+          "id": "soc-02",
+          "word": "urban",
+          "ipa": "/ˈɝːbən/",
+          "pos": "adjective",
+          "meaning_vi": "thuộc đô thị",
+          "example_en": "More people are moving to urban areas.",
+          "example_vi": "Ngày càng nhiều người chuyển đến khu vực đô thị."
+        },
+        {
+          "id": "soc-03",
+          "word": "rural",
+          "ipa": "/ˈrʊrəl/",
+          "pos": "adjective",
+          "meaning_vi": "thuộc nông thôn",
+          "example_en": "Life in rural areas is quieter.",
+          "example_vi": "Cuộc sống ở nông thôn yên tĩnh hơn."
+        },
+        {
+          "id": "soc-04",
+          "word": "traffic jam",
+          "ipa": "/ˈtræfɪk ˌdʒæm/",
+          "pos": "phrase",
+          "meaning_vi": "tắc đường",
+          "example_en": "I was stuck in a traffic jam for an hour.",
+          "example_vi": "Tôi bị kẹt xe cả tiếng đồng hồ."
+        },
+        {
+          "id": "soc-05",
+          "word": "public transport",
+          "ipa": "/ˌpʌblɪk ˈtrænspɔːrt/",
+          "pos": "phrase",
+          "meaning_vi": "giao thông công cộng",
+          "example_en": "Public transport in this city is cheap.",
+          "example_vi": "Giao thông công cộng ở thành phố này rẻ."
+        },
+        {
+          "id": "soc-06",
+          "word": "crime",
+          "ipa": "/kraɪm/",
+          "pos": "noun",
+          "meaning_vi": "tội phạm, tội ác",
+          "example_en": "Crime rates have fallen in recent years.",
+          "example_vi": "Tỷ lệ tội phạm đã giảm trong những năm gần đây."
+        },
+        {
+          "id": "soc-07",
+          "word": "housing",
+          "ipa": "/ˈhaʊzɪŋ/",
+          "pos": "noun",
+          "meaning_vi": "nhà ở",
+          "example_en": "Housing is very expensive in big cities.",
+          "example_vi": "Nhà ở rất đắt đỏ ở các thành phố lớn."
+        },
+        {
+          "id": "soc-08",
+          "word": "community",
+          "ipa": "/kəˈmjuːnəti/",
+          "pos": "noun",
+          "meaning_vi": "cộng đồng",
+          "example_en": "She works hard for the local community.",
+          "example_vi": "Cô ấy làm việc chăm chỉ vì cộng đồng địa phương."
+        },
+        {
+          "id": "soc-09",
+          "word": "elderly",
+          "ipa": "/ˈeldɚli/",
+          "pos": "adjective",
+          "meaning_vi": "cao tuổi",
+          "example_en": "We should take care of elderly people.",
+          "example_vi": "Chúng ta nên chăm sóc người cao tuổi."
+        },
+        {
+          "id": "soc-10",
+          "word": "generation",
+          "ipa": "/ˌdʒenəˈreɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "thế hệ",
+          "example_en": "The younger generation uses technology every day.",
+          "example_vi": "Thế hệ trẻ dùng công nghệ mỗi ngày."
+        },
+        {
+          "id": "soc-11",
+          "word": "equality",
+          "ipa": "/iˈkwɑːləti/",
+          "pos": "noun",
+          "meaning_vi": "sự bình đẳng",
+          "example_en": "Gender equality is important in the workplace.",
+          "example_vi": "Bình đẳng giới rất quan trọng ở nơi làm việc."
+        },
+        {
+          "id": "soc-12",
+          "word": "poverty",
+          "ipa": "/ˈpɑːvɚti/",
+          "pos": "noun",
+          "meaning_vi": "sự nghèo đói",
+          "example_en": "Education can help reduce poverty.",
+          "example_vi": "Giáo dục có thể giúp giảm nghèo."
+        },
+        {
+          "id": "soc-13",
+          "word": "volunteer",
+          "ipa": "/ˌvɑːlənˈtɪr/",
+          "pos": "noun, verb",
+          "meaning_vi": "tình nguyện viên; tình nguyện",
+          "example_en": "I volunteer at an animal shelter.",
+          "example_vi": "Tôi làm tình nguyện ở một trại cứu hộ động vật."
+        },
+        {
+          "id": "soc-14",
+          "word": "facility",
+          "ipa": "/fəˈsɪləti/",
+          "pos": "noun",
+          "meaning_vi": "cơ sở vật chất, tiện ích",
+          "example_en": "The city has excellent sports facilities.",
+          "example_vi": "Thành phố có cơ sở thể thao rất tốt."
+        },
+        {
+          "id": "soc-15",
+          "word": "infrastructure",
+          "ipa": "/ˈɪnfrəˌstrʌktʃɚ/",
+          "pos": "noun",
+          "meaning_vi": "cơ sở hạ tầng",
+          "example_en": "The country needs better infrastructure.",
+          "example_vi": "Đất nước cần cơ sở hạ tầng tốt hơn."
+        },
+        {
+          "id": "soc-16",
+          "word": "overcrowded",
+          "ipa": "/ˌoʊvɚˈkraʊdɪd/",
+          "pos": "adjective",
+          "meaning_vi": "quá đông đúc",
+          "example_en": "The buses are overcrowded in the morning.",
+          "example_vi": "Xe buýt quá đông vào buổi sáng."
+        },
+        {
+          "id": "soc-17",
+          "word": "tax",
+          "ipa": "/tæks/",
+          "pos": "noun",
+          "meaning_vi": "thuế",
+          "example_en": "Everyone has to pay tax.",
+          "example_vi": "Ai cũng phải đóng thuế."
+        },
+        {
+          "id": "soc-18",
+          "word": "citizen",
+          "ipa": "/ˈsɪtɪzən/",
+          "pos": "noun",
+          "meaning_vi": "công dân",
+          "example_en": "Every citizen has the right to vote.",
+          "example_vi": "Mọi công dân đều có quyền bầu cử."
+        },
+        {
+          "id": "soc-19",
+          "word": "standard of living",
+          "ipa": "/ˌstændɚd əv ˈlɪvɪŋ/",
+          "pos": "phrase",
+          "meaning_vi": "mức sống",
+          "example_en": "The standard of living has improved a lot.",
+          "example_vi": "Mức sống đã được cải thiện nhiều."
+        },
+        {
+          "id": "soc-20",
+          "word": "migrate",
+          "ipa": "/ˈmaɪɡreɪt/",
+          "pos": "verb",
+          "meaning_vi": "di cư",
+          "example_en": "Many young people migrate to cities for work.",
+          "example_vi": "Nhiều người trẻ di cư lên thành phố để làm việc."
+        }
+      ]
+    },
+    {
+      "id": "ielts-travel",
+      "name": "Du lịch và văn hóa",
+      "description": "Đi lại, điểm đến, phong tục, lễ hội, ẩm thực.",
+      "cards": [
+        {
+          "id": "travel-01",
+          "word": "destination",
+          "ipa": "/ˌdestɪˈneɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "điểm đến",
+          "example_en": "Da Nang is a popular tourist destination.",
+          "example_vi": "Đà Nẵng là điểm đến du lịch nổi tiếng."
+        },
+        {
+          "id": "travel-02",
+          "word": "tourism",
+          "ipa": "/ˈtʊrɪzəm/",
+          "pos": "noun",
+          "meaning_vi": "ngành du lịch",
+          "example_en": "Tourism brings money to the region.",
+          "example_vi": "Du lịch mang lại nguồn thu cho khu vực."
+        },
+        {
+          "id": "travel-03",
+          "word": "accommodation",
+          "ipa": "/əˌkɑːməˈdeɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "chỗ ở",
+          "example_en": "The price includes flights and accommodation.",
+          "example_vi": "Giá đã bao gồm vé máy bay và chỗ ở."
+        },
+        {
+          "id": "travel-04",
+          "word": "journey",
+          "ipa": "/ˈdʒɝːni/",
+          "pos": "noun",
+          "meaning_vi": "chuyến đi, hành trình",
+          "example_en": "The journey took six hours.",
+          "example_vi": "Chuyến đi mất sáu tiếng."
+        },
+        {
+          "id": "travel-05",
+          "word": "abroad",
+          "ipa": "/əˈbrɑːd/",
+          "pos": "adverb",
+          "meaning_vi": "ở nước ngoài",
+          "example_en": "I want to work abroad.",
+          "example_vi": "Tôi muốn làm việc ở nước ngoài."
+        },
+        {
+          "id": "travel-06",
+          "word": "sightseeing",
+          "ipa": "/ˈsaɪtˌsiːɪŋ/",
+          "pos": "noun",
+          "meaning_vi": "việc tham quan",
+          "example_en": "We went sightseeing in Hue.",
+          "example_vi": "Chúng tôi đi tham quan ở Huế."
+        },
+        {
+          "id": "travel-07",
+          "word": "landmark",
+          "ipa": "/ˈlændmɑːrk/",
+          "pos": "noun",
+          "meaning_vi": "địa danh nổi tiếng",
+          "example_en": "The Eiffel Tower is a famous landmark.",
+          "example_vi": "Tháp Eiffel là một địa danh nổi tiếng."
+        },
+        {
+          "id": "travel-08",
+          "word": "heritage",
+          "ipa": "/ˈherɪtɪdʒ/",
+          "pos": "noun",
+          "meaning_vi": "di sản",
+          "example_en": "Hoi An is a world heritage site.",
+          "example_vi": "Hội An là di sản thế giới."
+        },
+        {
+          "id": "travel-09",
+          "word": "tradition",
+          "ipa": "/trəˈdɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "truyền thống",
+          "example_en": "It is a tradition to eat banh chung at Tet.",
+          "example_vi": "Ăn bánh chưng dịp Tết là một truyền thống."
+        },
+        {
+          "id": "travel-10",
+          "word": "custom",
+          "ipa": "/ˈkʌstəm/",
+          "pos": "noun",
+          "meaning_vi": "phong tục",
+          "example_en": "Every country has its own customs.",
+          "example_vi": "Mỗi quốc gia có phong tục riêng."
+        },
+        {
+          "id": "travel-11",
+          "word": "festival",
+          "ipa": "/ˈfestɪvəl/",
+          "pos": "noun",
+          "meaning_vi": "lễ hội",
+          "example_en": "Children love the Mid-Autumn Festival.",
+          "example_vi": "Trẻ em rất thích Tết Trung thu."
+        },
+        {
+          "id": "travel-12",
+          "word": "local",
+          "ipa": "/ˈloʊkəl/",
+          "pos": "adjective, noun",
+          "meaning_vi": "địa phương; người địa phương",
+          "example_en": "Try the local food when you travel.",
+          "example_vi": "Hãy thử đồ ăn địa phương khi đi du lịch."
+        },
+        {
+          "id": "travel-13",
+          "word": "luggage",
+          "ipa": "/ˈlʌɡɪdʒ/",
+          "pos": "noun",
+          "meaning_vi": "hành lý",
+          "example_en": "Don't leave your luggage alone.",
+          "example_vi": "Đừng để hành lý của bạn không có người trông."
+        },
+        {
+          "id": "travel-14",
+          "word": "reservation",
+          "ipa": "/ˌrezɚˈveɪʃən/",
+          "pos": "noun",
+          "meaning_vi": "sự đặt chỗ trước",
+          "example_en": "I made a reservation for dinner.",
+          "example_vi": "Tôi đã đặt bàn cho bữa tối."
+        },
+        {
+          "id": "travel-15",
+          "word": "itinerary",
+          "ipa": "/aɪˈtɪnəreri/",
+          "pos": "noun",
+          "meaning_vi": "lịch trình chuyến đi",
+          "example_en": "Our itinerary includes three cities.",
+          "example_vi": "Lịch trình của chúng tôi gồm ba thành phố."
+        },
+        {
+          "id": "travel-16",
+          "word": "explore",
+          "ipa": "/ɪkˈsplɔːr/",
+          "pos": "verb",
+          "meaning_vi": "khám phá",
+          "example_en": "We explored the old town on foot.",
+          "example_vi": "Chúng tôi đi bộ khám phá phố cổ."
+        },
+        {
+          "id": "travel-17",
+          "word": "souvenir",
+          "ipa": "/ˌsuːvəˈnɪr/",
+          "pos": "noun",
+          "meaning_vi": "quà lưu niệm",
+          "example_en": "I bought some souvenirs for my family.",
+          "example_vi": "Tôi mua vài món quà lưu niệm cho gia đình."
+        },
+        {
+          "id": "travel-18",
+          "word": "crowded",
+          "ipa": "/ˈkraʊdɪd/",
+          "pos": "adjective",
+          "meaning_vi": "đông đúc",
+          "example_en": "The beach was very crowded.",
+          "example_vi": "Bãi biển rất đông người."
+        },
+        {
+          "id": "travel-19",
+          "word": "breathtaking",
+          "ipa": "/ˈbreθˌteɪkɪŋ/",
+          "pos": "adjective",
+          "meaning_vi": "đẹp ngoạn mục",
+          "example_en": "The view from the mountain was breathtaking.",
+          "example_vi": "Cảnh nhìn từ trên núi đẹp ngoạn mục."
+        },
+        {
+          "id": "travel-20",
+          "word": "cuisine",
+          "ipa": "/kwɪˈziːn/",
+          "pos": "noun",
+          "meaning_vi": "ẩm thực",
+          "example_en": "Vietnamese cuisine is famous around the world.",
+          "example_vi": "Ẩm thực Việt Nam nổi tiếng khắp thế giới."
+        }
+      ]
+    },
+    {
+      "id": "ielts-media",
+      "name": "Truyền thông và quảng cáo",
+      "description": "Báo chí, tin tức, quảng cáo, người nổi tiếng.",
+      "cards": [
+        {
+          "id": "media-01",
+          "word": "advertisement",
+          "ipa": "/ˌædvɚˈtaɪzmənt/",
+          "pos": "noun",
+          "meaning_vi": "quảng cáo",
+          "example_en": "I saw an advertisement for a new phone.",
+          "example_vi": "Tôi thấy quảng cáo một chiếc điện thoại mới."
+        },
+        {
+          "id": "media-02",
+          "word": "advertise",
+          "ipa": "/ˈædvɚtaɪz/",
+          "pos": "verb",
+          "meaning_vi": "quảng cáo",
+          "example_en": "Companies advertise on social media.",
+          "example_vi": "Các công ty quảng cáo trên mạng xã hội."
+        },
+        {
+          "id": "media-03",
+          "word": "consumer",
+          "ipa": "/kənˈsuːmɚ/",
+          "pos": "noun",
+          "meaning_vi": "người tiêu dùng",
+          "example_en": "Consumers want cheaper products.",
+          "example_vi": "Người tiêu dùng muốn sản phẩm rẻ hơn."
+        },
+        {
+          "id": "media-04",
+          "word": "brand",
+          "ipa": "/brænd/",
+          "pos": "noun",
+          "meaning_vi": "thương hiệu",
+          "example_en": "This is a well-known brand.",
+          "example_vi": "Đây là một thương hiệu nổi tiếng."
+        },
+        {
+          "id": "media-05",
+          "word": "influence",
+          "ipa": "/ˈɪnfluəns/",
+          "pos": "noun, verb",
+          "meaning_vi": "ảnh hưởng",
+          "example_en": "Advertising has a strong influence on children.",
+          "example_vi": "Quảng cáo có ảnh hưởng mạnh đến trẻ em."
+        },
+        {
+          "id": "media-06",
+          "word": "journalist",
+          "ipa": "/ˈdʒɝːnəlɪst/",
+          "pos": "noun",
+          "meaning_vi": "nhà báo",
+          "example_en": "She works as a journalist for a newspaper.",
+          "example_vi": "Cô ấy làm nhà báo cho một tờ báo."
+        },
+        {
+          "id": "media-07",
+          "word": "headline",
+          "ipa": "/ˈhedlaɪn/",
+          "pos": "noun",
+          "meaning_vi": "tiêu đề (báo)",
+          "example_en": "I only read the headlines this morning.",
+          "example_vi": "Sáng nay tôi chỉ đọc lướt các tiêu đề."
+        },
+        {
+          "id": "media-08",
+          "word": "broadcast",
+          "ipa": "/ˈbrɑːdkæst/",
+          "pos": "verb, noun",
+          "meaning_vi": "phát sóng; chương trình phát sóng",
+          "example_en": "The match was broadcast live.",
+          "example_vi": "Trận đấu được phát sóng trực tiếp."
+        },
+        {
+          "id": "media-09",
+          "word": "audience",
+          "ipa": "/ˈɑːdiəns/",
+          "pos": "noun",
+          "meaning_vi": "khán giả",
+          "example_en": "The show has a large audience.",
+          "example_vi": "Chương trình có lượng khán giả lớn."
+        },
+        {
+          "id": "media-10",
+          "word": "reliable",
+          "ipa": "/rɪˈlaɪəbəl/",
+          "pos": "adjective",
+          "meaning_vi": "đáng tin cậy",
+          "example_en": "Is this news website reliable?",
+          "example_vi": "Trang tin này có đáng tin không?"
+        },
+        {
+          "id": "media-11",
+          "word": "fake news",
+          "ipa": "/ˌfeɪk ˈnuːz/",
+          "pos": "phrase",
+          "meaning_vi": "tin giả",
+          "example_en": "Fake news spreads quickly online.",
+          "example_vi": "Tin giả lan truyền nhanh trên mạng."
+        },
+        {
+          "id": "media-12",
+          "word": "celebrity",
+          "ipa": "/səˈlebrəti/",
+          "pos": "noun",
+          "meaning_vi": "người nổi tiếng",
+          "example_en": "Many brands pay celebrities to promote their products.",
+          "example_vi": "Nhiều thương hiệu trả tiền cho người nổi tiếng để quảng bá sản phẩm."
+        },
+        {
+          "id": "media-13",
+          "word": "promote",
+          "ipa": "/prəˈmoʊt/",
+          "pos": "verb",
+          "meaning_vi": "quảng bá; thăng chức",
+          "example_en": "The singer is promoting her new album.",
+          "example_vi": "Ca sĩ đang quảng bá album mới."
+        },
+        {
+          "id": "media-14",
+          "word": "entertainment",
+          "ipa": "/ˌentɚˈteɪnmənt/",
+          "pos": "noun",
+          "meaning_vi": "sự giải trí",
+          "example_en": "Television is a cheap form of entertainment.",
+          "example_vi": "Tivi là một hình thức giải trí rẻ."
+        },
+        {
+          "id": "media-15",
+          "word": "documentary",
+          "ipa": "/ˌdɑːkjəˈmentɚi/",
+          "pos": "noun",
+          "meaning_vi": "phim tài liệu",
+          "example_en": "I watched a documentary about the ocean.",
+          "example_vi": "Tôi đã xem một bộ phim tài liệu về đại dương."
+        },
+        {
+          "id": "media-16",
+          "word": "article",
+          "ipa": "/ˈɑːrtɪkəl/",
+          "pos": "noun",
+          "meaning_vi": "bài báo",
+          "example_en": "I read an interesting article about sleep.",
+          "example_vi": "Tôi đọc một bài báo thú vị về giấc ngủ."
+        },
+        {
+          "id": "media-17",
+          "word": "opinion",
+          "ipa": "/əˈpɪnjən/",
+          "pos": "noun",
+          "meaning_vi": "ý kiến, quan điểm",
+          "example_en": "In my opinion, advertising should be controlled.",
+          "example_vi": "Theo tôi, quảng cáo nên được kiểm soát."
+        },
+        {
+          "id": "media-18",
+          "word": "persuade",
+          "ipa": "/pɚˈsweɪd/",
+          "pos": "verb",
+          "meaning_vi": "thuyết phục",
+          "example_en": "Adverts try to persuade us to buy things.",
+          "example_vi": "Quảng cáo cố thuyết phục chúng ta mua sắm."
+        },
+        {
+          "id": "media-19",
+          "word": "target",
+          "ipa": "/ˈtɑːrɡɪt/",
+          "pos": "noun, verb",
+          "meaning_vi": "mục tiêu; nhắm tới",
+          "example_en": "This advert targets young people.",
+          "example_vi": "Quảng cáo này nhắm tới người trẻ."
+        },
+        {
+          "id": "media-20",
+          "word": "misleading",
+          "ipa": "/ˌmɪsˈliːdɪŋ/",
+          "pos": "adjective",
+          "meaning_vi": "gây hiểu lầm",
+          "example_en": "Some adverts give misleading information.",
+          "example_vi": "Một số quảng cáo đưa thông tin gây hiểu lầm."
+        }
+      ]
+    },
+    {
+      "id": "awl-sublist-1",
+      "name": "Từ học thuật (AWL Sublist 1)",
+      "description": "60 từ học thuật phổ biến nhất (Academic Word List, nhóm 1). Rất cần cho IELTS Reading và Writing.",
+      "cards": [
+        {
+          "id": "awl1-01",
+          "word": "analyse",
+          "ipa": "/ˈænəlaɪz/",
+          "pos": "verb",
+          "meaning_vi": "phân tích (Mỹ viết: analyze)",
+          "example_en": "Scientists analyse the data carefully.",
+          "example_vi": "Các nhà khoa học phân tích dữ liệu cẩn thận."
+        },
+        {
+          "id": "awl1-02",
+          "word": "approach",
+          "ipa": "/əˈproʊtʃ/",
+          "pos": "noun, verb",
+          "meaning_vi": "cách tiếp cận; tiến lại gần",
+          "example_en": "We need a new approach to this problem.",
+          "example_vi": "Chúng ta cần một cách tiếp cận mới cho vấn đề này."
+        },
+        {
+          "id": "awl1-03",
+          "word": "area",
+          "ipa": "/ˈeriə/",
+          "pos": "noun",
+          "meaning_vi": "lĩnh vực; khu vực",
+          "example_en": "Her area of research is child education.",
+          "example_vi": "Lĩnh vực nghiên cứu của cô ấy là giáo dục trẻ em."
+        },
+        {
+          "id": "awl1-04",
+          "word": "assess",
+          "ipa": "/əˈses/",
+          "pos": "verb",
+          "meaning_vi": "đánh giá",
+          "example_en": "Teachers assess students in many ways.",
+          "example_vi": "Giáo viên đánh giá học sinh bằng nhiều cách."
+        },
+        {
+          "id": "awl1-05",
+          "word": "assume",
+          "ipa": "/əˈsuːm/",
+          "pos": "verb",
+          "meaning_vi": "cho rằng, giả định",
+          "example_en": "I assume you have read the report.",
+          "example_vi": "Tôi cho rằng bạn đã đọc báo cáo."
+        },
+        {
+          "id": "awl1-06",
+          "word": "authority",
+          "ipa": "/əˈθɔːrəti/",
+          "pos": "noun",
+          "meaning_vi": "chính quyền; quyền lực",
+          "example_en": "The local authorities closed the road.",
+          "example_vi": "Chính quyền địa phương đã đóng con đường."
+        },
+        {
+          "id": "awl1-07",
+          "word": "available",
+          "ipa": "/əˈveɪləbəl/",
+          "pos": "adjective",
+          "meaning_vi": "có sẵn; rảnh",
+          "example_en": "Is this book available in the library?",
+          "example_vi": "Thư viện có sẵn cuốn sách này không?"
+        },
+        {
+          "id": "awl1-08",
+          "word": "benefit",
+          "ipa": "/ˈbenɪfɪt/",
+          "pos": "noun, verb",
+          "meaning_vi": "lợi ích; có lợi",
+          "example_en": "Exercise has many health benefits.",
+          "example_vi": "Tập thể dục có nhiều lợi ích cho sức khỏe."
+        },
+        {
+          "id": "awl1-09",
+          "word": "concept",
+          "ipa": "/ˈkɑːnsept/",
+          "pos": "noun",
+          "meaning_vi": "khái niệm",
+          "example_en": "The concept is easy to understand.",
+          "example_vi": "Khái niệm này dễ hiểu."
+        },
+        {
+          "id": "awl1-10",
+          "word": "consist",
+          "ipa": "/kənˈsɪst/",
+          "pos": "verb",
+          "meaning_vi": "(consist of) bao gồm",
+          "example_en": "The test consists of four parts.",
+          "example_vi": "Bài thi gồm bốn phần."
+        },
+        {
+          "id": "awl1-11",
+          "word": "constitute",
+          "ipa": "/ˈkɑːnstətuːt/",
+          "pos": "verb",
+          "meaning_vi": "cấu thành, chiếm",
+          "example_en": "Women constitute half of the workforce.",
+          "example_vi": "Phụ nữ chiếm một nửa lực lượng lao động."
+        },
+        {
+          "id": "awl1-12",
+          "word": "context",
+          "ipa": "/ˈkɑːntekst/",
+          "pos": "noun",
+          "meaning_vi": "ngữ cảnh, bối cảnh",
+          "example_en": "Guess the meaning of the word from the context.",
+          "example_vi": "Hãy đoán nghĩa của từ dựa vào ngữ cảnh."
+        },
+        {
+          "id": "awl1-13",
+          "word": "contract",
+          "ipa": "/ˈkɑːntrækt/",
+          "pos": "noun",
+          "meaning_vi": "hợp đồng",
+          "example_en": "She signed a two-year contract.",
+          "example_vi": "Cô ấy đã ký hợp đồng hai năm."
+        },
+        {
+          "id": "awl1-14",
+          "word": "create",
+          "ipa": "/kriˈeɪt/",
+          "pos": "verb",
+          "meaning_vi": "tạo ra",
+          "example_en": "The project will create many jobs.",
+          "example_vi": "Dự án sẽ tạo ra nhiều việc làm."
+        },
+        {
+          "id": "awl1-15",
+          "word": "data",
+          "ipa": "/ˈdeɪtə/",
+          "pos": "noun",
+          "meaning_vi": "dữ liệu",
+          "example_en": "The data shows a clear increase.",
+          "example_vi": "Dữ liệu cho thấy sự gia tăng rõ rệt."
+        },
+        {
+          "id": "awl1-16",
+          "word": "define",
+          "ipa": "/dɪˈfaɪn/",
+          "pos": "verb",
+          "meaning_vi": "định nghĩa, xác định",
+          "example_en": "How do you define success?",
+          "example_vi": "Bạn định nghĩa thành công như thế nào?"
+        },
+        {
+          "id": "awl1-17",
+          "word": "derive",
+          "ipa": "/dɪˈraɪv/",
+          "pos": "verb",
+          "meaning_vi": "bắt nguồn; thu được",
+          "example_en": "Many English words derive from Latin.",
+          "example_vi": "Nhiều từ tiếng Anh bắt nguồn từ tiếng La-tinh."
+        },
+        {
+          "id": "awl1-18",
+          "word": "distribute",
+          "ipa": "/dɪˈstrɪbjuːt/",
+          "pos": "verb",
+          "meaning_vi": "phân phát, phân phối",
+          "example_en": "Volunteers distributed food to the poor.",
+          "example_vi": "Tình nguyện viên phát đồ ăn cho người nghèo."
+        },
+        {
+          "id": "awl1-19",
+          "word": "economy",
+          "ipa": "/ɪˈkɑːnəmi/",
+          "pos": "noun",
+          "meaning_vi": "nền kinh tế",
+          "example_en": "The economy grew quickly last year.",
+          "example_vi": "Nền kinh tế tăng trưởng nhanh năm ngoái."
+        },
+        {
+          "id": "awl1-20",
+          "word": "environment",
+          "ipa": "/ɪnˈvaɪrənmənt/",
+          "pos": "noun",
+          "meaning_vi": "môi trường",
+          "example_en": "Children need a safe environment to learn.",
+          "example_vi": "Trẻ em cần một môi trường an toàn để học tập."
+        },
+        {
+          "id": "awl1-21",
+          "word": "establish",
+          "ipa": "/ɪˈstæblɪʃ/",
+          "pos": "verb",
+          "meaning_vi": "thành lập, thiết lập",
+          "example_en": "The company was established ten years ago.",
+          "example_vi": "Công ty được thành lập cách đây mười năm."
+        },
+        {
+          "id": "awl1-22",
+          "word": "estimate",
+          "ipa": "/ˈestɪmeɪt/",
+          "pos": "verb, noun",
+          "meaning_vi": "ước tính; sự ước tính",
+          "example_en": "Experts estimate that prices will rise.",
+          "example_vi": "Các chuyên gia ước tính giá sẽ tăng."
+        },
+        {
+          "id": "awl1-23",
+          "word": "evident",
+          "ipa": "/ˈevɪdənt/",
+          "pos": "adjective",
+          "meaning_vi": "rõ ràng, hiển nhiên",
+          "example_en": "It was evident that she was tired.",
+          "example_vi": "Rõ ràng là cô ấy mệt."
+        },
+        {
+          "id": "awl1-24",
+          "word": "export",
+          "ipa": "/ˈekspɔːrt/ (động từ: /ɪkˈspɔːrt/)",
+          "pos": "noun, verb",
+          "meaning_vi": "hàng xuất khẩu; xuất khẩu",
+          "example_en": "Vietnam exports a lot of rice and coffee.",
+          "example_vi": "Việt Nam xuất khẩu nhiều gạo và cà phê."
+        },
+        {
+          "id": "awl1-25",
+          "word": "factor",
+          "ipa": "/ˈfæktɚ/",
+          "pos": "noun",
+          "meaning_vi": "yếu tố",
+          "example_en": "Price is an important factor for buyers.",
+          "example_vi": "Giá cả là yếu tố quan trọng với người mua."
+        },
+        {
+          "id": "awl1-26",
+          "word": "finance",
+          "ipa": "/ˈfaɪnæns/",
+          "pos": "noun, verb",
+          "meaning_vi": "tài chính; cấp vốn",
+          "example_en": "She works in finance.",
+          "example_vi": "Cô ấy làm trong ngành tài chính."
+        },
+        {
+          "id": "awl1-27",
+          "word": "formula",
+          "ipa": "/ˈfɔːrmjələ/",
+          "pos": "noun",
+          "meaning_vi": "công thức",
+          "example_en": "There is no simple formula for success.",
+          "example_vi": "Không có công thức đơn giản nào cho thành công."
+        },
+        {
+          "id": "awl1-28",
+          "word": "function",
+          "ipa": "/ˈfʌŋkʃən/",
+          "pos": "noun, verb",
+          "meaning_vi": "chức năng; hoạt động",
+          "example_en": "What is the function of this button?",
+          "example_vi": "Nút này có chức năng gì?"
+        },
+        {
+          "id": "awl1-29",
+          "word": "identify",
+          "ipa": "/aɪˈdentɪfaɪ/",
+          "pos": "verb",
+          "meaning_vi": "nhận ra, xác định",
+          "example_en": "Can you identify the main problem?",
+          "example_vi": "Bạn có xác định được vấn đề chính không?"
+        },
+        {
+          "id": "awl1-30",
+          "word": "income",
+          "ipa": "/ˈɪnkʌm/",
+          "pos": "noun",
+          "meaning_vi": "thu nhập",
+          "example_en": "Their monthly income is quite low.",
+          "example_vi": "Thu nhập hằng tháng của họ khá thấp."
+        },
+        {
+          "id": "awl1-31",
+          "word": "indicate",
+          "ipa": "/ˈɪndɪkeɪt/",
+          "pos": "verb",
+          "meaning_vi": "cho thấy, chỉ ra",
+          "example_en": "The results indicate a clear trend.",
+          "example_vi": "Kết quả cho thấy một xu hướng rõ ràng."
+        },
+        {
+          "id": "awl1-32",
+          "word": "individual",
+          "ipa": "/ˌɪndɪˈvɪdʒuəl/",
+          "pos": "noun, adjective",
+          "meaning_vi": "cá nhân; riêng lẻ",
+          "example_en": "Each individual has different needs.",
+          "example_vi": "Mỗi cá nhân có nhu cầu khác nhau."
+        },
+        {
+          "id": "awl1-33",
+          "word": "interpret",
+          "ipa": "/ɪnˈtɝːprɪt/",
+          "pos": "verb",
+          "meaning_vi": "hiểu, giải thích; phiên dịch",
+          "example_en": "How do you interpret this chart?",
+          "example_vi": "Bạn hiểu biểu đồ này thế nào?"
+        },
+        {
+          "id": "awl1-34",
+          "word": "involve",
+          "ipa": "/ɪnˈvɑːlv/",
+          "pos": "verb",
+          "meaning_vi": "bao gồm, liên quan",
+          "example_en": "The job involves a lot of travel.",
+          "example_vi": "Công việc này phải đi lại nhiều."
+        },
+        {
+          "id": "awl1-35",
+          "word": "issue",
+          "ipa": "/ˈɪʃuː/",
+          "pos": "noun",
+          "meaning_vi": "vấn đề",
+          "example_en": "Climate change is a global issue.",
+          "example_vi": "Biến đổi khí hậu là vấn đề toàn cầu."
+        },
+        {
+          "id": "awl1-36",
+          "word": "labour",
+          "ipa": "/ˈleɪbɚ/",
+          "pos": "noun",
+          "meaning_vi": "lao động (Mỹ viết: labor)",
+          "example_en": "The factory needs cheap labour.",
+          "example_vi": "Nhà máy cần lao động giá rẻ."
+        },
+        {
+          "id": "awl1-37",
+          "word": "legal",
+          "ipa": "/ˈliːɡəl/",
+          "pos": "adjective",
+          "meaning_vi": "hợp pháp; thuộc pháp luật",
+          "example_en": "Is it legal to park here?",
+          "example_vi": "Đỗ xe ở đây có hợp pháp không?"
+        },
+        {
+          "id": "awl1-38",
+          "word": "legislate",
+          "ipa": "/ˈledʒɪsleɪt/",
+          "pos": "verb",
+          "meaning_vi": "ban hành luật",
+          "example_en": "The government legislated against smoking in public places.",
+          "example_vi": "Chính phủ ban hành luật cấm hút thuốc nơi công cộng."
+        },
+        {
+          "id": "awl1-39",
+          "word": "major",
+          "ipa": "/ˈmeɪdʒɚ/",
+          "pos": "adjective",
+          "meaning_vi": "chính, lớn, quan trọng",
+          "example_en": "Traffic is a major problem in Hanoi.",
+          "example_vi": "Giao thông là vấn đề lớn ở Hà Nội."
+        },
+        {
+          "id": "awl1-40",
+          "word": "method",
+          "ipa": "/ˈmeθəd/",
+          "pos": "noun",
+          "meaning_vi": "phương pháp",
+          "example_en": "This is a good method for learning vocabulary.",
+          "example_vi": "Đây là phương pháp tốt để học từ vựng."
+        },
+        {
+          "id": "awl1-41",
+          "word": "occur",
+          "ipa": "/əˈkɝː/",
+          "pos": "verb",
+          "meaning_vi": "xảy ra",
+          "example_en": "The accident occurred at night.",
+          "example_vi": "Vụ tai nạn xảy ra vào ban đêm."
+        },
+        {
+          "id": "awl1-42",
+          "word": "percent",
+          "ipa": "/pɚˈsent/",
+          "pos": "noun",
+          "meaning_vi": "phần trăm",
+          "example_en": "Fifty percent of the students passed the test.",
+          "example_vi": "Năm mươi phần trăm học sinh đã đỗ bài kiểm tra."
+        },
+        {
+          "id": "awl1-43",
+          "word": "period",
+          "ipa": "/ˈpɪriəd/",
+          "pos": "noun",
+          "meaning_vi": "giai đoạn, thời kỳ",
+          "example_en": "Prices rose during this period.",
+          "example_vi": "Giá tăng trong giai đoạn này."
+        },
+        {
+          "id": "awl1-44",
+          "word": "policy",
+          "ipa": "/ˈpɑːləsi/",
+          "pos": "noun",
+          "meaning_vi": "chính sách",
+          "example_en": "The new policy helps small businesses.",
+          "example_vi": "Chính sách mới giúp các doanh nghiệp nhỏ."
+        },
+        {
+          "id": "awl1-45",
+          "word": "principle",
+          "ipa": "/ˈprɪnsəpəl/",
+          "pos": "noun",
+          "meaning_vi": "nguyên tắc",
+          "example_en": "She has strong moral principles.",
+          "example_vi": "Cô ấy có nguyên tắc đạo đức vững vàng."
+        },
+        {
+          "id": "awl1-46",
+          "word": "proceed",
+          "ipa": "/proʊˈsiːd/",
+          "pos": "verb",
+          "meaning_vi": "tiếp tục, tiến hành",
+          "example_en": "Please proceed to the next question.",
+          "example_vi": "Vui lòng tiếp tục sang câu hỏi tiếp theo."
+        },
+        {
+          "id": "awl1-47",
+          "word": "process",
+          "ipa": "/ˈprɑːses/",
+          "pos": "noun, verb",
+          "meaning_vi": "quá trình; xử lý",
+          "example_en": "Learning a language is a long process.",
+          "example_vi": "Học một ngôn ngữ là một quá trình dài."
+        },
+        {
+          "id": "awl1-48",
+          "word": "require",
+          "ipa": "/rɪˈkwaɪɚ/",
+          "pos": "verb",
+          "meaning_vi": "yêu cầu, cần",
+          "example_en": "This job requires good English.",
+          "example_vi": "Công việc này yêu cầu tiếng Anh tốt."
+        },
+        {
+          "id": "awl1-49",
+          "word": "research",
+          "ipa": "/ˈriːsɝːtʃ/",
+          "pos": "noun, verb",
+          "meaning_vi": "nghiên cứu",
+          "example_en": "Research shows that sleep improves memory.",
+          "example_vi": "Nghiên cứu cho thấy giấc ngủ cải thiện trí nhớ."
+        },
+        {
+          "id": "awl1-50",
+          "word": "respond",
+          "ipa": "/rɪˈspɑːnd/",
+          "pos": "verb",
+          "meaning_vi": "trả lời, phản hồi",
+          "example_en": "He didn't respond to my email.",
+          "example_vi": "Anh ấy không trả lời email của tôi."
+        },
+        {
+          "id": "awl1-51",
+          "word": "role",
+          "ipa": "/roʊl/",
+          "pos": "noun",
+          "meaning_vi": "vai trò",
+          "example_en": "Parents play an important role in education.",
+          "example_vi": "Cha mẹ đóng vai trò quan trọng trong giáo dục."
+        },
+        {
+          "id": "awl1-52",
+          "word": "section",
+          "ipa": "/ˈsekʃən/",
+          "pos": "noun",
+          "meaning_vi": "phần, mục",
+          "example_en": "Read the first section of the text.",
+          "example_vi": "Hãy đọc phần đầu tiên của bài."
+        },
+        {
+          "id": "awl1-53",
+          "word": "sector",
+          "ipa": "/ˈsektɚ/",
+          "pos": "noun",
+          "meaning_vi": "khu vực, lĩnh vực (kinh tế)",
+          "example_en": "He works in the public sector.",
+          "example_vi": "Anh ấy làm việc trong khu vực công."
+        },
+        {
+          "id": "awl1-54",
+          "word": "significant",
+          "ipa": "/sɪɡˈnɪfɪkənt/",
+          "pos": "adjective",
+          "meaning_vi": "đáng kể, quan trọng",
+          "example_en": "There was a significant increase in sales.",
+          "example_vi": "Doanh số tăng đáng kể."
+        },
+        {
+          "id": "awl1-55",
+          "word": "similar",
+          "ipa": "/ˈsɪməlɚ/",
+          "pos": "adjective",
+          "meaning_vi": "tương tự",
+          "example_en": "My sister and I have similar interests.",
+          "example_vi": "Chị tôi và tôi có sở thích giống nhau."
+        },
+        {
+          "id": "awl1-56",
+          "word": "source",
+          "ipa": "/sɔːrs/",
+          "pos": "noun",
+          "meaning_vi": "nguồn",
+          "example_en": "The sun is a source of energy.",
+          "example_vi": "Mặt trời là một nguồn năng lượng."
+        },
+        {
+          "id": "awl1-57",
+          "word": "specific",
+          "ipa": "/spəˈsɪfɪk/",
+          "pos": "adjective",
+          "meaning_vi": "cụ thể",
+          "example_en": "Can you give me a specific example?",
+          "example_vi": "Bạn có thể cho tôi một ví dụ cụ thể không?"
+        },
+        {
+          "id": "awl1-58",
+          "word": "structure",
+          "ipa": "/ˈstrʌktʃɚ/",
+          "pos": "noun",
+          "meaning_vi": "cấu trúc",
+          "example_en": "The structure of the essay is clear.",
+          "example_vi": "Cấu trúc bài luận rõ ràng."
+        },
+        {
+          "id": "awl1-59",
+          "word": "theory",
+          "ipa": "/ˈθiːəri/",
+          "pos": "noun",
+          "meaning_vi": "lý thuyết",
+          "example_en": "In theory, the plan should work.",
+          "example_vi": "Về lý thuyết, kế hoạch này sẽ hiệu quả."
+        },
+        {
+          "id": "awl1-60",
+          "word": "vary",
+          "ipa": "/ˈveri/",
+          "pos": "verb",
+          "meaning_vi": "thay đổi, khác nhau",
+          "example_en": "Prices vary from shop to shop.",
+          "example_vi": "Giá cả khác nhau tùy cửa hàng."
+        }
+      ]
+    }
+  ]
+}
