@@ -123,6 +123,7 @@ cp .env.example .env.local
 > - **Tuyệt đối không** dùng *secret key* (`sb_secret_...`) hay *service_role key* trong app này.
 > - Project cũ chỉ có *anon key* (`eyJ...`) cũng được: đặt vào biến `VITE_SUPABASE_ANON_KEY`.
 > - `.env.local` đã nằm trong `.gitignore`, sẽ không bị đẩy lên GitHub.
+> - File `.env.production` (có trong repo) chứa sẵn URL và publishable key của project Supabase đang dùng, để bản build trên Vercel chạy được ngay mà không cần khai báo biến. Nếu đổi sang project Supabase khác, sửa file này hoặc đặt biến trên Vercel (biến trên Vercel được ưu tiên hơn).
 
 ---
 
@@ -155,9 +156,9 @@ Mở <http://localhost:5173>, nhập email và bấm link trong email. Lần đ�
 1. Đẩy code lên GitHub (repo này).
 2. Vào <https://vercel.com> → **Add New… → Project** → chọn repo.
 3. Vercel tự nhận ra **Vite**, giữ nguyên các thiết lập mặc định (Build Command `npm run build`, Output Directory `dist`).
-4. Mở mục **Environment Variables**, thêm `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` (và `VITE_VAPID_PUBLIC_KEY` nếu dùng thông báo).
+4. (Không bắt buộc) Mở mục **Environment Variables** nếu muốn ghi đè giá trị trong `.env.production`, hoặc thêm `VITE_VAPID_PUBLIC_KEY` khi dùng thông báo.
 5. Bấm **Deploy**. Xong sẽ có địa chỉ dạng `https://ten-app.vercel.app`.
-6. Quay lại Supabase → **Authentication → URL Configuration**: đặt **Site URL** là địa chỉ Vercel và thêm `https://ten-app.vercel.app/**` vào **Redirect URLs**.
+6. Quay lại Supabase → **Authentication → URL Configuration**: đặt **Site URL** là địa chỉ Vercel (bắt buộc, nếu không link đăng nhập trong email sẽ dẫn về `localhost`) và thêm `https://ten-app.vercel.app/**` vào **Redirect URLs**.
 
 Lưu ý:
 
@@ -417,5 +418,6 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
 │   ├── pages/                   # các trang
 │   └── styles/global.css        # giao diện, màu sáng/tối
 ├── vercel.json                  # cấu hình SPA + service worker cho Vercel
+├── .env.production              # URL + publishable key Supabase cho bản build
 └── .env.example                 # mẫu biến môi trường
 ```
