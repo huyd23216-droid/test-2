@@ -27,7 +27,7 @@ Web app học tiếng Anh cá nhân: mỗi ngày tối thiểu 10 phút, hướn
 - Giọng đọc Mỹ, Anh hoặc xen kẽ.
 - Chế độ tối. Cài được ra màn hình chính như một app.
 
-Công nghệ: React + Vite, Supabase (Postgres, Auth magic link, Edge Functions), Web Speech API, Service Worker, deploy trên Vercel.
+Công nghệ: React + Vite, Supabase (Postgres, Auth, Edge Functions), Web Speech API, Service Worker, deploy trên Vercel.
 
 ---
 
@@ -54,18 +54,19 @@ Công nghệ: React + Vite, Supabase (Postgres, Auth magic link, Edge Functions)
 
 ### 1.2. Chạy migration (tạo bảng + Row Level Security)
 
-Có **2 file migration**, chạy **theo đúng thứ tự**:
+Có **3 file migration**, chạy **theo đúng thứ tự**:
 
 1. [`supabase/migrations/20260928000000_init.sql`](supabase/migrations/20260928000000_init.sql): các bảng chính.
 2. [`supabase/migrations/20260929000000_extensions.sql`](supabase/migrations/20260929000000_extensions.sql): FSRS, cài đặt mới, luyện nghe, thông báo.
+3. [`supabase/migrations/20260929120000_allowed_emails.sql`](supabase/migrations/20260929120000_allowed_emails.sql): danh sách email được vào web.
 
 **Cách 1: dùng SQL Editor (dễ nhất)**
 
 1. Trong dashboard, mở **SQL Editor** → **New query**.
 2. Mở file migration thứ nhất, sao chép **toàn bộ** nội dung, dán vào rồi bấm **Run**. Thấy `Success. No rows returned` là xong.
-3. Tạo query mới, làm tương tự với file thứ hai.
-4. Kiểm tra ở **Table Editor**: sẽ có 8 bảng, bảng nào cũng có nhãn RLS đang bật:
-   `user_settings`, `cards`, `connected_speech_progress`, `listening_progress`, `clips`, `dictation_history`, `study_sessions`, `push_subscriptions`.
+3. Tạo query mới, làm tương tự với file thứ hai, rồi file thứ ba.
+4. Kiểm tra ở **Table Editor**: sẽ có 9 bảng, bảng nào cũng có nhãn RLS đang bật:
+   `user_settings`, `cards`, `connected_speech_progress`, `listening_progress`, `clips`, `dictation_history`, `study_sessions`, `push_subscriptions`, `allowed_emails`.
 
 **Cách 2: dùng Supabase CLI**
 
@@ -77,28 +78,23 @@ supabase db push                           # chạy mọi migration còn thiếu
 ```
 
 > - Mỗi migration chỉ chạy **một lần**. Chạy lại sẽ báo lỗi "already exists".
-> - **Đã dùng bản cũ (chỉ có migration 1)?** Chỉ cần chạy thêm file thứ hai, dữ liệu cũ được giữ nguyên. Nếu quên chạy, app sẽ hiện màn hình nhắc bạn.
+> - **Đã dùng bản cũ?** Chỉ cần chạy thêm các file còn thiếu, dữ liệu cũ được giữ nguyên. Nếu quên chạy file thứ hai, app sẽ hiện màn hình nhắc bạn.
 
-### 1.3. Cấu hình đăng nhập bằng email (magic link)
+### 1.3. Cấu hình đăng nhập (email trong danh sách cho phép)
 
-Mở **Authentication** trong dashboard:
+App không dùng mật khẩu hay link trong email: bạn **nhập đúng email đã được mở quyền là vào ngay**. Một Edge Function nhỏ trên Supabase kiểm tra email với bảng `allowed_emails` rồi cấp phiên đăng nhập. Không gửi email nào, nên không vướng giới hạn "vài email mỗi giờ" của Supabase.
 
-1. **URL Configuration**:
-   - **Site URL**: địa chỉ app sau khi deploy, ví dụ `https://tieng-anh.vercel.app`. Tạm thời để `http://localhost:5173` cũng được.
-   - **Redirect URLs**: thêm cả hai dòng
-     - `http://localhost:5173/**`
-     - `https://tieng-anh.vercel.app/**` (thay bằng tên miền Vercel thật của bạn)
-2. **Sign In / Providers → Email**: đảm bảo **Email** đang bật (mặc định là bật).
-3. **(Nên làm) Thêm mã số vào email đăng nhập**: vào **Emails → Templates → Magic Link**, thêm dòng sau vào nội dung email:
+1. **Deploy Edge Function** [`supabase/functions/email-login`](supabase/functions/email-login/index.ts):
 
-   ```html
-   <p>Hoặc nhập mã: <strong>{{ .Token }}</strong></p>
+   ```bash
+   supabase functions deploy email-login --no-verify-jwt
    ```
 
-   Nhờ mã này bạn đăng nhập được kể cả khi link bị mở ở trình duyệt khác. Hay gặp nhất là khi bạn đã thêm app ra **màn hình chính iPhone**: bấm link trong Mail sẽ mở Safari chứ không mở app đã cài, lúc đó chỉ cần gõ mã vào ô "Mã trong email".
-4. **(Nên làm, sau khi bạn đăng nhập lần đầu)** Ở **Sign In / Providers**, tắt **Allow new users to sign up** để người lạ không tự tạo tài khoản được. Dữ liệu vốn đã được RLS tách riêng theo từng người, bước này chỉ để app hoàn toàn là của riêng bạn.
+   Hoặc trong dashboard: **Edge Functions → Deploy a new function → Via Editor**, đặt tên `email-login`, dán nội dung file `index.ts`, và **tắt Verify JWT** trước khi deploy.
+2. **Mở quyền cho email của bạn**: **Table Editor → allowed_emails → Insert row**, điền email (viết thường), bấm **Save**. Muốn cho thêm người khác vào thì thêm dòng; muốn khóa ai thì xóa dòng đó.
+3. **(Nên làm)** Ở **Authentication → Sign In / Providers**, tắt **Allow new users to sign up** để người lạ không tự tạo tài khoản bằng cách khác. Tài khoản cho email trong danh sách vẫn được hàm tạo tự động.
 
-> **Giới hạn gửi email**: máy chủ email mặc định của Supabase chỉ gửi được vài email mỗi giờ. Mỗi thiết bị chỉ cần đăng nhập một lần (phiên được giữ lâu dài) nên thường là đủ. Nếu thấy báo "gửi hơi nhiều lần", hãy đợi ít phút. Muốn gửi nhiều hơn thì cấu hình SMTP riêng trong **Authentication → Emails → SMTP Settings**.
+> **Đánh đổi:** ai biết một email trong danh sách là vào được tài khoản đó, nên cách này chỉ hợp với web học của riêng bạn. Dữ liệu giữa các tài khoản vẫn được RLS tách riêng. Mỗi thiết bị chỉ cần nhập email một lần, app nhớ phiên lâu dài.
 
 ---
 
@@ -136,7 +132,7 @@ npm install
 npm run dev
 ```
 
-Mở <http://localhost:5173>, nhập email và bấm link trong email. Lần đầu đăng nhập, app tự nạp bộ 300 thẻ từ vựng vào tài khoản.
+Mở <http://localhost:5173>, nhập email đã có trong bảng `allowed_emails` và bấm **Vào học**. Lần đầu vào, app tự nạp bộ 300 thẻ từ vựng vào tài khoản.
 
 | Lệnh | Công dụng |
 |---|---|
@@ -145,7 +141,7 @@ Mở <http://localhost:5173>, nhập email và bấm link trong email. Lần đ�
 | `npm run build` | Build bản production vào thư mục `dist/` |
 | `npm run preview` | Chạy thử bản build (có service worker để thử chế độ offline) |
 
-**Thử trên điện thoại cùng Wi-Fi:** chạy `npm run dev -- --host`, mở địa chỉ `http://192.168.x.x:5173` mà Vite in ra, và thêm `http://192.168.x.x:5173/**` vào Redirect URLs của Supabase.
+**Thử trên điện thoại cùng Wi-Fi:** chạy `npm run dev -- --host`, rồi mở địa chỉ `http://192.168.x.x:5173` mà Vite in ra.
 
 > Chế độ offline và thông báo đẩy chỉ hoạt động ở bản build (`npm run build && npm run preview`, hoặc bản trên Vercel), không chạy ở `npm run dev`.
 
@@ -157,8 +153,16 @@ Mở <http://localhost:5173>, nhập email và bấm link trong email. Lần đ�
 2. Vào <https://vercel.com> → **Add New… → Project** → chọn repo.
 3. Vercel tự nhận ra **Vite**, giữ nguyên các thiết lập mặc định (Build Command `npm run build`, Output Directory `dist`).
 4. (Không bắt buộc) Mở mục **Environment Variables** nếu muốn ghi đè giá trị trong `.env.production`, hoặc thêm `VITE_VAPID_PUBLIC_KEY` khi dùng thông báo.
-5. Bấm **Deploy**. Xong sẽ có địa chỉ dạng `https://ten-app.vercel.app`.
-6. Quay lại Supabase → **Authentication → URL Configuration**: đặt **Site URL** là địa chỉ Vercel (bắt buộc, nếu không link đăng nhập trong email sẽ dẫn về `localhost`) và thêm `https://ten-app.vercel.app/**` vào **Redirect URLs**.
+5. Bấm **Deploy**. Xong sẽ có địa chỉ dạng `https://ten-app.vercel.app`. Không cần cấu hình thêm gì trong Supabase.
+
+**Không kết nối được GitHub với Vercel?** Build trên máy rồi kéo thả:
+
+```bash
+npm run build
+cp vercel.json dist/        # để các đường dẫn như /vocab không bị 404 khi tải lại trang
+```
+
+Kéo **thư mục `dist`** (thư mục có sẵn `index.html` bên trong) thả vào <https://vercel.com/new> rồi bấm **Deploy**. Mỗi lần có bản mới, làm lại bước này.
 
 Lưu ý:
 
@@ -168,7 +172,7 @@ Lưu ý:
 
 **Cài lên màn hình chính điện thoại** (dùng như app, mở được cả khi offline):
 
-- iPhone (Safari): nút **Chia sẻ** → **Thêm vào MH chính**. App đã cài có bộ nhớ riêng, nên bạn cần đăng nhập lại bên trong app bằng **mã trong email** (xem mục 1.3).
+- iPhone (Safari): nút **Chia sẻ** → **Thêm vào MH chính**. App đã cài có bộ nhớ riêng, nên bạn nhập lại email một lần bên trong app.
 - Android (Chrome): menu ⋮ → **Thêm vào màn hình chính**.
 
 ---
@@ -378,8 +382,9 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
 | `clips` | Clip YouTube: link, mốc thời gian, câu thoại |
 | `study_sessions` | Mỗi buổi học: ngày, thời lượng, các hoạt động đã làm |
 | `push_subscriptions` | Thiết bị nhận thông báo nhắc học |
+| `allowed_emails` | Email được vào web (chỉ Edge Function `email-login` đọc được) |
 
-- Mọi bảng bật Row Level Security với policy `auth.uid() = user_id`.
+- Mọi bảng bật Row Level Security. Bảng dữ liệu học dùng policy `auth.uid() = user_id`; bảng `allowed_emails` không có policy nào nên web và người lạ không đọc được.
 - **Cài đặt → Xuất dữ liệu (JSON)** tải toàn bộ dữ liệu về máy để sao lưu.
 - **Khôi phục từ file sao lưu** ghi lại dữ liệu từ file đó, kể cả vào tài khoản mới. Chạy lại nhiều lần cũng không bị trùng.
 
@@ -404,6 +409,7 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
 ```
 ├── supabase/
 │   ├── migrations/              # SQL tạo bảng + RLS (chạy theo thứ tự)
+│   ├── functions/email-login    # Edge Function cho vào web bằng email trong danh sách
 │   ├── functions/send-reminders # Edge Function gửi thông báo nhắc học
 │   └── snippets/                # SQL mẫu lên lịch cron
 ├── public/                      # icon, manifest, service worker (sw.js)
