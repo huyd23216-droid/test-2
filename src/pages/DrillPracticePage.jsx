@@ -36,7 +36,7 @@ function DrillQuestion({ item, rate, onRateChange, onDone, doneLabel }) {
   return (
     <div className="exercise">
       <div className="prompt">
-        <SpeakButton text={item.options[spoken]} rate={rate} variant="big" label="Nghe câu" />
+        <SpeakButton text={item.options[spoken]} rate={rate} variant="big" label="Nghe câu" prefetch />
         {onRateChange && <RateSelector value={rate} onChange={onRateChange} />}
         <p className="hint">Bạn nghe thấy câu nào?</p>
       </div>

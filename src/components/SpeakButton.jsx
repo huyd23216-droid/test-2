@@ -1,11 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon.jsx'
-import { ACCENTS, accentFor, getDefaultAccent, isSpeechSupported, speak, stopSpeaking } from '../lib/tts.js'
+import { ACCENTS, accentFor, canSpeak, getDefaultAccent, prepareSpeech, speak, stopSpeaking } from '../lib/tts.js'
 
 // Nút đọc câu tiếng Anh. variant: "icon" (tròn nhỏ) | "big" (nút to cho bài nghe)
-export default function SpeakButton({ text, rate = 1, label = 'Nghe', variant = 'default', onPlay, className = '' }) {
+// prefetch: chuẩn bị trước giọng Google cho câu này để bấm là phát ngay
+export default function SpeakButton({
+  text,
+  rate = 1,
+  label = 'Nghe',
+  variant = 'default',
+  onPlay,
+  prefetch = false,
+  className = '',
+}) {
   const [speaking, setSpeaking] = useState(false)
   const speakingRef = useRef(false)
+
+  useEffect(() => {
+    if (prefetch) prepareSpeech(text)
+  }, [prefetch, text])
 
   // Rời màn hình thì dừng câu mà chính nút này đang đọc
   useEffect(
@@ -20,7 +33,7 @@ export default function SpeakButton({ text, rate = 1, label = 'Nghe', variant = 
     setSpeaking(v)
   }
 
-  if (!isSpeechSupported()) {
+  if (!canSpeak()) {
     return variant === 'big' ? (
       <p className="hint">Trình duyệt này chưa hỗ trợ đọc tiếng Anh. Bạn thử Safari hoặc Chrome nhé.</p>
     ) : null

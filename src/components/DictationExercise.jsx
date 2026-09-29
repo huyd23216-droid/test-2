@@ -79,6 +79,7 @@ export default function DictationExercise({
               variant="big"
               label={plays === 0 ? 'Nghe câu' : 'Nghe lại'}
               onPlay={() => setPlays((n) => n + 1)}
+              prefetch
             />
             {onRateChange && <RateSelector value={rate} onChange={onRateChange} />}
             <p className="hint">

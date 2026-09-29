@@ -1,5 +1,7 @@
-// Đọc tiếng Anh bằng Web Speech API (speechSynthesis).
+// Đọc tiếng Anh: ưu tiên giọng Google Chirp 3 HD (cloudTts.js), không được thì
+// dùng Web Speech API (speechSynthesis) có sẵn trên thiết bị.
 // Giọng: Mỹ (en-US), Anh (en-GB) hoặc xen kẽ (mỗi câu cố định một giọng).
+import { canUseCloud, ensureCloudAudio, forgetCloudAudio, readyCloudUrl } from './cloudTts.js'
 
 export const ACCENTS = {
   us: { lang: 'en-US', label: 'Giọng Mỹ' },
@@ -79,19 +81,93 @@ export function pickVoice(accent = 'us') {
   return voices.find((v) => v.localService) ?? voices[0]
 }
 
+// Đọc được bằng giọng Google hoặc giọng của máy
+export function canSpeak() {
+  return isSpeechSupported() || canUseCloud()
+}
+
+// Chuẩn bị trước file giọng Google cho các câu sắp đọc, để bấm là phát ngay
+export function prepareSpeech(texts) {
+  if (!canUseCloud()) return
+  for (const text of [].concat(texts)) {
+    if (text) ensureCloudAudio(text, accentFor(text)).catch(() => {})
+  }
+}
+
+// Một phần tử phát dùng chung: iPhone chỉ cho phát tiếp trên phần tử đã từng
+// được phát bằng một lần chạm
+let audio = null
+function sharedAudio() {
+  if (!audio) audio = new Audio()
+  return audio
+}
+
 export function stopSpeaking() {
-  if (!isSpeechSupported()) return
   current?.finish()
-  window.speechSynthesis.cancel()
+  audio?.pause()
+  if (isSpeechSupported()) window.speechSynthesis.cancel()
 }
 
 export function speak(text, { rate = 1, accent, onStart, onEnd } = {}) {
-  if (!isSpeechSupported() || !text) {
+  if (!text || !canSpeak()) {
     onEnd?.()
     return
   }
-  const synth = window.speechSynthesis
   const which = accentFor(text, accent ?? defaultAccent)
+  // Báo cho nút đang đọc trước đó biết là đã dừng
+  current?.finish()
+  audio?.pause()
+  if (canUseCloud()) speakCloud(text, which, { rate, onStart, onEnd })
+  else speakDevice(text, which, { rate, onStart, onEnd })
+}
+
+function speakCloud(text, which, options) {
+  const el = sharedAudio()
+  const entry = { done: false }
+  const detach = () => {
+    entry.done = true
+    el.onended = null
+    el.onerror = null
+    if (current === entry) current = null
+  }
+  entry.finish = () => {
+    if (entry.done) return
+    detach()
+    el.pause()
+    options.onEnd?.()
+  }
+  // Giọng Google lỗi (mất mạng, chưa cài khóa…): đọc bằng giọng của máy
+  const fallBack = () => {
+    if (entry.done || current !== entry) return
+    detach()
+    if (isSpeechSupported()) speakDevice(text, which, options)
+    else options.onEnd?.()
+  }
+  const play = (url) => {
+    if (entry.done || current !== entry) return
+    el.onended = entry.finish
+    // Không tải được file (vd đã bị xóa trên máy chủ): quên đi để lần sau tạo lại
+    el.onerror = () => {
+      forgetCloudAudio(text, which)
+      fallBack()
+    }
+    // Đổi src sẽ đặt lại tốc độ về defaultPlaybackRate, nên đặt cả hai
+    el.defaultPlaybackRate = options.rate
+    el.src = url
+    el.playbackRate = options.rate
+    el.preservesPitch = true
+    el.play().then(() => {
+      if (!entry.done) options.onStart?.()
+    }, fallBack)
+  }
+  current = entry
+  const ready = readyCloudUrl(text, which)
+  if (ready) play(ready)
+  else ensureCloudAudio(text, which).then(play, fallBack)
+}
+
+function speakDevice(text, which, { rate = 1, onStart, onEnd }) {
+  const synth = window.speechSynthesis
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.lang = ACCENTS[which].lang
   utterance.rate = rate

@@ -54,17 +54,18 @@ Công nghệ: React + Vite, Supabase (Postgres, Auth, Edge Functions), Web Speec
 
 ### 1.2. Chạy migration (tạo bảng + Row Level Security)
 
-Có **3 file migration**, chạy **theo đúng thứ tự**:
+Có **4 file migration**, chạy **theo đúng thứ tự**:
 
 1. [`supabase/migrations/20260928000000_init.sql`](supabase/migrations/20260928000000_init.sql): các bảng chính.
 2. [`supabase/migrations/20260929000000_extensions.sql`](supabase/migrations/20260929000000_extensions.sql): FSRS, cài đặt mới, luyện nghe, thông báo.
 3. [`supabase/migrations/20260929120000_allowed_emails.sql`](supabase/migrations/20260929120000_allowed_emails.sql): danh sách email được vào web.
+4. [`supabase/migrations/20260929130000_tts_cache.sql`](supabase/migrations/20260929130000_tts_cache.sql): kho lưu file giọng Google (xem mục 1.4).
 
 **Cách 1: dùng SQL Editor (dễ nhất)**
 
 1. Trong dashboard, mở **SQL Editor** → **New query**.
 2. Mở file migration thứ nhất, sao chép **toàn bộ** nội dung, dán vào rồi bấm **Run**. Thấy `Success. No rows returned` là xong.
-3. Tạo query mới, làm tương tự với file thứ hai, rồi file thứ ba.
+3. Tạo query mới, làm tương tự lần lượt với các file còn lại.
 4. Kiểm tra ở **Table Editor**: sẽ có 9 bảng, bảng nào cũng có nhãn RLS đang bật:
    `user_settings`, `cards`, `connected_speech_progress`, `listening_progress`, `clips`, `dictation_history`, `study_sessions`, `push_subscriptions`, `allowed_emails`.
 
@@ -95,6 +96,30 @@ App không dùng mật khẩu hay link trong email: bạn **nhập đúng email 
 3. **(Nên làm)** Ở **Authentication → Sign In / Providers**, tắt **Allow new users to sign up** để người lạ không tự tạo tài khoản bằng cách khác. Tài khoản cho email trong danh sách vẫn được hàm tạo tự động.
 
 > **Đánh đổi:** ai biết một email trong danh sách là vào được tài khoản đó, nên cách này chỉ hợp với web học của riêng bạn. Dữ liệu giữa các tài khoản vẫn được RLS tách riêng. Mỗi thiết bị chỉ cần nhập email một lần, app nhớ phiên lâu dài.
+
+### 1.4. Giọng Google Chirp 3 HD (tùy chọn, nên làm)
+
+Mặc định app đọc bằng giọng có sẵn của thiết bị, chất lượng tùy máy. Bật giọng **Google Chirp 3 HD** thì máy nào cũng nghe cùng một giọng rất tự nhiên (có giọng Mỹ và Anh, nam và nữ).
+
+- **Chi phí:** Google miễn phí 1 triệu ký tự mỗi tháng, sau đó 30 USD / 1 triệu ký tự. Toàn bộ nội dung có sẵn của app, đọc cả giọng Mỹ lẫn Anh, chỉ khoảng 48.000 ký tự.
+- **Cách hoạt động:** Edge Function [`tts`](supabase/functions/tts/index.ts) gọi Google cho mỗi câu **một lần**, lưu file MP3 vào bucket `tts-cache` của Supabase Storage. Những lần sau app phát lại file đã lưu, không gọi Google nữa. Mất mạng hoặc Google lỗi thì app tự đọc bằng giọng của thiết bị.
+
+Cài đặt một lần:
+
+1. **Google Cloud:** vào <https://console.cloud.google.com>, tạo project, bật **Billing** (Google yêu cầu thẻ kể cả khi chỉ dùng phần miễn phí).
+2. Bật **Cloud Text-to-Speech API**: <https://console.cloud.google.com/apis/library/texttospeech.googleapis.com> → **Enable**.
+3. Tạo khóa: **APIs & Services → Credentials → Create credentials → API key**. Mở khóa vừa tạo, ở **API restrictions** chọn **Restrict key → Cloud Text-to-Speech API**, để **Application restrictions = None** (khóa được gọi từ máy chủ Supabase, không phải từ trình duyệt), rồi **Save**.
+4. **(Nên làm)** **Billing → Budgets & alerts**: đặt ngân sách khoảng 1 USD để được báo nếu có phát sinh.
+5. **Supabase:** chạy migration thứ 4 (tạo bucket `tts-cache`), rồi vào **Edge Functions → Secrets**, thêm secret `GOOGLE_TTS_API_KEY` = khóa ở bước 3.
+6. Deploy hàm:
+
+   ```bash
+   supabase functions deploy tts --no-verify-jwt
+   ```
+
+   Hàm tự kiểm tra người gọi đã đăng nhập, nên tắt Verify JWT là an toàn.
+
+Kiểm tra: mở app → **Cài đặt → Giọng đọc**. Thấy dòng "Giọng Google Chirp 3 HD đã sẵn sàng" là xong. Ở đó bạn chọn được giọng (Aoede, Kore, Charon, Puck…) cho giọng Mỹ và giọng Anh, hoặc chuyển về **Của máy**.
 
 ---
 
@@ -394,11 +419,12 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
   - [Free Dictionary API](https://dictionaryapi.dev/): phiên âm, loại từ, câu ví dụ.
   - [MyMemory](https://mymemory.translated.net/): dịch nghĩa. Nghĩa dịch máy chỉ là gợi ý, bạn nên xem lại.
 - **YouTube** (clip thật) và **YouGlish** (nghe người thật nói) mở trực tiếp từ trình duyệt của bạn.
+- **Google Cloud Text-to-Speech** (giọng Chirp 3 HD, nếu bạn bật ở mục 1.4) được gọi từ Edge Function `tts`, khóa Google nằm trong Secrets của Supabase.
 
 ### Giới hạn
 
-- Giọng đọc phụ thuộc thiết bị:
-  - Mac/iPhone có giọng Mỹ (Samantha, Ava…) và Anh (Daniel, Kate…) khá tốt.
+- Khi chưa bật giọng Google (hoặc đang mất mạng), giọng đọc phụ thuộc thiết bị:
+  - Mac/iPhone có giọng Mỹ (Samantha, Ava…) và Anh (Daniel, Kate…) khá tốt. Windows nên dùng Edge (giọng Aria, Jenny).
   - Thiếu giọng Anh thì tải thêm trong Cài đặt → Trợ năng → Nội dung được đọc.
 - Clip YouTube chỉ phát trong app được khi chủ video cho phép nhúng; nếu không, dùng nút mở trên YouTube.
 
@@ -410,6 +436,7 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
 ├── supabase/
 │   ├── migrations/              # SQL tạo bảng + RLS (chạy theo thứ tự)
 │   ├── functions/email-login    # Edge Function cho vào web bằng email trong danh sách
+│   ├── functions/tts            # Edge Function tạo + lưu giọng Google Chirp 3 HD
 │   ├── functions/send-reminders # Edge Function gửi thông báo nhắc học
 │   └── snippets/                # SQL mẫu lên lịch cron
 ├── public/                      # icon, manifest, service worker (sw.js)

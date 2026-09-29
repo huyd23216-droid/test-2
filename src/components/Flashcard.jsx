@@ -4,12 +4,18 @@ import YouGlishButton from './YouGlishButton.jsx'
 import { GRADES, GRADE_LABELS, nextIntervals } from '../lib/srs.js'
 import { describeInterval, todayString } from '../lib/dates.js'
 import { posLabel } from '../lib/labels.js'
+import { prepareSpeech } from '../lib/tts.js'
 
 // Thẻ từ vựng: mặt trước là từ + nút nghe, lật ra mặt sau để xem nghĩa và chấm.
 // Trên máy tính: phím Space để lật, phím 1–4 để chấm.
 export default function Flashcard({ card, rate, retention, onGrade, badge }) {
   const [flipped, setFlipped] = useState(false)
   const intervals = nextIntervals(card, todayString(), retention)
+
+  // Chuẩn bị sẵn giọng đọc cho từ và câu ví dụ ngay khi thẻ hiện ra
+  useEffect(() => {
+    prepareSpeech([card.word, card.example_en])
+  }, [card.word, card.example_en])
 
   useEffect(() => {
     const onKey = (e) => {
