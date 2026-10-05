@@ -123,11 +123,43 @@ export function fetchStudySessions(userId) {
   )
 }
 
+// ---------- Bài tập ----------
+// Chưa chạy migration bài tập thì trả về null (app vẫn chạy, mục Bài tập báo cần cài thêm)
+const isMissingTable = (err) => err.status === 404 || err.code === '42P01' || err.code === 'PGRST205'
+
+async function optional(promise) {
+  try {
+    return await promise
+  } catch (err) {
+    if (isMissingTable(err)) return null
+    throw err
+  }
+}
+
+export function fetchHomeworkProgress(userId) {
+  return optional(
+    fetchAll(() => supabase.from('homework_progress').select('*').eq('user_id', userId).order('item_key')),
+  )
+}
+
+export function fetchHomeworkSessions(userId) {
+  return optional(
+    fetchAll(() =>
+      supabase
+        .from('homework_sessions')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .order('id'),
+    ),
+  )
+}
+
 // ---------- Xuất / khôi phục dữ liệu ----------
 export async function exportAllData(user) {
   const all = (table, order) =>
     fetchAll(() => supabase.from(table).select('*').eq('user_id', user.id).order(order).order(order === 'id' ? 'created_at' : 'id'))
-  const [settings, cards, connected, listening, dictation, sessions, clips] = await Promise.all([
+  const [settings, cards, connected, listening, dictation, sessions, clips, hwProgress, hwSessions] = await Promise.all([
     supabase.from('user_settings').select('*').eq('user_id', user.id).maybeSingle().then(unwrap),
     all('cards', 'position'),
     fetchAll(() => supabase.from('connected_speech_progress').select('*').eq('user_id', user.id).order('item_id')),
@@ -135,10 +167,12 @@ export async function exportAllData(user) {
     all('dictation_history', 'created_at'),
     all('study_sessions', 'study_date'),
     all('clips', 'created_at'),
+    fetchHomeworkProgress(user.id),
+    fetchHomeworkSessions(user.id),
   ])
   return {
     app: 'tieng-anh-moi-ngay',
-    format_version: 2,
+    format_version: 3,
     exported_at: new Date().toISOString(),
     user: { id: user.id, email: user.email },
     user_settings: settings,
@@ -148,6 +182,8 @@ export async function exportAllData(user) {
     dictation_history: dictation,
     study_sessions: sessions,
     clips,
+    homework_progress: hwProgress ?? [],
+    homework_sessions: hwSessions ?? [],
   }
 }
 

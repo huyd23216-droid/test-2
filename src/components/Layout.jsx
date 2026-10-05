@@ -11,6 +11,7 @@ const NAV = [
     icon: 'headphones',
     match: (p) => ['/listen', '/connected', '/dictation'].some((x) => p.startsWith(x)),
   },
+  { to: '/homework', label: 'Bài tập', icon: 'task', match: (p) => p.startsWith('/homework') },
   { to: '/stats', label: 'Tiến độ', icon: 'chart', match: (p) => p.startsWith('/stats') },
   { to: '/settings', label: 'Cài đặt', icon: 'settings', match: (p) => p.startsWith('/settings') },
 ]

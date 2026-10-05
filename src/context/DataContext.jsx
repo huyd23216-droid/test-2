@@ -16,6 +16,7 @@ import { buildDictationStats } from '../lib/planner.js'
 import { createSyncQueue, isNetworkError } from '../lib/syncQueue.js'
 import { idbGet, idbSet } from '../lib/idb.js'
 import { uuid } from '../lib/ids.js'
+import { nextProgress, nextStat } from '../lib/homework.js'
 import { MASTERED_INTERVAL_DAYS, DEFAULT_SETTINGS } from '../config.js'
 
 const DataContext = createContext(null)
@@ -47,13 +48,15 @@ async function fetchUserData(userId, onSeeding) {
     throw new MigrationMissingError('Chưa chạy migration 20260929000000_extensions.sql')
   }
   const settings = { ...DEFAULT_SETTINGS, ...rawSettings }
-  let [cards, csRows, listening, history, sessions, clips] = await Promise.all([
+  let [cards, csRows, listening, history, sessions, clips, homework, homeworkSessions] = await Promise.all([
     db.fetchCards(userId),
     db.fetchConnectedSpeechProgress(userId),
     db.fetchListeningProgress(userId),
     db.fetchDictationHistory(userId),
     db.fetchStudySessions(userId),
     db.fetchClips(userId),
+    db.fetchHomeworkProgress(userId),
+    db.fetchHomeworkSessions(userId),
   ])
 
   const haveSeeds = new Set(cards.map((c) => c.seed_id).filter(Boolean))
@@ -69,7 +72,19 @@ async function fetchUserData(userId, onSeeding) {
     cards = await db.fetchCards(userId)
   }
 
-  return { settings, cards, csRows, listening, history, sessions, clips }
+  return {
+    settings,
+    cards,
+    csRows,
+    listening,
+    history,
+    sessions,
+    clips,
+    // null = chưa chạy migration bài tập
+    homeworkReady: homework !== null && homeworkSessions !== null,
+    homework: homework ?? [],
+    homeworkSessions: homeworkSessions ?? [],
+  }
 }
 
 export function DataProvider({ children }) {
@@ -88,14 +103,17 @@ export function DataProvider({ children }) {
   const [history, setHistory] = useState([])
   const [sessions, setSessions] = useState([])
   const [clips, setClips] = useState([])
+  const [homework, setHomework] = useState([])
+  const [homeworkSessions, setHomeworkSessions] = useState([])
+  const [homeworkReady, setHomeworkReady] = useState(true)
   const [today, setToday] = useState(todayString)
 
   const lastLoadedAt = useRef(0)
   const loading = useRef(false)
   const latest = useRef({})
   useEffect(() => {
-    latest.current = { settings, cards, csRows, listening }
-  }, [settings, cards, csRows, listening])
+    latest.current = { settings, cards, csRows, listening, homework }
+  }, [settings, cards, csRows, listening, homework])
 
   const [queue] = useState(() =>
     createSyncQueue(userId, {
@@ -115,6 +133,9 @@ export function DataProvider({ children }) {
     setHistory(data.history ?? [])
     setSessions(data.sessions ?? [])
     setClips(data.clips ?? [])
+    setHomework(data.homework ?? [])
+    setHomeworkSessions(data.homeworkSessions ?? [])
+    setHomeworkReady(data.homeworkReady ?? true)
     setOffline(fromCache)
     if (!fromCache) lastLoadedAt.current = Date.now()
     setStatus('ready')
@@ -196,10 +217,25 @@ export function DataProvider({ children }) {
   useEffect(() => {
     if (status !== 'ready') return
     const t = setTimeout(() => {
-      idbSet(snapshotKey, { settings, cards, csRows, listening, history, sessions, clips, saved_at: Date.now() })
+      idbSet(snapshotKey, {
+        settings,
+        cards,
+        csRows,
+        listening,
+        history,
+        sessions,
+        clips,
+        homework,
+        homeworkSessions,
+        homeworkReady,
+        saved_at: Date.now(),
+      })
     }, 800)
     return () => clearTimeout(t)
-  }, [status, snapshotKey, settings, cards, csRows, listening, history, sessions, clips])
+  }, [
+    status, snapshotKey, settings, cards, csRows, listening, history, sessions, clips, homework, homeworkSessions,
+    homeworkReady,
+  ])
 
   // Đồng bộ khi quay lại app / có mạng lại + cập nhật "hôm nay" khi qua ngày mới
   useEffect(() => {
@@ -487,6 +523,39 @@ export function DataProvider({ children }) {
     [queue],
   )
 
+  // ---------- Bài tập ----------
+  // Ghi kết quả một câu: câu gắn với thẻ/từ/tên thì xếp lịch làm lại,
+  // câu số-ngày-giờ (ngẫu nhiên) thì chỉ cộng thống kê theo dạng
+  const recordHomework = useCallback(
+    (item, result) => {
+      const key = item.stat ?? item.key
+      const prev = latest.current.homework.find((r) => r.item_key === key)
+      const next = item.stat ? nextStat(prev, result) : nextProgress(prev, result, todayString())
+      const row = { user_id: userId, item_key: key, kind: item.type, ...next }
+      setHomework((list) => replaceBy(list, row, 'item_key'))
+      latest.current.homework = replaceBy(latest.current.homework, row, 'item_key')
+      queue.enqueue({
+        table: 'homework_progress',
+        action: 'upsert',
+        values: row,
+        onConflict: 'user_id,item_key',
+        key: `hw:${key}`,
+      })
+      return row
+    },
+    [queue, userId],
+  )
+
+  const saveHomeworkSession = useCallback(
+    (fields) => {
+      const row = { id: uuid(), user_id: userId, created_at: new Date().toISOString(), ...fields }
+      setHomeworkSessions((list) => [row, ...list])
+      queue.enqueue({ table: 'homework_sessions', action: 'upsert', values: row, key: `hw-session:${row.id}` })
+      return row
+    },
+    [queue, userId],
+  )
+
   // ---------- Buổi học ----------
   const saveSession = useCallback(
     (row) => {
@@ -517,6 +586,7 @@ export function DataProvider({ children }) {
   const csProgress = useMemo(() => new Map(csRows.map((r) => [r.item_id, r])), [csRows])
   const listeningProgress = useMemo(() => new Map(listening.map((r) => [r.item_id, r])), [listening])
   const dictationStats = useMemo(() => buildDictationStats(history), [history])
+  const homeworkProgress = useMemo(() => new Map(homework.map((r) => [r.item_key, r])), [homework])
 
   const stats = useMemo(() => {
     const dueCards = cards
@@ -578,6 +648,11 @@ export function DataProvider({ children }) {
       removeClip,
       sessions,
       saveSession,
+      homeworkReady,
+      homeworkProgress,
+      homeworkSessions,
+      recordHomework,
+      saveHomeworkSession,
       savePushSubscription,
       removePushSubscription,
       stats,
@@ -585,8 +660,9 @@ export function DataProvider({ children }) {
     [
       status, error, offline, pending, load, today, settings, updateSettings, cards, gradeCard, addCard, addCards,
       editCard, removeCard, enableSet, disableSet, csProgress, recordConnectedSpeech, listeningProgress, recordListening, history,
-      dictationStats, recordDictation, clips, addClip, editClip, removeClip, sessions, saveSession,
-      savePushSubscription, removePushSubscription, stats,
+      dictationStats, recordDictation, clips, addClip, editClip, removeClip, sessions, saveSession, homeworkReady,
+      homeworkProgress, homeworkSessions, recordHomework, saveHomeworkSession, savePushSubscription,
+      removePushSubscription, stats,
     ],
   )
 

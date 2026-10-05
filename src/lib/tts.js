@@ -87,10 +87,10 @@ export function canSpeak() {
 }
 
 // Chuẩn bị trước file giọng Google cho các câu sắp đọc, để bấm là phát ngay
-export function prepareSpeech(texts) {
+export function prepareSpeech(texts, accent) {
   if (!canUseCloud()) return
   for (const text of [].concat(texts)) {
-    if (text) ensureCloudAudio(text, accentFor(text)).catch(() => {})
+    if (text) ensureCloudAudio(text, accentFor(text, accent ?? defaultAccent)).catch(() => {})
   }
 }
 

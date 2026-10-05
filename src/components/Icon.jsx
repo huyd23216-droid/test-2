@@ -23,6 +23,7 @@ const PATHS = {
   ear: 'M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-6 0M10 9a2 2 0 0 1 4 0',
   chart: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
   headphones: 'M4 15v-3a8 8 0 0 1 16 0v3M4 15h3v5H5a1 1 0 0 1-1-1zM20 15h-3v5h2a1 1 0 0 0 1-1z',
+  task: 'M9 3h6v3H9zM8 4.5H5V21h14V4.5h-3M8.5 13.5l2.5 2.5 4.5-5',
 }
 
 export default function Icon({ name, size = 22, className = '', title }) {

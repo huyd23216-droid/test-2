@@ -17,6 +17,13 @@ const COLUMNS = {
     'wrong_words', 'missing_words', 'extra_words', 'score', 'replays', 'rate', 'duration_seconds', 'created_at',
   ],
   study_sessions: ['id', 'study_date', 'kind', 'started_at', 'ended_at', 'duration_seconds', 'activities', 'created_at'],
+  homework_progress: [
+    'item_key', 'kind', 'box', 'correct_count', 'wrong_count', 'last_result', 'due_on', 'last_seen_at',
+  ],
+  homework_sessions: [
+    'id', 'study_date', 'mode', 'type', 'total', 'correct_count', 'close_count', 'wrong_count', 'duration_seconds',
+    'items', 'created_at',
+  ],
 }
 
 const SETTINGS_COLUMNS = [
@@ -71,11 +78,21 @@ export function prepareRestore(data, userId) {
       },
       { table: 'dictation_history', rows: dictation },
       { table: 'study_sessions', rows: rowsOf('study_sessions').map((r) => own(pick(r, COLUMNS.study_sessions))) },
+      {
+        table: 'homework_progress',
+        rows: rowsOf('homework_progress').map((r) => own(pick(r, COLUMNS.homework_progress))),
+        onConflict: 'user_id,item_key',
+      },
+      {
+        table: 'homework_sessions',
+        rows: rowsOf('homework_sessions').map((r) => own(pick(r, COLUMNS.homework_sessions))),
+      },
     ].filter((t) => t.rows.length > 0),
   }
 }
 
 export function summarizeBackup(data) {
   const n = (key) => (Array.isArray(data[key]) ? data[key].length : 0)
-  return `${n('cards')} thẻ, ${n('clips')} clip, ${n('dictation_history')} lần chép chính tả, ${n('study_sessions')} buổi học`
+  const homework = n('homework_sessions') ? `, ${n('homework_sessions')} bài tập` : ''
+  return `${n('cards')} thẻ, ${n('clips')} clip, ${n('dictation_history')} lần chép chính tả, ${n('study_sessions')} buổi học${homework}`
 }

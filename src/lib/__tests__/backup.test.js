@@ -10,6 +10,23 @@ describe('backup restore', () => {
     expect(validateBackup({ app: 'tieng-anh-moi-ngay', cards: [] })).toBe(null)
   })
 
+  it('restores homework progress and sessions for the current account', () => {
+    const plan = prepareRestore(
+      {
+        app: 'tieng-anh-moi-ngay',
+        cards: [],
+        homework_progress: [{ user_id: 'old', item_key: 'meaning:c1', kind: 'meaning', box: 2, updated_at: 'x' }],
+        homework_sessions: [{ id: 'h1', user_id: 'old', study_date: '2026-10-05', mode: 'daily', total: 12, items: [] }],
+      },
+      ME,
+    )
+    const progress = plan.tables.find((t) => t.table === 'homework_progress')
+    expect(progress).toMatchObject({ onConflict: 'user_id,item_key' })
+    expect(progress.rows).toEqual([{ user_id: ME, item_key: 'meaning:c1', kind: 'meaning', box: 2 }])
+    const sessions = plan.tables.find((t) => t.table === 'homework_sessions')
+    expect(sessions.rows[0]).toMatchObject({ id: 'h1', user_id: ME, mode: 'daily', total: 12 })
+  })
+
   it('reassigns ownership, matches seed cards by seed_id and drops unknown columns', () => {
     const plan = prepareRestore(
       {

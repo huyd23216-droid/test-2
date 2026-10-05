@@ -18,6 +18,24 @@ function greeting() {
   return 'Chào buổi tối'
 }
 
+function HomeworkCard({ done }) {
+  return (
+    <Link to="/homework" className="card hw-home">
+      <span className="hw-home-icon" aria-hidden="true">
+        <Icon name="task" size={24} />
+      </span>
+      <span>
+        <strong>Bài tập hôm nay</strong>
+        <small className="muted">
+          {done
+            ? `Đã xong, đúng ${done.correct_count}/${done.total} câu. Làm thêm nếu bạn muốn nhé.`
+            : 'Khoảng 12 câu từ những gì bạn đã học, chừng 10 phút.'}
+        </small>
+      </span>
+    </Link>
+  )
+}
+
 function StreakCard({ streak, todayMinutes }) {
   const { streak: days, studiedToday, restDaysLeft } = streak
   let message
@@ -58,7 +76,8 @@ function StreakCard({ streak, todayMinutes }) {
 }
 
 export default function HomePage() {
-  const { stats } = useData()
+  const { stats, homeworkSessions, today } = useData()
+  const homeworkDone = homeworkSessions.find((s) => s.study_date === today && s.mode === 'daily')
   const reviewCount = Math.min(stats.dueCards.length, DAILY_SESSION_MAX_REVIEWS)
 
   const parts = []
@@ -82,6 +101,8 @@ export default function HomePage() {
       </Link>
 
       <StreakCard streak={stats.streak} todayMinutes={stats.todayMinutes} />
+
+      <HomeworkCard done={homeworkDone} />
 
       <section>
         <h2 className="section-title">Tiến độ của bạn</h2>
@@ -122,6 +143,13 @@ export default function HomePage() {
             <span>
               <strong>Luyện nghe thêm</strong>
               <small>Điền từ còn thiếu, phân biệt âm dễ nhầm</small>
+            </span>
+          </Link>
+          <Link to="/homework" className="module">
+            <Icon name="task" />
+            <span>
+              <strong>Bài tập</strong>
+              <small>Gõ từ, điền câu, nghe số và đánh vần kiểu IELTS, sổ lỗi</small>
             </span>
           </Link>
         </div>

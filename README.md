@@ -54,20 +54,21 @@ Công nghệ: React + Vite, Supabase (Postgres, Auth, Edge Functions), Web Speec
 
 ### 1.2. Chạy migration (tạo bảng + Row Level Security)
 
-Có **4 file migration**, chạy **theo đúng thứ tự**:
+Có **5 file migration**, chạy **theo đúng thứ tự**:
 
 1. [`supabase/migrations/20260928000000_init.sql`](supabase/migrations/20260928000000_init.sql): các bảng chính.
 2. [`supabase/migrations/20260929000000_extensions.sql`](supabase/migrations/20260929000000_extensions.sql): FSRS, cài đặt mới, luyện nghe, thông báo.
 3. [`supabase/migrations/20260929120000_allowed_emails.sql`](supabase/migrations/20260929120000_allowed_emails.sql): danh sách email được vào web.
 4. [`supabase/migrations/20260929130000_tts_cache.sql`](supabase/migrations/20260929130000_tts_cache.sql): kho lưu file giọng Google (xem mục 1.4).
+5. [`supabase/migrations/20261005000000_homework.sql`](supabase/migrations/20261005000000_homework.sql): mục Bài tập.
 
 **Cách 1: dùng SQL Editor (dễ nhất)**
 
 1. Trong dashboard, mở **SQL Editor** → **New query**.
 2. Mở file migration thứ nhất, sao chép **toàn bộ** nội dung, dán vào rồi bấm **Run**. Thấy `Success. No rows returned` là xong.
 3. Tạo query mới, làm tương tự lần lượt với các file còn lại.
-4. Kiểm tra ở **Table Editor**: sẽ có 9 bảng, bảng nào cũng có nhãn RLS đang bật:
-   `user_settings`, `cards`, `connected_speech_progress`, `listening_progress`, `clips`, `dictation_history`, `study_sessions`, `push_subscriptions`, `allowed_emails`.
+4. Kiểm tra ở **Table Editor**: sẽ có 11 bảng, bảng nào cũng có nhãn RLS đang bật:
+   `user_settings`, `cards`, `connected_speech_progress`, `listening_progress`, `clips`, `dictation_history`, `study_sessions`, `push_subscriptions`, `allowed_emails`, `homework_progress`, `homework_sessions`.
 
 **Cách 2: dùng Supabase CLI**
 
@@ -385,6 +386,27 @@ Dừng lúc nào cũng được, cuối buổi có tóm tắt.
 - Thanh báo nhẹ ở đầu trang cho biết đang offline hay còn bao nhiêu thay đổi chờ đồng bộ.
 - Hai thiết bị cùng sửa một thẻ khi offline thì bản gửi lên sau cùng được giữ.
 
+### Bài tập
+
+Mục **Bài tập** (thanh điều hướng dưới cùng) tạo bài từ chính những gì bạn đã học, logic nằm ở [`src/lib/homework.js`](src/lib/homework.js):
+
+| Dạng bài | Luyện gì |
+|---|---|
+| Nhìn nghĩa, gõ từ | Nhớ chủ động: thấy nghĩa tiếng Việt, tự gõ từ tiếng Anh (có nút gợi ý chữ đầu) |
+| Điền từ vào câu | Dùng từ đúng dạng trong câu ví dụ (decide → decided); gõ đúng từ nhưng sai dạng được nhắc nhẹ |
+| Nghe, chọn nghĩa | Chỉ nghe từ rồi chọn nghĩa đúng trong 4 lựa chọn |
+| Nghe, viết từ | Nghe và viết đúng chính tả, gồm cả những từ bạn hay chép sai ở mục Chép chính tả |
+| Sắp xếp câu | Ghép các mảnh thành câu ví dụ đúng thứ tự |
+| Số, giá tiền, ngày, giờ | Kiểu IELTS Listening Part 1, đọc bằng giọng Anh: số điện thoại ("double five", "oh"), giá tiền, ngày ("the twenty-third of March"), giờ ("quarter to eight"), số -teen / -ty, số lớn. Bài tạo ngẫu nhiên nên không bao giờ hết |
+| Nghe đánh vần tên | Tên người, tên đường được đánh vần từng chữ ("R, U, double S, E, double L") |
+
+- **Bài hôm nay** (khoảng 12 câu, 10 phút): câu đến hạn làm lại + từ vừa học trong tuần + từ hay chép sai + 1 câu sắp xếp + 2 câu nghe IELTS. Mở lại trong ngày vẫn là bài đó; đang làm dở thì tải lại trang vẫn làm tiếp được.
+- **Chấm dễ tính với lỗi gõ nhỏ**: sai 1 chữ cái là "gần đúng"; số và ngày giờ nhận nhiều cách viết (15.50 / £15,50, 7:45 / 19.45, 23 March / 23/3).
+- **Lịch làm lại kiểu hộp Leitner**: câu sai quay lại ngày hôm sau; đúng thì giãn dần 2, 4, 8, 16, 32 ngày. Từ hộp 3 trở lên coi như đã vững và rời khỏi **Sổ lỗi**.
+- **Thích ứng**: dạng số nào bạn hay sai (vd ngày tháng) sẽ được ra nhiều hơn.
+- Làm xong có thể **thử lại ngay** các câu sai (chỉ để luyện, không tính điểm), **làm thêm một bài**, hoặc **luyện riêng một dạng**.
+- Trang Bài tập có biểu đồ **độ chính xác 30 ngày** theo từng dạng.
+
 ### Chuỗi ngày học và thời gian học
 
 - Một ngày được tính là "đã học" khi làm ít nhất một bài hoặc học từ 1 phút trở lên.
@@ -408,6 +430,8 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
 | `study_sessions` | Mỗi buổi học: ngày, thời lượng, các hoạt động đã làm |
 | `push_subscriptions` | Thiết bị nhận thông báo nhắc học |
 | `allowed_emails` | Email được vào web (chỉ Edge Function `email-login` đọc được) |
+| `homework_progress` | Tiến độ từng câu bài tập: hộp Leitner, số lần đúng/sai, ngày làm lại |
+| `homework_sessions` | Mỗi lần làm xong một bài tập: điểm, thời gian, kết quả từng câu |
 
 - Mọi bảng bật Row Level Security. Bảng dữ liệu học dùng policy `auth.uid() = user_id`; bảng `allowed_emails` không có policy nào nên web và người lạ không đọc được.
 - **Cài đặt → Xuất dữ liệu (JSON)** tải toàn bộ dữ liệu về máy để sao lưu.
