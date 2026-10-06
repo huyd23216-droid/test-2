@@ -24,6 +24,10 @@ const COLUMNS = {
     'id', 'study_date', 'mode', 'type', 'total', 'correct_count', 'close_count', 'wrong_count', 'duration_seconds',
     'items', 'created_at',
   ],
+  homework_sets: ['id', 'title', 'tag', 'instructions_vi', 'items', 'due_on', 'created_at', 'completed_at'],
+  homework_answers: [
+    'id', 'set_id', 'item_id', 'answer', 'is_correct', 'feedback_vi', 'next_due', 'created_at',
+  ],
 }
 
 const SETTINGS_COLUMNS = [
@@ -60,6 +64,13 @@ export function prepareRestore(data, userId) {
     return row
   })
 
+  // Câu trả lời chỉ giữ khi bộ bài tập của nó cũng có trong file
+  const sets = rowsOf('homework_sets').map((r) => own(pick(r, COLUMNS.homework_sets)))
+  const setIds = new Set(sets.map((s) => s.id))
+  const setAnswers = rowsOf('homework_answers')
+    .map((r) => own(pick(r, COLUMNS.homework_answers)))
+    .filter((r) => setIds.has(r.set_id))
+
   return {
     settings: data.user_settings ? pick(data.user_settings, SETTINGS_COLUMNS) : null,
     tables: [
@@ -87,6 +98,8 @@ export function prepareRestore(data, userId) {
         table: 'homework_sessions',
         rows: rowsOf('homework_sessions').map((r) => own(pick(r, COLUMNS.homework_sessions))),
       },
+      { table: 'homework_sets', rows: sets },
+      { table: 'homework_answers', rows: setAnswers },
     ].filter((t) => t.rows.length > 0),
   }
 }

@@ -155,11 +155,29 @@ export function fetchHomeworkSessions(userId) {
   )
 }
 
+// ---------- Bài tập được giao ----------
+export function fetchHomeworkSets(userId) {
+  return optional(
+    fetchAll(() =>
+      supabase.from('homework_sets').select('*').eq('user_id', userId).order('created_at').order('id'),
+    ),
+  )
+}
+
+export function fetchHomeworkAnswers(userId) {
+  return optional(
+    fetchAll(() =>
+      supabase.from('homework_answers').select('*').eq('user_id', userId).order('created_at').order('id'),
+    ),
+  )
+}
+
 // ---------- Xuất / khôi phục dữ liệu ----------
 export async function exportAllData(user) {
   const all = (table, order) =>
     fetchAll(() => supabase.from(table).select('*').eq('user_id', user.id).order(order).order(order === 'id' ? 'created_at' : 'id'))
-  const [settings, cards, connected, listening, dictation, sessions, clips, hwProgress, hwSessions] = await Promise.all([
+  const [settings, cards, connected, listening, dictation, sessions, clips, hwProgress, hwSessions, sets, answers] =
+    await Promise.all([
     supabase.from('user_settings').select('*').eq('user_id', user.id).maybeSingle().then(unwrap),
     all('cards', 'position'),
     fetchAll(() => supabase.from('connected_speech_progress').select('*').eq('user_id', user.id).order('item_id')),
@@ -169,6 +187,8 @@ export async function exportAllData(user) {
     all('clips', 'created_at'),
     fetchHomeworkProgress(user.id),
     fetchHomeworkSessions(user.id),
+    fetchHomeworkSets(user.id),
+    fetchHomeworkAnswers(user.id),
   ])
   return {
     app: 'tieng-anh-moi-ngay',
@@ -184,6 +204,8 @@ export async function exportAllData(user) {
     clips,
     homework_progress: hwProgress ?? [],
     homework_sessions: hwSessions ?? [],
+    homework_sets: sets ?? [],
+    homework_answers: answers ?? [],
   }
 }
 

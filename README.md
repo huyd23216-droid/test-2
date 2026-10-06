@@ -54,21 +54,22 @@ Công nghệ: React + Vite, Supabase (Postgres, Auth, Edge Functions), Web Speec
 
 ### 1.2. Chạy migration (tạo bảng + Row Level Security)
 
-Có **5 file migration**, chạy **theo đúng thứ tự**:
+Có **6 file migration**, chạy **theo đúng thứ tự**:
 
 1. [`supabase/migrations/20260928000000_init.sql`](supabase/migrations/20260928000000_init.sql): các bảng chính.
 2. [`supabase/migrations/20260929000000_extensions.sql`](supabase/migrations/20260929000000_extensions.sql): FSRS, cài đặt mới, luyện nghe, thông báo.
 3. [`supabase/migrations/20260929120000_allowed_emails.sql`](supabase/migrations/20260929120000_allowed_emails.sql): danh sách email được vào web.
 4. [`supabase/migrations/20260929130000_tts_cache.sql`](supabase/migrations/20260929130000_tts_cache.sql): kho lưu file giọng Google (xem mục 1.4).
-5. [`supabase/migrations/20261005000000_homework.sql`](supabase/migrations/20261005000000_homework.sql): mục Bài tập.
+5. [`supabase/migrations/20261005000000_homework.sql`](supabase/migrations/20261005000000_homework.sql): luyện tập tự động trong mục Bài tập.
+6. [`supabase/migrations/20261006000000_homework_sets_review_log.sql`](supabase/migrations/20261006000000_homework_sets_review_log.sql): bài tập được giao và nhật ký ôn thẻ.
 
 **Cách 1: dùng SQL Editor (dễ nhất)**
 
 1. Trong dashboard, mở **SQL Editor** → **New query**.
 2. Mở file migration thứ nhất, sao chép **toàn bộ** nội dung, dán vào rồi bấm **Run**. Thấy `Success. No rows returned` là xong.
 3. Tạo query mới, làm tương tự lần lượt với các file còn lại.
-4. Kiểm tra ở **Table Editor**: sẽ có 11 bảng, bảng nào cũng có nhãn RLS đang bật:
-   `user_settings`, `cards`, `connected_speech_progress`, `listening_progress`, `clips`, `dictation_history`, `study_sessions`, `push_subscriptions`, `allowed_emails`, `homework_progress`, `homework_sessions`.
+4. Kiểm tra ở **Table Editor**: sẽ có 14 bảng, bảng nào cũng có nhãn RLS đang bật:
+   `user_settings`, `cards`, `connected_speech_progress`, `listening_progress`, `clips`, `dictation_history`, `study_sessions`, `push_subscriptions`, `allowed_emails`, `homework_progress`, `homework_sessions`, `homework_sets`, `homework_answers`, `review_log`.
 
 **Cách 2: dùng Supabase CLI**
 
@@ -386,9 +387,30 @@ Dừng lúc nào cũng được, cuối buổi có tóm tắt.
 - Thanh báo nhẹ ở đầu trang cho biết đang offline hay còn bao nhiêu thay đổi chờ đồng bộ.
 - Hai thiết bị cùng sửa một thẻ khi offline thì bản gửi lên sau cùng được giữ.
 
-### Bài tập
+### Bài tập được giao
 
-Mục **Bài tập** (thanh điều hướng dưới cùng) tạo bài từ chính những gì bạn đã học, logic nằm ở [`src/lib/homework.js`](src/lib/homework.js):
+Tab **Bài tập** có một con số nhỏ ở góc biểu tượng: số bộ bài chưa làm xong. Trang hiện các bộ bài trong bảng `homework_sets`: bộ chưa làm trước (hạn gần nhất trước), rồi tới bộ đã xong kèm điểm.
+
+- **Giao bài**: thêm một dòng vào `homework_sets` (Table Editor hoặc SQL). File mẫu: [`supabase/snippets/homework-set-example.sql`](supabase/snippets/homework-set-example.sql). Mỗi câu trong cột `items` có dạng `{ id, type, prompt, options?, answer?, accept?, explain_vi }`:
+
+  | `type` | Cách làm | Chấm |
+  |---|---|---|
+  | `mcq` | Chọn một trong `options` (phím 1–4) | Đúng khi bằng `answer` |
+  | `gap` | Gõ vào chỗ `___` trong `prompt` | Khớp `answer` hoặc một giá trị trong `accept` (không phân biệt hoa thường, bỏ khoảng trắng thừa và dấu câu cuối) |
+  | `fix` | `prompt` là câu sai, sửa lại cho đúng (câu sai có sẵn trong ô để sửa) | So như `gap` |
+  | `write` | Viết tự do | Không chấm tự động (`is_correct = null`), giáo viên ghi `feedback_vi` sau |
+
+- **Làm bài**: mỗi màn hình một câu, chấm ngay và hiện `explain_vi`. Phím 1–4 để chọn đáp án trắc nghiệm, Enter để kiểm tra / sang câu sau. Mỗi câu trả lời được lưu ngay vào `homework_answers` (qua hàng đợi offline như mọi phần khác); trả lời đủ hết câu thì `completed_at` của bộ bài được ghi. Đang làm dở thoát ra thì lần sau làm tiếp từ câu chưa làm.
+- **Nhận xét bài viết**: cập nhật `homework_answers.feedback_vi` của câu `write` (xem file mẫu). Nhận xét hiện ở phần **Xem lại bài** của bộ đó.
+- **Ôn câu sai**: câu sai được đặt `next_due` = ngày mai; làm đúng lại → +3 ngày → +7 ngày → xong (`next_due = null`); sai giữa chừng thì bắt đầu lại từ ngày mai. Các câu đến hạn hiện thành một bài nhỏ ở đầu trang Bài tập và được thêm vào buổi **Học tối thiểu 10 phút** (tối đa 10 câu mỗi buổi). Điểm của bộ bài tính theo lần trả lời đầu tiên.
+
+### Nhật ký ôn thẻ
+
+Mỗi lần chấm một thẻ (thẻ mới hay thẻ ôn) app ghi một dòng vào `review_log`: `card_id`, `rating` (`again` / `hard` / `good` / `easy`), `was_due` (thẻ có đến hạn lúc chấm không), `reviewed_at`. Chưa có giao diện; dùng để phân tích sau (vd tỉ lệ nhớ thật so với mức ghi nhớ mong muốn).
+
+### Luyện tập tự động
+
+Trong trang Bài tập, mục **Luyện tập tự động** (`/homework/practice`) tự tạo bài từ chính những gì bạn đã học, logic nằm ở [`src/lib/homework.js`](src/lib/homework.js):
 
 | Dạng bài | Luyện gì |
 |---|---|
@@ -431,7 +453,10 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
 | `push_subscriptions` | Thiết bị nhận thông báo nhắc học |
 | `allowed_emails` | Email được vào web (chỉ Edge Function `email-login` đọc được) |
 | `homework_progress` | Tiến độ từng câu bài tập: hộp Leitner, số lần đúng/sai, ngày làm lại |
-| `homework_sessions` | Mỗi lần làm xong một bài tập: điểm, thời gian, kết quả từng câu |
+| `homework_sessions` | Mỗi lần làm xong một bài luyện tập tự động: điểm, thời gian, kết quả từng câu |
+| `homework_sets` | Bộ bài tập được giao: tiêu đề, nhãn (vd Unit 10), hướng dẫn, các câu (`items`), hạn nộp, lúc làm xong |
+| `homework_answers` | Mỗi lần trả lời một câu bài tập: câu trả lời, đúng/sai, nhận xét của giáo viên, ngày ôn lại |
+| `review_log` | Mỗi lần chấm một thẻ từ vựng: mức chấm, thẻ có đến hạn không, thời điểm |
 
 - Mọi bảng bật Row Level Security. Bảng dữ liệu học dùng policy `auth.uid() = user_id`; bảng `allowed_emails` không có policy nào nên web và người lạ không đọc được.
 - **Cài đặt → Xuất dữ liệu (JSON)** tải toàn bộ dữ liệu về máy để sao lưu.
@@ -462,7 +487,7 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
 │   ├── functions/email-login    # Edge Function cho vào web bằng email trong danh sách
 │   ├── functions/tts            # Edge Function tạo + lưu giọng Google Chirp 3 HD
 │   ├── functions/send-reminders # Edge Function gửi thông báo nhắc học
-│   └── snippets/                # SQL mẫu lên lịch cron
+│   └── snippets/                # SQL mẫu: lên lịch cron, giao bài tập + nhận xét
 ├── public/                      # icon, manifest, service worker (sw.js)
 ├── src/
 │   ├── config.js                # hằng số tùy chỉnh

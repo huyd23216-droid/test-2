@@ -2415,3 +2415,149 @@ textarea:focus {
   font-size: 1rem;
   margin-top: 6px;
 }
+
+/* ============ Bài tập được giao ============ */
+.nav-icon {
+  position: relative;
+  display: inline-flex;
+}
+
+.nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -12px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.set-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.set-row > svg {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.set-row-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.set-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.set-review p {
+  line-height: 1.5;
+}
+
+.set-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.set-source {
+  font-size: 0.85rem;
+}
+
+.set-prompt {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.set-wrong {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.set-text {
+  width: 100%;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.set-text.is-ok {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+}
+
+.set-text.is-bad,
+.gap-input.is-bad {
+  border-color: var(--border);
+  background: var(--surface-2);
+}
+
+.gap-input.is-ok {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+}
+
+.set-write {
+  min-height: 140px;
+}
+
+.choice-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.hw-feedback.is-saved {
+  background: var(--note-bg);
+}
+
+.set-explain .label,
+.set-feedback .label,
+.set-review-list .label {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.set-answer {
+  display: block;
+  white-space: pre-wrap;
+}
+
+.set-review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.set-feedback p {
+  white-space: pre-wrap;
+}

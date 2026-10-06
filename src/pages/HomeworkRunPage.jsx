@@ -127,14 +127,14 @@ export default function HomeworkRunPage() {
   if (run.items.length === 0) {
     return (
       <div className="page">
-        <PageHeader title={title} back="/homework" />
+        <PageHeader title={title} back="/homework/practice" />
         <div className="notice">
           {mode === 'mistakes'
             ? 'Sổ lỗi đang trống, không có câu nào cần ôn lại. Tuyệt vời! 🎉'
             : 'Chưa có đủ từ đã học để làm dạng bài này. Bạn học thêm vài thẻ từ vựng rồi quay lại nhé.'}
         </div>
-        <Link to="/homework" className="btn btn-secondary btn-block">
-          Về trang Bài tập
+        <Link to="/homework/practice" className="btn btn-secondary btn-block">
+          Về Luyện tập tự động
         </Link>
       </div>
     )
@@ -144,7 +144,7 @@ export default function HomeworkRunPage() {
     const { summary, wrongItems, practice } = finished
     return (
       <div className="page">
-        <PageHeader title={title} back="/homework" />
+        <PageHeader title={title} back="/homework/practice" />
         <div className="summary">
           <div className="summary-hero">
             <span className="summary-icon" aria-hidden="true">
@@ -185,8 +185,8 @@ export default function HomeworkRunPage() {
                 Thử lại ngay {wrongItems.length} câu này
               </button>
             )}
-            <Link to="/homework" className={`btn btn-block ${wrongItems.length ? 'btn-secondary' : 'btn-primary btn-lg'}`}>
-              Về trang Bài tập
+            <Link to="/homework/practice" className={`btn btn-block ${wrongItems.length ? 'btn-secondary' : 'btn-primary btn-lg'}`}>
+              Về Luyện tập tự động
             </Link>
           </div>
         </div>
@@ -198,7 +198,7 @@ export default function HomeworkRunPage() {
   if (!item) {
     return (
       <div className="page">
-        <PageHeader title={title} back="/homework" />
+        <PageHeader title={title} back="/homework/practice" />
         <div className="notice">Bạn đã làm xong tất cả các câu rồi.</div>
         <button type="button" className="btn btn-primary btn-block btn-lg" onClick={() => finish(run)}>
           Xem kết quả
@@ -210,7 +210,7 @@ export default function HomeworkRunPage() {
   const last = run.index + 1 >= run.items.length
   return (
     <div className="page">
-      <PageHeader title={title} back="/homework" subtitle={run.practice ? 'Làm lại ngay, không tính điểm' : undefined} />
+      <PageHeader title={title} back="/homework/practice" subtitle={run.practice ? 'Làm lại ngay, không tính điểm' : undefined} />
       <ProgressBar value={run.index} max={run.items.length} label={`${run.index + 1}/${run.items.length}`} />
       <RateSelector value={rate} onChange={setRate} />
       <HomeworkItem
@@ -221,7 +221,7 @@ export default function HomeworkRunPage() {
         onNext={onNext}
         nextLabel={last ? 'Xem kết quả' : 'Câu tiếp theo'}
       />
-      <Link to="/homework" className="btn btn-ghost btn-block finish-early">
+      <Link to="/homework/practice" className="btn btn-ghost btn-block finish-early">
         {run.practice ? 'Dừng ở đây' : 'Dừng ở đây, lát làm tiếp'}
       </Link>
     </div>

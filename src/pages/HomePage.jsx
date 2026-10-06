@@ -3,6 +3,7 @@ import Icon from '../components/Icon.jsx'
 import StatCard from '../components/StatCard.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { formatLongDate } from '../lib/dates.js'
+import { dueReviewItems, unfinishedCount } from '../lib/homeworkSets.js'
 import {
   DAILY_SESSION_CONNECTED_SPEECH,
   DAILY_SESSION_DICTATION,
@@ -18,18 +19,19 @@ function greeting() {
   return 'Chào buổi tối'
 }
 
-function HomeworkCard({ done }) {
+function HomeworkCard({ unfinished, due }) {
+  const parts = []
+  if (unfinished > 0) parts.push(`${unfinished} bài chưa làm`)
+  if (due > 0) parts.push(`${due} câu cần ôn lại`)
   return (
     <Link to="/homework" className="card hw-home">
       <span className="hw-home-icon" aria-hidden="true">
         <Icon name="task" size={24} />
       </span>
       <span>
-        <strong>Bài tập hôm nay</strong>
+        <strong>Bài tập</strong>
         <small className="muted">
-          {done
-            ? `Đã xong, đúng ${done.correct_count}/${done.total} câu. Làm thêm nếu bạn muốn nhé.`
-            : 'Khoảng 12 câu từ những gì bạn đã học, chừng 10 phút.'}
+          {parts.length ? parts.join(' · ') : 'Không có bài nào đang chờ. Luyện tập tự động nếu bạn muốn nhé.'}
         </small>
       </span>
     </Link>
@@ -76,8 +78,8 @@ function StreakCard({ streak, todayMinutes }) {
 }
 
 export default function HomePage() {
-  const { stats, homeworkSessions, today } = useData()
-  const homeworkDone = homeworkSessions.find((s) => s.study_date === today && s.mode === 'daily')
+  const { stats, hwSets, hwAnswersGrouped, today } = useData()
+  const homeworkDue = dueReviewItems(hwSets, hwAnswersGrouped, today).length
   const reviewCount = Math.min(stats.dueCards.length, DAILY_SESSION_MAX_REVIEWS)
 
   const parts = []
@@ -102,7 +104,7 @@ export default function HomePage() {
 
       <StreakCard streak={stats.streak} todayMinutes={stats.todayMinutes} />
 
-      <HomeworkCard done={homeworkDone} />
+      <HomeworkCard unfinished={unfinishedCount(hwSets)} due={homeworkDue} />
 
       <section>
         <h2 className="section-title">Tiến độ của bạn</h2>
@@ -149,7 +151,7 @@ export default function HomePage() {
             <Icon name="task" />
             <span>
               <strong>Bài tập</strong>
-              <small>Gõ từ, điền câu, nghe số và đánh vần kiểu IELTS, sổ lỗi</small>
+              <small>Bài được giao, ôn câu sai và luyện tập tự động</small>
             </span>
           </Link>
         </div>

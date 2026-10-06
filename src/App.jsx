@@ -31,6 +31,9 @@ import DrillPracticePage from './pages/DrillPracticePage.jsx'
 import StatsPage from './pages/StatsPage.jsx'
 import HomeworkPage from './pages/HomeworkPage.jsx'
 import HomeworkRunPage from './pages/HomeworkRunPage.jsx'
+import HomeworkSetPage from './pages/HomeworkSetPage.jsx'
+import HomeworkReviewPage from './pages/HomeworkReviewPage.jsx'
+import PracticePage from './pages/PracticePage.jsx'
 
 function ConfigMissing() {
   return (
@@ -114,6 +117,7 @@ function AppRoutes() {
           <Route path="listen" element={<ListenHubPage />} />
           <Route path="listen/drills" element={<DrillsPage />} />
           <Route path="homework" element={<HomeworkPage />} />
+          <Route path="homework/practice" element={<PracticePage />} />
           <Route path="stats" element={<StatsPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="*" element={<NotFound />} />
@@ -127,6 +131,8 @@ function AppRoutes() {
           <Route path="listen/gapfill" element={<GapFillPage />} />
           <Route path="listen/drills/:id" element={<DrillPracticePage />} />
           <Route path="homework/run" element={<HomeworkRunPage />} />
+          <Route path="homework/set/:id" element={<HomeworkSetPage />} />
+          <Route path="homework/review" element={<HomeworkReviewPage />} />
         </Route>
       </Routes>
     </StudyTrackerProvider>

@@ -17,6 +17,7 @@ import { createSyncQueue, isNetworkError } from '../lib/syncQueue.js'
 import { idbGet, idbSet } from '../lib/idb.js'
 import { uuid } from '../lib/ids.js'
 import { nextProgress, nextStat } from '../lib/homework.js'
+import { groupAnswers, nextDueFor, setProgress } from '../lib/homeworkSets.js'
 import { MASTERED_INTERVAL_DAYS, DEFAULT_SETTINGS } from '../config.js'
 
 const DataContext = createContext(null)
@@ -48,7 +49,8 @@ async function fetchUserData(userId, onSeeding) {
     throw new MigrationMissingError('Chưa chạy migration 20260929000000_extensions.sql')
   }
   const settings = { ...DEFAULT_SETTINGS, ...rawSettings }
-  let [cards, csRows, listening, history, sessions, clips, homework, homeworkSessions] = await Promise.all([
+  let [cards, csRows, listening, history, sessions, clips, homework, homeworkSessions, hwSets, hwAnswers] =
+    await Promise.all([
     db.fetchCards(userId),
     db.fetchConnectedSpeechProgress(userId),
     db.fetchListeningProgress(userId),
@@ -57,6 +59,8 @@ async function fetchUserData(userId, onSeeding) {
     db.fetchClips(userId),
     db.fetchHomeworkProgress(userId),
     db.fetchHomeworkSessions(userId),
+    db.fetchHomeworkSets(userId),
+    db.fetchHomeworkAnswers(userId),
   ])
 
   const haveSeeds = new Set(cards.map((c) => c.seed_id).filter(Boolean))
@@ -84,6 +88,10 @@ async function fetchUserData(userId, onSeeding) {
     homeworkReady: homework !== null && homeworkSessions !== null,
     homework: homework ?? [],
     homeworkSessions: homeworkSessions ?? [],
+    // null = chưa chạy migration bài tập được giao + nhật ký ôn thẻ
+    setsReady: hwSets !== null && hwAnswers !== null,
+    hwSets: hwSets ?? [],
+    hwAnswers: hwAnswers ?? [],
   }
 }
 
@@ -106,14 +114,17 @@ export function DataProvider({ children }) {
   const [homework, setHomework] = useState([])
   const [homeworkSessions, setHomeworkSessions] = useState([])
   const [homeworkReady, setHomeworkReady] = useState(true)
+  const [hwSets, setHwSets] = useState([])
+  const [hwAnswers, setHwAnswers] = useState([])
+  const [setsReady, setSetsReady] = useState(true)
   const [today, setToday] = useState(todayString)
 
   const lastLoadedAt = useRef(0)
   const loading = useRef(false)
   const latest = useRef({})
   useEffect(() => {
-    latest.current = { settings, cards, csRows, listening, homework }
-  }, [settings, cards, csRows, listening, homework])
+    latest.current = { settings, cards, csRows, listening, homework, hwSets, hwAnswers, setsReady }
+  }, [settings, cards, csRows, listening, homework, hwSets, hwAnswers, setsReady])
 
   const [queue] = useState(() =>
     createSyncQueue(userId, {
@@ -136,6 +147,9 @@ export function DataProvider({ children }) {
     setHomework(data.homework ?? [])
     setHomeworkSessions(data.homeworkSessions ?? [])
     setHomeworkReady(data.homeworkReady ?? true)
+    setHwSets(data.hwSets ?? [])
+    setHwAnswers(data.hwAnswers ?? [])
+    setSetsReady(data.setsReady ?? true)
     setOffline(fromCache)
     if (!fromCache) lastLoadedAt.current = Date.now()
     setStatus('ready')
@@ -228,13 +242,16 @@ export function DataProvider({ children }) {
         homework,
         homeworkSessions,
         homeworkReady,
+        hwSets,
+        hwAnswers,
+        setsReady,
         saved_at: Date.now(),
       })
     }, 800)
     return () => clearTimeout(t)
   }, [
     status, snapshotKey, settings, cards, csRows, listening, history, sessions, clips, homework, homeworkSessions,
-    homeworkReady,
+    homeworkReady, hwSets, hwAnswers, setsReady,
   ])
 
   // Đồng bộ khi quay lại app / có mạng lại + cập nhật "hôm nay" khi qua ngày mới
@@ -271,14 +288,33 @@ export function DataProvider({ children }) {
   // ---------- Thẻ từ vựng ----------
   const gradeCard = useCallback(
     (card, grade) => {
+      const today = todayString()
+      const now = new Date()
       const retention = Number(latest.current.settings?.desired_retention) || DEFAULT_SETTINGS.desired_retention
-      const patch = schedule(card, grade, todayString(), new Date(), retention)
+      const wasDue = isDue(card, today)
+      const patch = schedule(card, grade, today, now, retention)
       const updated = { ...card, ...patch }
       setCards((list) => replaceBy(list, updated))
       queue.enqueue({ table: 'cards', action: 'update', values: patch, match: { id: card.id }, key: `card:${card.id}` })
+      // Nhật ký ôn: mỗi lần chấm một dòng (bảng có từ migration 20261006000000)
+      if (latest.current.setsReady !== false) {
+        queue.enqueue({
+          table: 'review_log',
+          action: 'upsert',
+          values: {
+            id: uuid(),
+            user_id: userId,
+            card_id: card.id,
+            rating: grade,
+            was_due: wasDue,
+            reviewed_at: now.toISOString(),
+          },
+          ignoreDuplicates: true,
+        })
+      }
       return updated
     },
-    [queue],
+    [queue, userId],
   )
 
   // Thẻ mới bạn tự thêm được xếp lên đầu hàng từ mới
@@ -556,6 +592,54 @@ export function DataProvider({ children }) {
     [queue, userId],
   )
 
+  // ---------- Bài tập được giao ----------
+  // Lưu ngay một câu trả lời; đủ hết câu thì đánh dấu bộ bài đã xong
+  const recordSetAnswer = useCallback(
+    (set, item, answer, isCorrect) => {
+      const today = todayString()
+      const history = latest.current.hwAnswers
+        .filter((a) => a.set_id === set.id && a.item_id === item.id)
+        .sort((x, y) => String(x.created_at).localeCompare(String(y.created_at)))
+      const row = {
+        id: uuid(),
+        user_id: userId,
+        set_id: set.id,
+        item_id: item.id,
+        answer,
+        is_correct: isCorrect,
+        next_due: nextDueFor(history, isCorrect, today),
+        created_at: new Date().toISOString(),
+      }
+      const answers = [...latest.current.hwAnswers, row]
+      latest.current.hwAnswers = answers
+      setHwAnswers(answers)
+      queue.enqueue({
+        table: 'homework_answers',
+        action: 'upsert',
+        values: row,
+        ignoreDuplicates: true,
+        key: `hw-answer:${row.id}`,
+      })
+
+      const current = latest.current.hwSets.find((s) => s.id === set.id)
+      if (current && !current.completed_at && setProgress(current, groupAnswers(answers)).done) {
+        const completed_at = new Date().toISOString()
+        const sets = replaceBy(latest.current.hwSets, { id: set.id, completed_at })
+        latest.current.hwSets = sets
+        setHwSets(sets)
+        queue.enqueue({
+          table: 'homework_sets',
+          action: 'update',
+          values: { completed_at },
+          match: { id: set.id },
+          key: `hw-set:${set.id}`,
+        })
+      }
+      return row
+    },
+    [queue, userId],
+  )
+
   // ---------- Buổi học ----------
   const saveSession = useCallback(
     (row) => {
@@ -587,6 +671,7 @@ export function DataProvider({ children }) {
   const listeningProgress = useMemo(() => new Map(listening.map((r) => [r.item_id, r])), [listening])
   const dictationStats = useMemo(() => buildDictationStats(history), [history])
   const homeworkProgress = useMemo(() => new Map(homework.map((r) => [r.item_key, r])), [homework])
+  const hwAnswersGrouped = useMemo(() => groupAnswers(hwAnswers), [hwAnswers])
 
   const stats = useMemo(() => {
     const dueCards = cards
@@ -653,6 +738,10 @@ export function DataProvider({ children }) {
       homeworkSessions,
       recordHomework,
       saveHomeworkSession,
+      setsReady,
+      hwSets,
+      hwAnswersGrouped,
+      recordSetAnswer,
       savePushSubscription,
       removePushSubscription,
       stats,
@@ -661,8 +750,8 @@ export function DataProvider({ children }) {
       status, error, offline, pending, load, today, settings, updateSettings, cards, gradeCard, addCard, addCards,
       editCard, removeCard, enableSet, disableSet, csProgress, recordConnectedSpeech, listeningProgress, recordListening, history,
       dictationStats, recordDictation, clips, addClip, editClip, removeClip, sessions, saveSession, homeworkReady,
-      homeworkProgress, homeworkSessions, recordHomework, saveHomeworkSession, savePushSubscription,
-      removePushSubscription, stats,
+      homeworkProgress, homeworkSessions, recordHomework, saveHomeworkSession, setsReady, hwSets, hwAnswersGrouped,
+      recordSetAnswer, savePushSubscription, removePushSubscription, stats,
     ],
   )
 
