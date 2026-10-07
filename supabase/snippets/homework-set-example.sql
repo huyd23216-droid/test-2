@@ -7,6 +7,8 @@
 --    type 'gap'  : prompt có chỗ trống ___, đúng khi khớp answer hoặc một giá trị trong accept
 --    type 'fix'  : prompt là câu sai, học viên gõ lại câu đúng
 --    type 'write': viết tự do, không chấm tự động
+--    type 'cloze': đoạn văn dài { id, type, text, bank, blanks }; {{n}} là chỗ trống số n,
+--                  điền bằng các từ trong bank (mỗi từ dùng một lần), mỗi chỗ trống chấm như 'gap'
 insert into public.homework_sets (user_id, title, tag, instructions_vi, due_on, items)
 select
   id,
@@ -44,6 +46,18 @@ select
       "type": "write",
       "prompt": "Viết 3–4 câu tiếng Anh về buổi sáng của bạn (dùng thì hiện tại đơn).",
       "explain_vi": "Gợi ý: I get up at…, I have…, then I…"
+    },
+    {
+      "id": "c1",
+      "type": "cloze",
+      "text": "Linh: What time do you {{1}} up on weekdays?\nHuy: At six. Then I {{2}} breakfast and take the bus to work.\nLinh: Does your sister {{3}} the bus too?\nHuy: No, she {{4}} to work. It's only ten minutes.",
+      "bank": ["get", "have", "take", "walks", "gets", "walk"],
+      "blanks": {
+        "1": { "answer": "get", "explain_vi": "Câu hỏi với do you: động từ giữ nguyên, get up = thức dậy." },
+        "2": { "answer": "have", "accept": ["eat"], "explain_vi": "have breakfast = ăn sáng; chủ ngữ I nên giữ nguyên have." },
+        "3": { "answer": "take", "explain_vi": "Sau does, động từ trở về dạng nguyên mẫu: take (không phải takes)." },
+        "4": { "answer": "walks", "explain_vi": "Chủ ngữ she, câu khẳng định thì hiện tại đơn: walks." }
+      }
     }
   ]$$::jsonb
 from auth.users

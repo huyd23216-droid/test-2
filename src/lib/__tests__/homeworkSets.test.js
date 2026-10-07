@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import {
+  clozeBlankNumbers,
+  clozeSpeechLines,
   dueReviewItems,
+  gradeBlank,
   gradeItem,
+  isValidItem,
+  itemUnits,
+  parseCloze,
+  reviewBank,
   groupAnswers,
   nextDueFor,
   normalizeAnswer,
@@ -130,5 +137,131 @@ describe('tiến độ và danh sách', () => {
     expect(open.map((s) => s.id)).toEqual(['c', 'b', 'a'])
     expect(done.map((s) => s.id)).toEqual(['e', 'd'])
     expect(unfinishedCount(sets)).toBe(3)
+  })
+})
+
+// ---------- Câu cloze ----------
+
+const CLOZE = {
+  id: 'c1',
+  type: 'cloze',
+  text:
+    "Linh: What are you doing these days?\nHuy: I'm studying for IELTS. I want a good {{1}} for my CV.\nLinh: You could apply for a {{ 2 }} to study abroad.\nHuy: Or I could take a {{3}} course at 10:30 on Mondays.",
+  bank: ['qualification', 'vocational', 'scholarship', 'degree', 'diploma'],
+  blanks: {
+    1: { answer: 'qualification', accept: [], explain_vi: 'qualification: bằng cấp, chứng chỉ.' },
+    2: { answer: 'scholarship', accept: ['grant'], explain_vi: 'scholarship: học bổng.' },
+    3: { answer: 'vocational', accept: [], explain_vi: 'vocational course: khoá học nghề.' },
+  },
+}
+
+describe('câu cloze: tách {{n}}', () => {
+  it('lấy số chỗ trống theo thứ tự, chấp nhận khoảng trắng trong ngoặc', () => {
+    expect(clozeBlankNumbers(CLOZE.text)).toEqual(['1', '2', '3'])
+  })
+
+  it('mỗi dòng một hàng; tên người nói ở đầu dòng được tách riêng', () => {
+    const lines = parseCloze(CLOZE.text)
+    expect(lines).toHaveLength(4)
+    expect(lines[0]).toEqual({ speaker: 'Linh', parts: [{ type: 'text', text: 'What are you doing these days?' }] })
+    expect(lines[1].speaker).toBe('Huy')
+    expect(lines[1].parts).toEqual([
+      { type: 'text', text: "I'm studying for IELTS. I want a good " },
+      { type: 'blank', n: '1' },
+      { type: 'text', text: ' for my CV.' },
+    ])
+    expect(lines[2].parts[1]).toEqual({ type: 'blank', n: '2' })
+  })
+
+  it('giờ như 10:30 không bị coi là tên người nói; dòng không có tên vẫn đọc được', () => {
+    expect(parseCloze('At 10:30 we {{1}}.')[0]).toEqual({
+      speaker: null,
+      parts: [
+        { type: 'text', text: 'At 10:30 we ' },
+        { type: 'blank', n: '1' },
+        { type: 'text', text: '.' },
+      ],
+    })
+    expect(parseCloze('{{1}} is here.')[0].parts[0]).toEqual({ type: 'blank', n: '1' })
+  })
+
+  it('kiểm tra dữ liệu: đủ đáp án trong ngân hàng từ, không trùng số', () => {
+    expect(isValidItem(CLOZE)).toBe(true)
+    expect(isValidItem({ ...CLOZE, bank: ['qualification', 'scholarship'] })).toBe(false)
+    expect(isValidItem({ ...CLOZE, text: 'A {{1}} and {{1}}' })).toBe(false)
+    expect(isValidItem({ ...CLOZE, blanks: { 1: CLOZE.blanks[1] } })).toBe(false)
+    expect(isValidItem({ ...CLOZE, text: 'Không có chỗ trống' })).toBe(false)
+    // Hai chỗ cùng đáp án thì ngân hàng phải có từ đó hai lần
+    const twice = { id: 't', type: 'cloze', text: '{{1}} and {{2}}', bank: ['go', 'go', 'x'], blanks: { 1: { answer: 'go' }, 2: { answer: 'go' } } }
+    expect(isValidItem(twice)).toBe(true)
+    expect(isValidItem({ ...twice, bank: ['go', 'x'] })).toBe(false)
+  })
+
+  it('mỗi chỗ trống là một đơn vị chấm điểm "c1.n"', () => {
+    expect(itemUnits(CLOZE).map((u) => u.id)).toEqual(['c1.1', 'c1.2', 'c1.3'])
+    expect(itemUnits({ id: 'q1', type: 'mcq' })).toEqual([{ id: 'q1' }])
+  })
+})
+
+describe('câu cloze: chấm điểm', () => {
+  it('chấm từng chỗ như dạng gap', () => {
+    expect(gradeBlank(CLOZE.blanks[1], 'Qualification')).toBe(true)
+    expect(gradeBlank(CLOZE.blanks[2], 'grant.')).toBe(true)
+    expect(gradeBlank(CLOZE.blanks[2], 'degree')).toBe(false)
+    expect(gradeBlank(CLOZE.blanks[3], '')).toBe(false)
+  })
+
+  it('điểm của bộ: mỗi chỗ trống một điểm, theo lần trả lời đầu tiên', () => {
+    const set = { id: 's9', items: [CLOZE, { id: 'q1', type: 'mcq', prompt: 'x', options: ['a', 'b'], answer: 'a' }] }
+    const grouped = groupAnswers([
+      { set_id: 's9', item_id: 'c1.1', is_correct: true, created_at: '1' },
+      { set_id: 's9', item_id: 'c1.2', is_correct: false, created_at: '2' },
+      { set_id: 's9', item_id: 'c1.2', is_correct: true, created_at: '5' },
+      { set_id: 's9', item_id: 'c1.3', is_correct: true, created_at: '3' },
+      { set_id: 's9', item_id: 'q1', is_correct: true, created_at: '4' },
+    ])
+    expect(setProgress(set, grouped)).toMatchObject({ total: 2, answered: 2, graded: 4, correct: 3, done: true })
+    const partial = groupAnswers([{ set_id: 's9', item_id: 'c1.1', is_correct: true, created_at: '1' }])
+    expect(setProgress(set, partial)).toMatchObject({ answered: 0, nextIndex: 0, done: false })
+  })
+
+  it('đọc cả đoạn: điền đáp án đúng, bỏ tên người nói', () => {
+    const lines = clozeSpeechLines(CLOZE)
+    expect(lines[1]).toEqual({ speaker: 'Huy', text: "I'm studying for IELTS. I want a good qualification for my CV." })
+    expect(lines.every((l) => !l.text.startsWith('Linh') && !l.text.startsWith('Huy'))).toBe(true)
+  })
+})
+
+describe('câu cloze: ôn từng phần', () => {
+  const set = { id: 's9', items: [CLOZE] }
+
+  it('chỉ các chỗ trống đến hạn được đưa vào lượt ôn', () => {
+    const grouped = groupAnswers([
+      { set_id: 's9', item_id: 'c1.1', is_correct: true, next_due: null, created_at: '1' },
+      { set_id: 's9', item_id: 'c1.2', is_correct: false, next_due: TODAY, created_at: '2' },
+      { set_id: 's9', item_id: 'c1.3', is_correct: false, next_due: '2026-10-09', created_at: '3' },
+    ])
+    const due = dueReviewItems([set], grouped, TODAY)
+    expect(due).toHaveLength(1)
+    expect(due[0]).toMatchObject({ item: { id: 'c1' }, blanks: ['2'], dueOn: TODAY })
+    expect(dueReviewItems([set], grouped, '2026-10-09')[0].blanks).toEqual(['2', '3'])
+  })
+
+  it('ngân hàng từ khi ôn = đáp án đến hạn + 2 từ nhiễu từ ngân hàng gốc', () => {
+    for (let seed = 0; seed < 20; seed++) {
+      let x = seed + 1
+      const rng = () => ((x = (x * 9301 + 49297) % 233280) / 233280)
+      const bank = reviewBank(CLOZE, ['2'], rng)
+      expect(bank).toHaveLength(3)
+      expect(bank).toContain('scholarship')
+      const distractors = bank.filter((w) => w !== 'scholarship')
+      expect(new Set(distractors).size).toBe(2)
+      expect(distractors.every((w) => CLOZE.bank.includes(w))).toBe(true)
+    }
+    // Ưu tiên từ nhiễu thật (degree, diploma) trước đáp án của chỗ khác
+    expect(reviewBank(CLOZE, ['1', '3']).filter((w) => !['qualification', 'vocational'].includes(w)).sort()).toEqual([
+      'degree',
+      'diploma',
+    ])
   })
 })

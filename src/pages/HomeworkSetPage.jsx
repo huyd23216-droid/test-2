@@ -2,17 +2,34 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import PageHeader from '../components/PageHeader.jsx'
+import ClozeItem from '../components/ClozeItem.jsx'
 import SetItemRunner from '../components/SetItemRunner.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { useStudyTimer } from '../context/StudyTracker.jsx'
-import { SET_ITEM_TYPES, answersFor, setItems, setProgress } from '../lib/homeworkSets.js'
+import { SET_ITEM_TYPES, answersFor, itemUnits, setItems, setProgress } from '../lib/homeworkSets.js'
 import { randomCheer } from '../lib/labels.js'
 
 // Xem lại cả bộ: câu trả lời lần đầu, đáp án, giải thích và nhận xét bài viết
-function SetReview({ set, items, grouped }) {
+function SetReview({ set, items, grouped, rate }) {
   return (
     <ol className="set-review-list">
       {items.map((item) => {
+        if (item.type === 'cloze') {
+          // Mỗi chỗ trống: câu trả lời lần đầu
+          const shown = {}
+          for (const unit of itemUnits(item)) {
+            const first = answersFor(grouped, set.id, unit.id)[0]
+            if (first) shown[unit.blank] = { answer: first.answer, isCorrect: first.is_correct }
+          }
+          return (
+            <li key={item.id} className="card stack">
+              <div className="set-item-head">
+                <span className="badge">{SET_ITEM_TYPES.cloze}</span>
+              </div>
+              <ClozeItem item={item} shown={shown} rate={rate} />
+            </li>
+          )
+        }
         const list = answersFor(grouped, set.id, item.id)
         const first = list[0]
         const last = list[list.length - 1]
@@ -69,14 +86,18 @@ function SetReview({ set, items, grouped }) {
 
 export default function HomeworkSetPage() {
   const { id } = useParams()
-  const { hwSets, hwAnswersGrouped } = useData()
+  const { hwSets, hwAnswersGrouped, settings } = useData()
   useStudyTimer('free')
   const set = hwSets.find((s) => s.id === id)
   const items = setItems(set)
 
   // Làm tiếp từ các câu chưa trả lời (cố định danh sách lúc mở bài)
   const [entries] = useState(() =>
-    set ? items.filter((item) => answersFor(hwAnswersGrouped, set.id, item.id).length === 0).map((item) => ({ set, item })) : [],
+    set
+      ? items
+          .filter((item) => itemUnits(item).some((u) => answersFor(hwAnswersGrouped, set.id, u.id).length === 0))
+          .map((item) => ({ set, item }))
+      : [],
   )
   const [view, setView] = useState(() => (entries.length ? 'run' : 'review'))
   const [cheer] = useState(randomCheer)
@@ -162,7 +183,7 @@ export default function HomeworkSetPage() {
       <p className="muted">
         {progress.graded > 0 ? `Đúng ${progress.correct}/${progress.graded} câu ở lần làm đầu tiên.` : 'Đã nộp bài.'}
       </p>
-      <SetReview set={set} items={items} grouped={hwAnswersGrouped} />
+      <SetReview set={set} items={items} grouped={hwAnswersGrouped} rate={settings?.tts_rate ?? 1} />
       <Link to="/homework" className="btn btn-secondary btn-block">
         Về trang Bài tập
       </Link>

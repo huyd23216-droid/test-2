@@ -399,6 +399,14 @@ Tab **Bài tập** có một con số nhỏ ở góc biểu tượng: số bộ 
   | `gap` | Gõ vào chỗ `___` trong `prompt` | Khớp `answer` hoặc một giá trị trong `accept` (không phân biệt hoa thường, bỏ khoảng trắng thừa và dấu câu cuối) |
   | `fix` | `prompt` là câu sai, sửa lại cho đúng (câu sai có sẵn trong ô để sửa) | So như `gap` |
   | `write` | Viết tự do | Không chấm tự động (`is_correct = null`), giáo viên ghi `feedback_vi` sau |
+  | `cloze` | Một đoạn văn dài có chỗ trống đánh số, điền bằng các từ trong ngân hàng từ | Từng chỗ trống so như `gap`; mỗi chỗ trống là 1 điểm |
+
+- **Câu `cloze`** có dạng `{ id, type: "cloze", text, bank: [...], blanks: { "1": { answer, accept?, explain_vi }, ... } }`:
+  - Trong `text`, `{{1}}`, `{{2}}`… là chỗ trống số 1, 2… Mỗi dòng (`\n`) là một dòng riêng; tên người nói ở đầu dòng trước dấu `:` (vd `Linh: …`) được in đậm.
+  - Mỗi từ trong `bank` dùng được một lần, nên đáp án nào lặp lại thì `bank` phải có đủ số bản. Nên thêm 1–2 từ gây nhiễu.
+  - Ngân hàng từ dính ở đầu màn hình khi cuộn. Chỗ trống đầu tiên được chọn sẵn; chạm một từ để điền vào chỗ đang chọn (tự chuyển sang chỗ trống kế tiếp), chạm chỗ đã điền để trả từ về ngân hàng. **Kiểm tra** bật khi đã điền đủ; chỗ sai hiện đáp án đúng bên dưới và giải thích được liệt kê dưới đoạn văn. Sau đó có nút **Nghe cả đoạn** đọc đoạn văn đã sửa (không đọc tên người nói, mỗi người một giọng).
+  - Mỗi chỗ trống lưu thành một dòng trong `homework_answers` với `item_id` = `"<id câu>.<số>"` (vd `c1.3`).
+  - Khi ôn câu sai, đoạn văn hiện lại với các chỗ khác điền sẵn và khóa; chỉ các chỗ đến hạn còn trống, ngân hàng từ gồm đáp án của các chỗ đó và 2 từ gây nhiễu lấy ngẫu nhiên từ `bank` gốc.
 
 - **Làm bài**: mỗi màn hình một câu, chấm ngay và hiện `explain_vi`. Phím 1–4 để chọn đáp án trắc nghiệm, Enter để kiểm tra / sang câu sau. Mỗi câu trả lời được lưu ngay vào `homework_answers` (qua hàng đợi offline như mọi phần khác); trả lời đủ hết câu thì `completed_at` của bộ bài được ghi. Đang làm dở thoát ra thì lần sau làm tiếp từ câu chưa làm.
 - **Nhận xét bài viết**: cập nhật `homework_answers.feedback_vi` của câu `write` (xem file mẫu). Nhận xét hiện ở phần **Xem lại bài** của bộ đó.
