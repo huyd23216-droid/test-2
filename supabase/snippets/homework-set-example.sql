@@ -9,6 +9,8 @@
 --    type 'write': viết tự do, không chấm tự động
 --    type 'cloze': đoạn văn dài { id, type, text, bank, blanks }; {{n}} là chỗ trống số n,
 --                  điền bằng các từ trong bank (mỗi từ dùng một lần), mỗi chỗ trống chấm như 'gap'
+--                  glossary (không bắt buộc): { "từ / cụm từ trong text": "nghĩa tiếng Việt" }, học viên chạm
+--                  vào từ để xem nghĩa và thêm vào thẻ
 insert into public.homework_sets (user_id, title, tag, instructions_vi, due_on, items)
 select
   id,
@@ -57,6 +59,10 @@ select
         "2": { "answer": "have", "accept": ["eat"], "explain_vi": "have breakfast = ăn sáng; chủ ngữ I nên giữ nguyên have." },
         "3": { "answer": "take", "explain_vi": "Sau does, động từ trở về dạng nguyên mẫu: take (không phải takes)." },
         "4": { "answer": "walks", "explain_vi": "Chủ ngữ she, câu khẳng định thì hiện tại đơn: walks." }
+      },
+      "glossary": {
+        "on weekdays": "vào các ngày thường (thứ Hai đến thứ Sáu)",
+        "breakfast": "bữa sáng"
       }
     }
   ]$$::jsonb

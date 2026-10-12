@@ -401,11 +401,12 @@ Tab **Bài tập** có một con số nhỏ ở góc biểu tượng: số bộ 
   | `write` | Viết tự do | Không chấm tự động (`is_correct = null`), giáo viên ghi `feedback_vi` sau |
   | `cloze` | Một đoạn văn dài có chỗ trống đánh số, điền bằng các từ trong ngân hàng từ | Từng chỗ trống so như `gap`; mỗi chỗ trống là 1 điểm |
 
-- **Câu `cloze`** có dạng `{ id, type: "cloze", text, bank: [...], blanks: { "1": { answer, accept?, explain_vi }, ... } }`:
+- **Câu `cloze`** có dạng `{ id, type: "cloze", text, bank: [...], blanks: { "1": { answer, accept?, explain_vi }, ... }, glossary? }`:
   - Trong `text`, `{{1}}`, `{{2}}`… là chỗ trống số 1, 2… Mỗi dòng (`\n`) là một dòng riêng; tên người nói ở đầu dòng trước dấu `:` (vd `Linh: …`) được in đậm.
   - Mỗi từ trong `bank` dùng được một lần, nên đáp án nào lặp lại thì `bank` phải có đủ số bản. Nên thêm 1–2 từ gây nhiễu.
   - Ngân hàng từ dính ở đầu màn hình khi cuộn. Chỗ trống đầu tiên được chọn sẵn; chạm một từ để điền vào chỗ đang chọn (tự chuyển sang chỗ trống kế tiếp), chạm chỗ đã điền để trả từ về ngân hàng. **Kiểm tra** bật khi đã điền đủ; chỗ sai hiện đáp án đúng bên dưới và giải thích được liệt kê dưới đoạn văn. Sau đó có nút **Nghe cả đoạn** đọc đoạn văn đã sửa (không đọc tên người nói, mỗi người một giọng).
   - Mỗi chỗ trống lưu thành một dòng trong `homework_answers` với `item_id` = `"<id câu>.<số>"` (vd `c1.3`).
+  - `glossary` (không bắt buộc) là từ điển nhỏ cho đoạn văn: `{ "pandemic": "đại dịch", "mental health": "sức khỏe tinh thần" }`. Khóa là từ / cụm từ như trong `text` (không phân biệt hoa thường, chỉ khớp cả từ). Các từ này (trừ chữ trong chỗ trống) được gạch chân chấm; chạm vào hiện nghĩa tiếng Việt, nút loa đọc từ đó, và **+ Thêm vào thẻ** tạo thẻ mới với từ, nghĩa và câu ví dụ là câu chứa từ đó trong đoạn văn (chỗ trống điền đáp án đúng). Cụm dài được khớp trước (`mental health` trước `health`). Từ đã có thẻ thì hiện **Đã có thẻ ✓**, không tạo thẻ trùng.
   - Khi ôn câu sai, đoạn văn hiện lại với các chỗ khác điền sẵn và khóa; chỉ các chỗ đến hạn còn trống, ngân hàng từ gồm đáp án của các chỗ đó và 2 từ gây nhiễu lấy ngẫu nhiên từ `bank` gốc.
 
 - **Làm bài**: mỗi màn hình một câu, chấm ngay và hiện `explain_vi`. Phím 1–4 để chọn đáp án trắc nghiệm, Enter để kiểm tra / sang câu sau. Mỗi câu trả lời được lưu ngay vào `homework_answers` (qua hàng đợi offline như mọi phần khác); trả lời đủ hết câu thì `completed_at` của bộ bài được ghi. Đang làm dở thoát ra thì lần sau làm tiếp từ câu chưa làm.

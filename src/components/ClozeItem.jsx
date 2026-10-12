@@ -1,13 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import GlossaryPopover from './GlossaryPopover.jsx'
 import PassageSpeaker from './PassageSpeaker.jsx'
+import { useData } from '../context/DataContext.jsx'
 import {
   SET_ITEM_TYPES,
   clozeBlankNumbers,
   clozeSpeechLines,
   gradeBlank,
-  parseCloze,
   reviewBank,
 } from '../lib/homeworkSets.js'
+import { addGlossaryCard, glossaryLines, hasCard } from '../lib/glossary.js'
 
 const isTyping = (el) => Boolean(el?.closest?.('input, textarea, select'))
 
@@ -15,9 +17,10 @@ const isTyping = (el) => Boolean(el?.closest?.('input, textarea, select'))
 // - dueBlanks: chỉ các chỗ này được điền (lượt ôn câu sai); chỗ khác điền sẵn và khóa.
 // - shown: { [n]: { answer, isCorrect } } để xem lại bài đã làm (không tương tác).
 // onAnswer([{ n, answer, isCorrect }]) được gọi một lần khi bấm Kiểm tra.
+// item.glossary (nếu có): từ trong đoạn văn được gạch chân chấm, chạm vào để xem nghĩa / thêm vào thẻ.
 export default function ClozeItem({ item, dueBlanks, shown, source, rate = 1, onAnswer, onNext, nextLabel }) {
   const numbers = useMemo(() => clozeBlankNumbers(item.text), [item.text])
-  const lines = useMemo(() => parseCloze(item.text), [item.text])
+  const lines = useMemo(() => glossaryLines(item), [item])
   const locked = useMemo(
     () => (dueBlanks ? numbers.filter((n) => !dueBlanks.includes(n)) : []),
     [numbers, dueBlanks],
@@ -30,6 +33,9 @@ export default function ClozeItem({ item, dueBlanks, shown, source, rate = 1, on
   const bankRef = useRef(null)
   const slotRefs = useRef({})
   const nextRef = useRef(null)
+  const { cards, addCard } = useData()
+  const [gloss, setGloss] = useState(null) // { id, term, anchor, container } của từ đang mở
+  const [added, setAdded] = useState({}) // từ đã bấm "Thêm vào thẻ" trong câu này
 
   const outcome = shown ?? result
   const used = new Set(Object.values(fill))
@@ -145,6 +151,42 @@ export default function ClozeItem({ item, dueBlanks, shown, source, rate = 1, on
     )
   }
 
+  const closeGloss = useCallback(() => setGloss(null), [])
+
+  const tapTerm = (id, term, e) => {
+    const anchor = e.currentTarget
+    const container = anchor.closest('.cloze-passage')
+    setGloss((g) => (g?.id === id ? null : { id, term, anchor, container }))
+  }
+
+  const addTerm = (term) => {
+    if (addGlossaryCard(term, { cards, addCard })) setAdded((a) => ({ ...a, [term.word]: true }))
+  }
+
+  const renderText = (p, key, id) => {
+    if (!p.segments?.some((s) => s.term)) return <span key={key}>{p.text}</span>
+    return (
+      <span key={key}>
+        {p.segments.map((s, k) => {
+          if (!s.term) return s.text
+          const termId = `${id}.${k}`
+          return (
+            <button
+              key={k}
+              type="button"
+              className={`gloss-term ${gloss?.id === termId ? 'is-open' : ''}`}
+              onClick={(e) => tapTerm(termId, s.term, e)}
+              aria-haspopup="dialog"
+              aria-expanded={gloss?.id === termId}
+            >
+              {s.text}
+            </button>
+          )
+        })}
+      </span>
+    )
+  }
+
   const wrong = outcome ? active.filter((n) => outcome[n] && !outcome[n].isCorrect) : []
   const right = outcome ? active.filter((n) => outcome[n]?.isCorrect).length : 0
 
@@ -187,9 +229,21 @@ export default function ClozeItem({ item, dueBlanks, shown, source, rate = 1, on
         {lines.map((line, i) => (
           <p key={i} className="cloze-line">
             {line.speaker && <strong className="cloze-speaker">{line.speaker}: </strong>}
-            {line.parts.map((p, j) => (p.type === 'text' ? <span key={j}>{p.text}</span> : renderBlank(p.n)))}
+            {line.parts.map((p, j) => (p.type === 'text' ? renderText(p, j, `${i}.${j}`) : renderBlank(p.n)))}
           </p>
         ))}
+        {gloss && (
+          <GlossaryPopover
+            key={gloss.id}
+            term={gloss.term}
+            anchor={gloss.anchor}
+            container={gloss.container}
+            rate={rate}
+            status={added[gloss.term.word] ? 'added' : hasCard(cards, gloss.term.word) ? 'exists' : 'new'}
+            onAdd={() => addTerm(gloss.term)}
+            onClose={closeGloss}
+          />
+        )}
       </div>
 
       {!outcome && (
