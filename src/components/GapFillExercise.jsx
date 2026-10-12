@@ -42,7 +42,7 @@ export default function GapFillExercise({ sentence, rate, onRateChange, onDone, 
   return (
     <div className="exercise">
       <div className="prompt">
-        <SpeakButton text={sentence.text} rate={rate} variant="big" label="Nghe câu" />
+        <SpeakButton text={sentence.text} rate={rate} variant="big" label="Nghe câu" prefetch />
         {onRateChange && <RateSelector value={rate} onChange={onRateChange} />}
       </div>
 

@@ -27,7 +27,7 @@ Web app học tiếng Anh cá nhân: mỗi ngày tối thiểu 10 phút, hướn
 - Giọng đọc Mỹ, Anh hoặc xen kẽ.
 - Chế độ tối. Cài được ra màn hình chính như một app.
 
-Công nghệ: React + Vite, Supabase (Postgres, Auth magic link, Edge Functions), Web Speech API, Service Worker, deploy trên Vercel.
+Công nghệ: React + Vite, Supabase (Postgres, Auth, Edge Functions), Web Speech API, Service Worker, deploy trên Vercel.
 
 ---
 
@@ -54,18 +54,22 @@ Công nghệ: React + Vite, Supabase (Postgres, Auth magic link, Edge Functions)
 
 ### 1.2. Chạy migration (tạo bảng + Row Level Security)
 
-Có **2 file migration**, chạy **theo đúng thứ tự**:
+Có **6 file migration**, chạy **theo đúng thứ tự**:
 
 1. [`supabase/migrations/20260928000000_init.sql`](supabase/migrations/20260928000000_init.sql): các bảng chính.
 2. [`supabase/migrations/20260929000000_extensions.sql`](supabase/migrations/20260929000000_extensions.sql): FSRS, cài đặt mới, luyện nghe, thông báo.
+3. [`supabase/migrations/20260929120000_allowed_emails.sql`](supabase/migrations/20260929120000_allowed_emails.sql): danh sách email được vào web.
+4. [`supabase/migrations/20260929130000_tts_cache.sql`](supabase/migrations/20260929130000_tts_cache.sql): kho lưu file giọng Google (xem mục 1.4).
+5. [`supabase/migrations/20261005000000_homework.sql`](supabase/migrations/20261005000000_homework.sql): luyện tập tự động trong mục Bài tập.
+6. [`supabase/migrations/20261006000000_homework_sets_review_log.sql`](supabase/migrations/20261006000000_homework_sets_review_log.sql): bài tập được giao và nhật ký ôn thẻ.
 
 **Cách 1: dùng SQL Editor (dễ nhất)**
 
 1. Trong dashboard, mở **SQL Editor** → **New query**.
 2. Mở file migration thứ nhất, sao chép **toàn bộ** nội dung, dán vào rồi bấm **Run**. Thấy `Success. No rows returned` là xong.
-3. Tạo query mới, làm tương tự với file thứ hai.
-4. Kiểm tra ở **Table Editor**: sẽ có 8 bảng, bảng nào cũng có nhãn RLS đang bật:
-   `user_settings`, `cards`, `connected_speech_progress`, `listening_progress`, `clips`, `dictation_history`, `study_sessions`, `push_subscriptions`.
+3. Tạo query mới, làm tương tự lần lượt với các file còn lại.
+4. Kiểm tra ở **Table Editor**: sẽ có 14 bảng, bảng nào cũng có nhãn RLS đang bật:
+   `user_settings`, `cards`, `connected_speech_progress`, `listening_progress`, `clips`, `dictation_history`, `study_sessions`, `push_subscriptions`, `allowed_emails`, `homework_progress`, `homework_sessions`, `homework_sets`, `homework_answers`, `review_log`.
 
 **Cách 2: dùng Supabase CLI**
 
@@ -77,28 +81,47 @@ supabase db push                           # chạy mọi migration còn thiếu
 ```
 
 > - Mỗi migration chỉ chạy **một lần**. Chạy lại sẽ báo lỗi "already exists".
-> - **Đã dùng bản cũ (chỉ có migration 1)?** Chỉ cần chạy thêm file thứ hai, dữ liệu cũ được giữ nguyên. Nếu quên chạy, app sẽ hiện màn hình nhắc bạn.
+> - **Đã dùng bản cũ?** Chỉ cần chạy thêm các file còn thiếu, dữ liệu cũ được giữ nguyên. Nếu quên chạy file thứ hai, app sẽ hiện màn hình nhắc bạn.
 
-### 1.3. Cấu hình đăng nhập bằng email (magic link)
+### 1.3. Cấu hình đăng nhập (email trong danh sách cho phép)
 
-Mở **Authentication** trong dashboard:
+App không dùng mật khẩu hay link trong email: bạn **nhập đúng email đã được mở quyền là vào ngay**. Một Edge Function nhỏ trên Supabase kiểm tra email với bảng `allowed_emails` rồi cấp phiên đăng nhập. Không gửi email nào, nên không vướng giới hạn "vài email mỗi giờ" của Supabase.
 
-1. **URL Configuration**:
-   - **Site URL**: địa chỉ app sau khi deploy, ví dụ `https://tieng-anh.vercel.app`. Tạm thời để `http://localhost:5173` cũng được.
-   - **Redirect URLs**: thêm cả hai dòng
-     - `http://localhost:5173/**`
-     - `https://tieng-anh.vercel.app/**` (thay bằng tên miền Vercel thật của bạn)
-2. **Sign In / Providers → Email**: đảm bảo **Email** đang bật (mặc định là bật).
-3. **(Nên làm) Thêm mã số vào email đăng nhập**: vào **Emails → Templates → Magic Link**, thêm dòng sau vào nội dung email:
+1. **Deploy Edge Function** [`supabase/functions/email-login`](supabase/functions/email-login/index.ts):
 
-   ```html
-   <p>Hoặc nhập mã: <strong>{{ .Token }}</strong></p>
+   ```bash
+   supabase functions deploy email-login --no-verify-jwt
    ```
 
-   Nhờ mã này bạn đăng nhập được kể cả khi link bị mở ở trình duyệt khác. Hay gặp nhất là khi bạn đã thêm app ra **màn hình chính iPhone**: bấm link trong Mail sẽ mở Safari chứ không mở app đã cài, lúc đó chỉ cần gõ mã vào ô "Mã trong email".
-4. **(Nên làm, sau khi bạn đăng nhập lần đầu)** Ở **Sign In / Providers**, tắt **Allow new users to sign up** để người lạ không tự tạo tài khoản được. Dữ liệu vốn đã được RLS tách riêng theo từng người, bước này chỉ để app hoàn toàn là của riêng bạn.
+   Hoặc trong dashboard: **Edge Functions → Deploy a new function → Via Editor**, đặt tên `email-login`, dán nội dung file `index.ts`, và **tắt Verify JWT** trước khi deploy.
+2. **Mở quyền cho email của bạn**: **Table Editor → allowed_emails → Insert row**, điền email (viết thường), bấm **Save**. Muốn cho thêm người khác vào thì thêm dòng; muốn khóa ai thì xóa dòng đó.
+3. **(Nên làm)** Ở **Authentication → Sign In / Providers**, tắt **Allow new users to sign up** để người lạ không tự tạo tài khoản bằng cách khác. Tài khoản cho email trong danh sách vẫn được hàm tạo tự động.
 
-> **Giới hạn gửi email**: máy chủ email mặc định của Supabase chỉ gửi được vài email mỗi giờ. Mỗi thiết bị chỉ cần đăng nhập một lần (phiên được giữ lâu dài) nên thường là đủ. Nếu thấy báo "gửi hơi nhiều lần", hãy đợi ít phút. Muốn gửi nhiều hơn thì cấu hình SMTP riêng trong **Authentication → Emails → SMTP Settings**.
+> **Đánh đổi:** ai biết một email trong danh sách là vào được tài khoản đó, nên cách này chỉ hợp với web học của riêng bạn. Dữ liệu giữa các tài khoản vẫn được RLS tách riêng. Mỗi thiết bị chỉ cần nhập email một lần, app nhớ phiên lâu dài.
+
+### 1.4. Giọng Google Chirp 3 HD (tùy chọn, nên làm)
+
+Mặc định app đọc bằng giọng có sẵn của thiết bị, chất lượng tùy máy. Bật giọng **Google Chirp 3 HD** thì máy nào cũng nghe cùng một giọng rất tự nhiên (có giọng Mỹ và Anh, nam và nữ).
+
+- **Chi phí:** Google miễn phí 1 triệu ký tự mỗi tháng, sau đó 30 USD / 1 triệu ký tự. Toàn bộ nội dung có sẵn của app, đọc cả giọng Mỹ lẫn Anh, chỉ khoảng 48.000 ký tự.
+- **Cách hoạt động:** Edge Function [`tts`](supabase/functions/tts/index.ts) gọi Google cho mỗi câu **một lần**, lưu file MP3 vào bucket `tts-cache` của Supabase Storage. Những lần sau app phát lại file đã lưu, không gọi Google nữa. Mất mạng hoặc Google lỗi thì app tự đọc bằng giọng của thiết bị.
+
+Cài đặt một lần:
+
+1. **Google Cloud:** vào <https://console.cloud.google.com>, tạo project, bật **Billing** (Google yêu cầu thẻ kể cả khi chỉ dùng phần miễn phí).
+2. Bật **Cloud Text-to-Speech API**: <https://console.cloud.google.com/apis/library/texttospeech.googleapis.com> → **Enable**.
+3. Tạo khóa: **APIs & Services → Credentials → Create credentials → API key**. Mở khóa vừa tạo, ở **API restrictions** chọn **Restrict key → Cloud Text-to-Speech API**, để **Application restrictions = None** (khóa được gọi từ máy chủ Supabase, không phải từ trình duyệt), rồi **Save**.
+4. **(Nên làm)** **Billing → Budgets & alerts**: đặt ngân sách khoảng 1 USD để được báo nếu có phát sinh.
+5. **Supabase:** chạy migration thứ 4 (tạo bucket `tts-cache`), rồi vào **Edge Functions → Secrets**, thêm secret `GOOGLE_TTS_API_KEY` = khóa ở bước 3.
+6. Deploy hàm:
+
+   ```bash
+   supabase functions deploy tts --no-verify-jwt
+   ```
+
+   Hàm tự kiểm tra người gọi đã đăng nhập, nên tắt Verify JWT là an toàn.
+
+Kiểm tra: mở app → **Cài đặt → Giọng đọc**. Thấy dòng "Giọng Google Chirp 3 HD đã sẵn sàng" là xong. Ở đó bạn chọn được giọng (Aoede, Kore, Charon, Puck…) cho giọng Mỹ và giọng Anh, hoặc chuyển về **Của máy**.
 
 ---
 
@@ -136,7 +159,7 @@ npm install
 npm run dev
 ```
 
-Mở <http://localhost:5173>, nhập email và bấm link trong email. Lần đầu đăng nhập, app tự nạp bộ 300 thẻ từ vựng vào tài khoản.
+Mở <http://localhost:5173>, nhập email đã có trong bảng `allowed_emails` và bấm **Vào học**. Lần đầu vào, app tự nạp bộ 300 thẻ từ vựng vào tài khoản.
 
 | Lệnh | Công dụng |
 |---|---|
@@ -145,7 +168,7 @@ Mở <http://localhost:5173>, nhập email và bấm link trong email. Lần đ�
 | `npm run build` | Build bản production vào thư mục `dist/` |
 | `npm run preview` | Chạy thử bản build (có service worker để thử chế độ offline) |
 
-**Thử trên điện thoại cùng Wi-Fi:** chạy `npm run dev -- --host`, mở địa chỉ `http://192.168.x.x:5173` mà Vite in ra, và thêm `http://192.168.x.x:5173/**` vào Redirect URLs của Supabase.
+**Thử trên điện thoại cùng Wi-Fi:** chạy `npm run dev -- --host`, rồi mở địa chỉ `http://192.168.x.x:5173` mà Vite in ra.
 
 > Chế độ offline và thông báo đẩy chỉ hoạt động ở bản build (`npm run build && npm run preview`, hoặc bản trên Vercel), không chạy ở `npm run dev`.
 
@@ -157,8 +180,16 @@ Mở <http://localhost:5173>, nhập email và bấm link trong email. Lần đ�
 2. Vào <https://vercel.com> → **Add New… → Project** → chọn repo.
 3. Vercel tự nhận ra **Vite**, giữ nguyên các thiết lập mặc định (Build Command `npm run build`, Output Directory `dist`).
 4. (Không bắt buộc) Mở mục **Environment Variables** nếu muốn ghi đè giá trị trong `.env.production`, hoặc thêm `VITE_VAPID_PUBLIC_KEY` khi dùng thông báo.
-5. Bấm **Deploy**. Xong sẽ có địa chỉ dạng `https://ten-app.vercel.app`.
-6. Quay lại Supabase → **Authentication → URL Configuration**: đặt **Site URL** là địa chỉ Vercel (bắt buộc, nếu không link đăng nhập trong email sẽ dẫn về `localhost`) và thêm `https://ten-app.vercel.app/**` vào **Redirect URLs**.
+5. Bấm **Deploy**. Xong sẽ có địa chỉ dạng `https://ten-app.vercel.app`. Không cần cấu hình thêm gì trong Supabase.
+
+**Không kết nối được GitHub với Vercel?** Build trên máy rồi kéo thả:
+
+```bash
+npm run build
+cp vercel.json dist/        # để các đường dẫn như /vocab không bị 404 khi tải lại trang
+```
+
+Kéo **thư mục `dist`** (thư mục có sẵn `index.html` bên trong) thả vào <https://vercel.com/new> rồi bấm **Deploy**. Mỗi lần có bản mới, làm lại bước này.
 
 Lưu ý:
 
@@ -168,7 +199,7 @@ Lưu ý:
 
 **Cài lên màn hình chính điện thoại** (dùng như app, mở được cả khi offline):
 
-- iPhone (Safari): nút **Chia sẻ** → **Thêm vào MH chính**. App đã cài có bộ nhớ riêng, nên bạn cần đăng nhập lại bên trong app bằng **mã trong email** (xem mục 1.3).
+- iPhone (Safari): nút **Chia sẻ** → **Thêm vào MH chính**. App đã cài có bộ nhớ riêng, nên bạn nhập lại email một lần bên trong app.
 - Android (Chrome): menu ⋮ → **Thêm vào màn hình chính**.
 
 ---
@@ -356,6 +387,56 @@ Dừng lúc nào cũng được, cuối buổi có tóm tắt.
 - Thanh báo nhẹ ở đầu trang cho biết đang offline hay còn bao nhiêu thay đổi chờ đồng bộ.
 - Hai thiết bị cùng sửa một thẻ khi offline thì bản gửi lên sau cùng được giữ.
 
+### Bài tập được giao
+
+Tab **Bài tập** có một con số nhỏ ở góc biểu tượng: số bộ bài chưa làm xong. Trang hiện các bộ bài trong bảng `homework_sets`: bộ chưa làm trước (hạn gần nhất trước), rồi tới bộ đã xong kèm điểm.
+
+- **Giao bài**: thêm một dòng vào `homework_sets` (Table Editor hoặc SQL). File mẫu: [`supabase/snippets/homework-set-example.sql`](supabase/snippets/homework-set-example.sql). Mỗi câu trong cột `items` có dạng `{ id, type, prompt, options?, answer?, accept?, explain_vi }`:
+
+  | `type` | Cách làm | Chấm |
+  |---|---|---|
+  | `mcq` | Chọn một trong `options` (phím 1–4) | Đúng khi bằng `answer` |
+  | `gap` | Gõ vào chỗ `___` trong `prompt` | Khớp `answer` hoặc một giá trị trong `accept` (không phân biệt hoa thường, bỏ khoảng trắng thừa và dấu câu cuối) |
+  | `fix` | `prompt` là câu sai, sửa lại cho đúng (câu sai có sẵn trong ô để sửa) | So như `gap` |
+  | `write` | Viết tự do | Không chấm tự động (`is_correct = null`), giáo viên ghi `feedback_vi` sau |
+  | `cloze` | Một đoạn văn dài có chỗ trống đánh số, điền bằng các từ trong ngân hàng từ | Từng chỗ trống so như `gap`; mỗi chỗ trống là 1 điểm |
+
+- **Câu `cloze`** có dạng `{ id, type: "cloze", text, bank: [...], blanks: { "1": { answer, accept?, explain_vi }, ... } }`:
+  - Trong `text`, `{{1}}`, `{{2}}`… là chỗ trống số 1, 2… Mỗi dòng (`\n`) là một dòng riêng; tên người nói ở đầu dòng trước dấu `:` (vd `Linh: …`) được in đậm.
+  - Mỗi từ trong `bank` dùng được một lần, nên đáp án nào lặp lại thì `bank` phải có đủ số bản. Nên thêm 1–2 từ gây nhiễu.
+  - Ngân hàng từ dính ở đầu màn hình khi cuộn. Chỗ trống đầu tiên được chọn sẵn; chạm một từ để điền vào chỗ đang chọn (tự chuyển sang chỗ trống kế tiếp), chạm chỗ đã điền để trả từ về ngân hàng. **Kiểm tra** bật khi đã điền đủ; chỗ sai hiện đáp án đúng bên dưới và giải thích được liệt kê dưới đoạn văn. Sau đó có nút **Nghe cả đoạn** đọc đoạn văn đã sửa (không đọc tên người nói, mỗi người một giọng).
+  - Mỗi chỗ trống lưu thành một dòng trong `homework_answers` với `item_id` = `"<id câu>.<số>"` (vd `c1.3`).
+  - Khi ôn câu sai, đoạn văn hiện lại với các chỗ khác điền sẵn và khóa; chỉ các chỗ đến hạn còn trống, ngân hàng từ gồm đáp án của các chỗ đó và 2 từ gây nhiễu lấy ngẫu nhiên từ `bank` gốc.
+
+- **Làm bài**: mỗi màn hình một câu, chấm ngay và hiện `explain_vi`. Phím 1–4 để chọn đáp án trắc nghiệm, Enter để kiểm tra / sang câu sau. Mỗi câu trả lời được lưu ngay vào `homework_answers` (qua hàng đợi offline như mọi phần khác); trả lời đủ hết câu thì `completed_at` của bộ bài được ghi. Đang làm dở thoát ra thì lần sau làm tiếp từ câu chưa làm.
+- **Nhận xét bài viết**: cập nhật `homework_answers.feedback_vi` của câu `write` (xem file mẫu). Nhận xét hiện ở phần **Xem lại bài** của bộ đó.
+- **Ôn câu sai**: câu sai được đặt `next_due` = ngày mai; làm đúng lại → +3 ngày → +7 ngày → xong (`next_due = null`); sai giữa chừng thì bắt đầu lại từ ngày mai. Các câu đến hạn hiện thành một bài nhỏ ở đầu trang Bài tập và được thêm vào buổi **Học tối thiểu 10 phút** (tối đa 10 câu mỗi buổi). Điểm của bộ bài tính theo lần trả lời đầu tiên.
+
+### Nhật ký ôn thẻ
+
+Mỗi lần chấm một thẻ (thẻ mới hay thẻ ôn) app ghi một dòng vào `review_log`: `card_id`, `rating` (`again` / `hard` / `good` / `easy`), `was_due` (thẻ có đến hạn lúc chấm không), `reviewed_at`. Chưa có giao diện; dùng để phân tích sau (vd tỉ lệ nhớ thật so với mức ghi nhớ mong muốn).
+
+### Luyện tập tự động
+
+Trong trang Bài tập, mục **Luyện tập tự động** (`/homework/practice`) tự tạo bài từ chính những gì bạn đã học, logic nằm ở [`src/lib/homework.js`](src/lib/homework.js):
+
+| Dạng bài | Luyện gì |
+|---|---|
+| Nhìn nghĩa, gõ từ | Nhớ chủ động: thấy nghĩa tiếng Việt, tự gõ từ tiếng Anh (có nút gợi ý chữ đầu) |
+| Điền từ vào câu | Dùng từ đúng dạng trong câu ví dụ (decide → decided); gõ đúng từ nhưng sai dạng được nhắc nhẹ |
+| Nghe, chọn nghĩa | Chỉ nghe từ rồi chọn nghĩa đúng trong 4 lựa chọn |
+| Nghe, viết từ | Nghe và viết đúng chính tả, gồm cả những từ bạn hay chép sai ở mục Chép chính tả |
+| Sắp xếp câu | Ghép các mảnh thành câu ví dụ đúng thứ tự |
+| Số, giá tiền, ngày, giờ | Kiểu IELTS Listening Part 1, đọc bằng giọng Anh: số điện thoại ("double five", "oh"), giá tiền, ngày ("the twenty-third of March"), giờ ("quarter to eight"), số -teen / -ty, số lớn. Bài tạo ngẫu nhiên nên không bao giờ hết |
+| Nghe đánh vần tên | Tên người, tên đường được đánh vần từng chữ ("R, U, double S, E, double L") |
+
+- **Bài hôm nay** (khoảng 12 câu, 10 phút): câu đến hạn làm lại + từ vừa học trong tuần + từ hay chép sai + 1 câu sắp xếp + 2 câu nghe IELTS. Mở lại trong ngày vẫn là bài đó; đang làm dở thì tải lại trang vẫn làm tiếp được.
+- **Chấm dễ tính với lỗi gõ nhỏ**: sai 1 chữ cái là "gần đúng"; số và ngày giờ nhận nhiều cách viết (15.50 / £15,50, 7:45 / 19.45, 23 March / 23/3).
+- **Lịch làm lại kiểu hộp Leitner**: câu sai quay lại ngày hôm sau; đúng thì giãn dần 2, 4, 8, 16, 32 ngày. Từ hộp 3 trở lên coi như đã vững và rời khỏi **Sổ lỗi**.
+- **Thích ứng**: dạng số nào bạn hay sai (vd ngày tháng) sẽ được ra nhiều hơn.
+- Làm xong có thể **thử lại ngay** các câu sai (chỉ để luyện, không tính điểm), **làm thêm một bài**, hoặc **luyện riêng một dạng**.
+- Trang Bài tập có biểu đồ **độ chính xác 30 ngày** theo từng dạng.
+
 ### Chuỗi ngày học và thời gian học
 
 - Một ngày được tính là "đã học" khi làm ít nhất một bài hoặc học từ 1 phút trở lên.
@@ -378,8 +459,14 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
 | `clips` | Clip YouTube: link, mốc thời gian, câu thoại |
 | `study_sessions` | Mỗi buổi học: ngày, thời lượng, các hoạt động đã làm |
 | `push_subscriptions` | Thiết bị nhận thông báo nhắc học |
+| `allowed_emails` | Email được vào web (chỉ Edge Function `email-login` đọc được) |
+| `homework_progress` | Tiến độ từng câu bài tập: hộp Leitner, số lần đúng/sai, ngày làm lại |
+| `homework_sessions` | Mỗi lần làm xong một bài luyện tập tự động: điểm, thời gian, kết quả từng câu |
+| `homework_sets` | Bộ bài tập được giao: tiêu đề, nhãn (vd Unit 10), hướng dẫn, các câu (`items`), hạn nộp, lúc làm xong |
+| `homework_answers` | Mỗi lần trả lời một câu bài tập: câu trả lời, đúng/sai, nhận xét của giáo viên, ngày ôn lại |
+| `review_log` | Mỗi lần chấm một thẻ từ vựng: mức chấm, thẻ có đến hạn không, thời điểm |
 
-- Mọi bảng bật Row Level Security với policy `auth.uid() = user_id`.
+- Mọi bảng bật Row Level Security. Bảng dữ liệu học dùng policy `auth.uid() = user_id`; bảng `allowed_emails` không có policy nào nên web và người lạ không đọc được.
 - **Cài đặt → Xuất dữ liệu (JSON)** tải toàn bộ dữ liệu về máy để sao lưu.
 - **Khôi phục từ file sao lưu** ghi lại dữ liệu từ file đó, kể cả vào tài khoản mới. Chạy lại nhiều lần cũng không bị trùng.
 
@@ -389,11 +476,12 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
   - [Free Dictionary API](https://dictionaryapi.dev/): phiên âm, loại từ, câu ví dụ.
   - [MyMemory](https://mymemory.translated.net/): dịch nghĩa. Nghĩa dịch máy chỉ là gợi ý, bạn nên xem lại.
 - **YouTube** (clip thật) và **YouGlish** (nghe người thật nói) mở trực tiếp từ trình duyệt của bạn.
+- **Google Cloud Text-to-Speech** (giọng Chirp 3 HD, nếu bạn bật ở mục 1.4) được gọi từ Edge Function `tts`, khóa Google nằm trong Secrets của Supabase.
 
 ### Giới hạn
 
-- Giọng đọc phụ thuộc thiết bị:
-  - Mac/iPhone có giọng Mỹ (Samantha, Ava…) và Anh (Daniel, Kate…) khá tốt.
+- Khi chưa bật giọng Google (hoặc đang mất mạng), giọng đọc phụ thuộc thiết bị:
+  - Mac/iPhone có giọng Mỹ (Samantha, Ava…) và Anh (Daniel, Kate…) khá tốt. Windows nên dùng Edge (giọng Aria, Jenny).
   - Thiếu giọng Anh thì tải thêm trong Cài đặt → Trợ năng → Nội dung được đọc.
 - Clip YouTube chỉ phát trong app được khi chủ video cho phép nhúng; nếu không, dùng nút mở trên YouTube.
 
@@ -404,8 +492,10 @@ Các hằng số trong [`src/config.js`](src/config.js): tốc độ đọc, ng�
 ```
 ├── supabase/
 │   ├── migrations/              # SQL tạo bảng + RLS (chạy theo thứ tự)
+│   ├── functions/email-login    # Edge Function cho vào web bằng email trong danh sách
+│   ├── functions/tts            # Edge Function tạo + lưu giọng Google Chirp 3 HD
 │   ├── functions/send-reminders # Edge Function gửi thông báo nhắc học
-│   └── snippets/                # SQL mẫu lên lịch cron
+│   └── snippets/                # SQL mẫu: lên lịch cron, giao bài tập + nhận xét
 ├── public/                      # icon, manifest, service worker (sw.js)
 ├── src/
 │   ├── config.js                # hằng số tùy chỉnh

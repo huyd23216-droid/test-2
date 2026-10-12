@@ -3,6 +3,7 @@ import Icon from '../components/Icon.jsx'
 import StatCard from '../components/StatCard.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { formatLongDate } from '../lib/dates.js'
+import { dueReviewItems, unfinishedCount } from '../lib/homeworkSets.js'
 import {
   DAILY_SESSION_CONNECTED_SPEECH,
   DAILY_SESSION_DICTATION,
@@ -16,6 +17,25 @@ function greeting() {
   if (h < 14) return 'Chào buổi trưa'
   if (h < 18) return 'Chào buổi chiều'
   return 'Chào buổi tối'
+}
+
+function HomeworkCard({ unfinished, due }) {
+  const parts = []
+  if (unfinished > 0) parts.push(`${unfinished} bài chưa làm`)
+  if (due > 0) parts.push(`${due} câu cần ôn lại`)
+  return (
+    <Link to="/homework" className="card hw-home">
+      <span className="hw-home-icon" aria-hidden="true">
+        <Icon name="task" size={24} />
+      </span>
+      <span>
+        <strong>Bài tập</strong>
+        <small className="muted">
+          {parts.length ? parts.join(' · ') : 'Không có bài nào đang chờ. Luyện tập tự động nếu bạn muốn nhé.'}
+        </small>
+      </span>
+    </Link>
+  )
 }
 
 function StreakCard({ streak, todayMinutes }) {
@@ -58,7 +78,8 @@ function StreakCard({ streak, todayMinutes }) {
 }
 
 export default function HomePage() {
-  const { stats } = useData()
+  const { stats, hwSets, hwAnswersGrouped, today } = useData()
+  const homeworkDue = dueReviewItems(hwSets, hwAnswersGrouped, today).length
   const reviewCount = Math.min(stats.dueCards.length, DAILY_SESSION_MAX_REVIEWS)
 
   const parts = []
@@ -82,6 +103,8 @@ export default function HomePage() {
       </Link>
 
       <StreakCard streak={stats.streak} todayMinutes={stats.todayMinutes} />
+
+      <HomeworkCard unfinished={unfinishedCount(hwSets)} due={homeworkDue} />
 
       <section>
         <h2 className="section-title">Tiến độ của bạn</h2>
@@ -122,6 +145,13 @@ export default function HomePage() {
             <span>
               <strong>Luyện nghe thêm</strong>
               <small>Điền từ còn thiếu, phân biệt âm dễ nhầm</small>
+            </span>
+          </Link>
+          <Link to="/homework" className="module">
+            <Icon name="task" />
+            <span>
+              <strong>Bài tập</strong>
+              <small>Bài được giao, ôn câu sai và luyện tập tự động</small>
             </span>
           </Link>
         </div>

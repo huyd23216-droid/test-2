@@ -17,6 +17,17 @@ const COLUMNS = {
     'wrong_words', 'missing_words', 'extra_words', 'score', 'replays', 'rate', 'duration_seconds', 'created_at',
   ],
   study_sessions: ['id', 'study_date', 'kind', 'started_at', 'ended_at', 'duration_seconds', 'activities', 'created_at'],
+  homework_progress: [
+    'item_key', 'kind', 'box', 'correct_count', 'wrong_count', 'last_result', 'due_on', 'last_seen_at',
+  ],
+  homework_sessions: [
+    'id', 'study_date', 'mode', 'type', 'total', 'correct_count', 'close_count', 'wrong_count', 'duration_seconds',
+    'items', 'created_at',
+  ],
+  homework_sets: ['id', 'title', 'tag', 'instructions_vi', 'items', 'due_on', 'created_at', 'completed_at'],
+  homework_answers: [
+    'id', 'set_id', 'item_id', 'answer', 'is_correct', 'feedback_vi', 'next_due', 'created_at',
+  ],
 }
 
 const SETTINGS_COLUMNS = [
@@ -53,6 +64,13 @@ export function prepareRestore(data, userId) {
     return row
   })
 
+  // Câu trả lời chỉ giữ khi bộ bài tập của nó cũng có trong file
+  const sets = rowsOf('homework_sets').map((r) => own(pick(r, COLUMNS.homework_sets)))
+  const setIds = new Set(sets.map((s) => s.id))
+  const setAnswers = rowsOf('homework_answers')
+    .map((r) => own(pick(r, COLUMNS.homework_answers)))
+    .filter((r) => setIds.has(r.set_id))
+
   return {
     settings: data.user_settings ? pick(data.user_settings, SETTINGS_COLUMNS) : null,
     tables: [
@@ -71,11 +89,23 @@ export function prepareRestore(data, userId) {
       },
       { table: 'dictation_history', rows: dictation },
       { table: 'study_sessions', rows: rowsOf('study_sessions').map((r) => own(pick(r, COLUMNS.study_sessions))) },
+      {
+        table: 'homework_progress',
+        rows: rowsOf('homework_progress').map((r) => own(pick(r, COLUMNS.homework_progress))),
+        onConflict: 'user_id,item_key',
+      },
+      {
+        table: 'homework_sessions',
+        rows: rowsOf('homework_sessions').map((r) => own(pick(r, COLUMNS.homework_sessions))),
+      },
+      { table: 'homework_sets', rows: sets },
+      { table: 'homework_answers', rows: setAnswers },
     ].filter((t) => t.rows.length > 0),
   }
 }
 
 export function summarizeBackup(data) {
   const n = (key) => (Array.isArray(data[key]) ? data[key].length : 0)
-  return `${n('cards')} thẻ, ${n('clips')} clip, ${n('dictation_history')} lần chép chính tả, ${n('study_sessions')} buổi học`
+  const homework = n('homework_sessions') ? `, ${n('homework_sessions')} bài tập` : ''
+  return `${n('cards')} thẻ, ${n('clips')} clip, ${n('dictation_history')} lần chép chính tả, ${n('study_sessions')} buổi học${homework}`
 }

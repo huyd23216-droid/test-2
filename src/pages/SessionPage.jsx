@@ -5,10 +5,12 @@ import DictationExercise from '../components/DictationExercise.jsx'
 import Icon from '../components/Icon.jsx'
 import ProgressBar from '../components/ProgressBar.jsx'
 import ReviewQueue from '../components/ReviewQueue.jsx'
+import SetItemRunner from '../components/SetItemRunner.jsx'
 import { useData } from '../context/DataContext.jsx'
 import { useStudyTimer } from '../context/StudyTracker.jsx'
 import { CS_ITEMS, DICTATION_SENTENCES } from '../lib/content.js'
 import { orderConnectedSpeech, orderDictation } from '../lib/planner.js'
+import { dueReviewItems } from '../lib/homeworkSets.js'
 import { randomCheer } from '../lib/labels.js'
 import {
   DAILY_SESSION_CONNECTED_SPEECH,
@@ -16,14 +18,20 @@ import {
   DAILY_SESSION_MAX_REVIEWS,
 } from '../config.js'
 
-// Ghép buổi học: thẻ đến hạn → từ mới → nối âm → chính tả
-function buildPlan({ stats, csProgress, dictationStats }) {
+// Câu bài tập ôn lại tối đa trong một buổi học
+const SESSION_HOMEWORK_REVIEWS = 10
+
+// Ghép buổi học: thẻ đến hạn → từ mới → ôn câu sai bài tập → nối âm → chính tả
+function buildPlan({ stats, csProgress, dictationStats, hwSets, hwAnswersGrouped, today }) {
   const steps = []
   const reviews = stats.dueCards.slice(0, DAILY_SESSION_MAX_REVIEWS).map((c) => c.id)
   if (reviews.length) steps.push({ type: 'review', title: `Ôn ${reviews.length} thẻ đến hạn`, cardIds: reviews })
 
   const fresh = stats.newCards.slice(0, stats.newQuotaLeft).map((c) => c.id)
   if (fresh.length) steps.push({ type: 'new', title: `${fresh.length} từ mới`, cardIds: fresh })
+
+  const homework = dueReviewItems(hwSets, hwAnswersGrouped, today).slice(0, SESSION_HOMEWORK_REVIEWS)
+  if (homework.length) steps.push({ type: 'homework', title: `Ôn ${homework.length} câu bài tập`, entries: homework })
 
   orderConnectedSpeech(CS_ITEMS, csProgress)
     .slice(0, DAILY_SESSION_CONNECTED_SPEECH)
@@ -88,6 +96,14 @@ function Summary({ results, seconds, remainingDue }) {
             </strong>
           </li>
         ))}
+        {results.homework.length > 0 && (
+          <li>
+            <span>Câu bài tập ôn lại</span>
+            <strong>
+              {results.homework.filter((r) => r.isCorrect).length}/{results.homework.length} đúng
+            </strong>
+          </li>
+        )}
         {dictAvg !== null && (
           <li>
             <span>Chép chính tả ({results.dictation.length} câu)</span>
@@ -122,7 +138,7 @@ export default function SessionPage() {
   const [step, setStep] = useState(0)
   const [finished, setFinished] = useState(false)
   const [rate, setRate] = useState(data.settings.tts_rate ?? 1)
-  const [results, setResults] = useState({ reviewed: 0, learnedNew: 0, cs: [], dictation: [] })
+  const [results, setResults] = useState({ reviewed: 0, learnedNew: 0, cs: [], dictation: [], homework: [] })
   const [finalSeconds, setFinalSeconds] = useState(0)
   const elapsed = useElapsedMinutes(tracker)
 
@@ -180,6 +196,19 @@ export default function SessionPage() {
 
       {(current.type === 'review' || current.type === 'new') && (
         <ReviewQueue key={step} cardIds={current.cardIds} onAnswer={onAnswer} onFinish={next} />
+      )}
+
+      {current.type === 'homework' && (
+        <SetItemRunner
+          key={step}
+          entries={current.entries}
+          showSource
+          finishLabel={step + 1 >= plan.length ? 'Xem kết quả' : 'Tiếp tục'}
+          onFinish={(list) => {
+            setResults((res) => ({ ...res, homework: list }))
+            next()
+          }}
+        />
       )}
 
       {current.type === 'cs' && (

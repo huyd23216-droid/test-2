@@ -10,6 +10,44 @@ describe('backup restore', () => {
     expect(validateBackup({ app: 'tieng-anh-moi-ngay', cards: [] })).toBe(null)
   })
 
+  it('restores homework progress and sessions for the current account', () => {
+    const plan = prepareRestore(
+      {
+        app: 'tieng-anh-moi-ngay',
+        cards: [],
+        homework_progress: [{ user_id: 'old', item_key: 'meaning:c1', kind: 'meaning', box: 2, updated_at: 'x' }],
+        homework_sessions: [{ id: 'h1', user_id: 'old', study_date: '2026-10-05', mode: 'daily', total: 12, items: [] }],
+      },
+      ME,
+    )
+    const progress = plan.tables.find((t) => t.table === 'homework_progress')
+    expect(progress).toMatchObject({ onConflict: 'user_id,item_key' })
+    expect(progress.rows).toEqual([{ user_id: ME, item_key: 'meaning:c1', kind: 'meaning', box: 2 }])
+    const sessions = plan.tables.find((t) => t.table === 'homework_sessions')
+    expect(sessions.rows[0]).toMatchObject({ id: 'h1', user_id: ME, mode: 'daily', total: 12 })
+  })
+
+  it('restores assigned homework sets and only the answers whose set is in the file', () => {
+    const plan = prepareRestore(
+      {
+        app: 'tieng-anh-moi-ngay',
+        cards: [],
+        homework_sets: [{ id: 'set1', user_id: 'old', title: 'Unit 10', items: [], extra: 1 }],
+        homework_answers: [
+          { id: 'a1', user_id: 'old', set_id: 'set1', item_id: 'q1', answer: 'x', is_correct: true },
+          { id: 'a2', user_id: 'old', set_id: 'gone', item_id: 'q1', answer: 'y', is_correct: false },
+        ],
+      },
+      ME,
+    )
+    const tables = plan.tables.map((t) => t.table)
+    expect(tables.indexOf('homework_sets')).toBeLessThan(tables.indexOf('homework_answers'))
+    expect(plan.tables.find((t) => t.table === 'homework_sets').rows).toEqual([
+      { id: 'set1', user_id: ME, title: 'Unit 10', items: [] },
+    ])
+    expect(plan.tables.find((t) => t.table === 'homework_answers').rows.map((r) => r.id)).toEqual(['a1'])
+  })
+
   it('reassigns ownership, matches seed cards by seed_id and drops unknown columns', () => {
     const plan = prepareRestore(
       {

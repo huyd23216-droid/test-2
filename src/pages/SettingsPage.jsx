@@ -21,6 +21,28 @@ import {
   setDefaultAccent,
   setPreferredVoiceURI,
 } from '../lib/tts.js'
+import {
+  CLOUD_VOICES,
+  ensureCloudAudio,
+  getCloudVoiceId,
+  getEngine,
+  setCloudVoiceId,
+  setEngine,
+} from '../lib/cloudTts.js'
+
+const SAMPLE_SENTENCE = 'What are you trying to prove?'
+
+const ENGINE_OPTIONS = [
+  { id: 'cloud', label: 'Google (tự nhiên)' },
+  { id: 'device', label: 'Của máy' },
+]
+
+const CLOUD_STATUS_TEXT = {
+  checking: 'Đang kiểm tra giọng Google…',
+  ok: 'Giọng Google Chirp 3 HD đã sẵn sàng. Mỗi câu chỉ tạo một lần rồi lưu lại; khi mất mạng, web tự dùng giọng của máy.',
+  not_configured: 'Máy chủ chưa có khóa Google nên chưa dùng được giọng Google. Trong lúc chờ, web đọc bằng giọng của máy.',
+  error: 'Chưa kết nối được giọng Google, web đang đọc bằng giọng của máy. Bạn thử lại sau nhé.',
+}
 
 const ACCENT_OPTIONS = [
   { id: 'us', label: 'Mỹ' },
@@ -64,6 +86,21 @@ export default function SettingsPage() {
   const { showToast } = useToast()
   const voices = useVoices()
   const [voiceURIs, setVoiceURIs] = useState(() => ({ us: getPreferredVoiceURI('us'), uk: getPreferredVoiceURI('uk') }))
+  const [engine, setEngineState] = useState(getEngine)
+  const [cloudVoice, setCloudVoice] = useState(() => ({ us: getCloudVoiceId('us'), uk: getCloudVoiceId('uk') }))
+  const [cloudCheck, setCloudCheck] = useState({})
+  const checkAccent = settings.accent === 'uk' ? 'uk' : 'us'
+  const checkKey = `${checkAccent}:${cloudVoice[checkAccent]}`
+
+  // Thử tạo giọng Google cho câu mẫu để báo cho bạn biết giọng Google đã chạy chưa
+  useEffect(() => {
+    if (engine !== 'cloud') return
+    ensureCloudAudio(SAMPLE_SENTENCE, checkAccent).then(
+      () => setCloudCheck((c) => ({ ...c, [checkKey]: 'ok' })),
+      (err) =>
+        setCloudCheck((c) => ({ ...c, [checkKey]: err?.context?.status === 503 ? 'not_configured' : 'error' })),
+    )
+  }, [engine, checkAccent, checkKey])
   const [theme, setThemeState] = useState(getTheme)
   const [exporting, setExporting] = useState(false)
   const [restoring, setRestoring] = useState(null) // { done, total } khi đang khôi phục
@@ -221,11 +258,54 @@ export default function SettingsPage() {
           value={settings.tts_rate}
           onChange={(r) => updateSettings({ tts_rate: r })}
         />
+        <div className="field">
+          <span>Nguồn giọng</span>
+          <div className="segmented segmented-block" role="group" aria-label="Nguồn giọng">
+            {ENGINE_OPTIONS.map((o) => (
+              <button
+                key={o.id}
+                type="button"
+                className={engine === o.id ? 'active' : ''}
+                aria-pressed={engine === o.id}
+                onClick={() => {
+                  setEngine(o.id)
+                  setEngineState(o.id)
+                }}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        {engine === 'cloud' && (
+          <>
+            {(settings.accent === 'mixed' ? ['us', 'uk'] : [settings.accent]).map((acc) => (
+              <label className="field" key={`cloud-${acc}`}>
+                <span>{ACCENTS[acc].label} của Google</span>
+                <select
+                  value={cloudVoice[acc]}
+                  onChange={(e) => {
+                    setCloudVoiceId(acc, e.target.value)
+                    setCloudVoice((v) => ({ ...v, [acc]: e.target.value }))
+                  }}
+                >
+                  {CLOUD_VOICES.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+            <p className="hint">{CLOUD_STATUS_TEXT[cloudCheck[checkKey] ?? 'checking']}</p>
+          </>
+        )}
         {isSpeechSupported() &&
           (settings.accent === 'mixed' ? ['us', 'uk'] : [settings.accent]).map((acc) => (
             <label className="field" key={acc}>
               <span>
                 {ACCENTS[acc].label} trên thiết bị này ({ACCENTS[acc].lang})
+                {engine === 'cloud' ? ', dùng khi mất mạng' : ''}
               </span>
               {voices[acc].length > 0 ? (
                 <select
@@ -245,13 +325,13 @@ export default function SettingsPage() {
               ) : (
                 <small className="hint">
                   Thiết bị chưa có giọng {ACCENTS[acc].lang}. Trên Mac/iPhone: Cài đặt → Trợ năng → Nội dung được đọc →
-                  Giọng nói → English (UK) để tải thêm.
+                  Giọng nói → English ({acc === 'uk' ? 'UK' : 'US'}) để tải thêm.
                 </small>
               )}
             </label>
           ))}
         <div className="button-row">
-          <SpeakButton text="What are you trying to prove?" rate={settings.tts_rate} label="Nghe thử" />
+          <SpeakButton text={SAMPLE_SENTENCE} rate={settings.tts_rate} label="Nghe thử" />
         </div>
         {!isSpeechSupported() && (
           <p className="hint">Trình duyệt này chưa hỗ trợ đọc tiếng Anh. Bạn thử Safari hoặc Chrome nhé.</p>

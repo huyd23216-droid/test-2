@@ -48,7 +48,7 @@ export default function ConnectedSpeechExercise({ item, mode, rate, onRateChange
       ) : (
         <div className="prompt">
           <p className="prompt-label">Nghe rồi gõ lại câu đầy đủ</p>
-          <SpeakButton text={item.full} rate={rate} variant="big" label="Nghe câu" />
+          <SpeakButton text={item.full} rate={rate} variant="big" label="Nghe câu" prefetch />
           {onRateChange && <RateSelector value={rate} onChange={onRateChange} />}
         </div>
       )}
